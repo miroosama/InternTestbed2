@@ -9,7 +9,7 @@ Testbed for Interns
 ## Installation 
 #### Follow these steps to install the repository
 ``` bash
-  git clone https://github.com/10thFloorSoft/InternTestbed.git InternTestbed
+  git clone https://github.com/10thFloorSoft/InternTestbed2.git InternTestbed2
   npm install
 ```
 
