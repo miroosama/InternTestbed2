@@ -18,3 +18,9 @@ Testbed for Interns
 ``` bash
   node index.js
 ```
+
+## Create a Bitcoin Testnet Address
+#### Create an address, then check the result with https://coinomi.com/recovery-phrase-tool.html or https://iancoleman.io/bip39/ 
+``` bash
+  node bitcoin.js
+  mgTaJF2s7x8QdLUN91YGFCg134UwG121io
