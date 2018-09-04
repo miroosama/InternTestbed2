@@ -1,0 +1,23 @@
+{
+  "name": "interntestbed2",
+  "version": "1.0.0",
+  "description": "Testbed for Interns",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10thFloorSoft/InternTestbed2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/10thFloorSoft/InternTestbed2/issues"
+  },
+  "homepage": "https://github.com/10thFloorSoft/InternTestbed2#readme",
+  "dependencies": {
+    "bip39": "^2.5.0",
+    "bitcoinjs-lib": "^4.0.1"
+  }
+}
