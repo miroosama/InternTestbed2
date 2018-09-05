@@ -4,7 +4,7 @@ var bitcoin = require('bitcoinjs-lib');
 var network = bitcoin.networks.testnet; // bitcoin.networks.bitcoin for mainnet
 var mnemonic = "fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss";
 var seed = bip39.mnemonicToSeed(mnemonic);
-var root = bitcoin.bip32.fromSeed(seed);
+var root = bitcoin.bip32.fromSeed(seed, network);
 // HDNode was deprecated: https://github.com/bitcoinjs/bitcoinjs-lib/issues/1206
 // and https://github.com/bitcoinjs/bitcoinjs-lib/issues/1047
 
