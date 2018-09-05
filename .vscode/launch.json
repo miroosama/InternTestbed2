@@ -7,6 +7,12 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch BTC Program",
+            "program": "${workspaceFolder}/bitcoin.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug index.js",
             "program": "${workspaceRoot}/index.js",
             "env": { },
