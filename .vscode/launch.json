@@ -8,7 +8,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug myBitcoin.js",
+            "name": "debug osama",
             "program": "${workspaceRoot}/myBitcoin.js",
             "env": { },
         },
@@ -16,16 +16,24 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug bitcoin.js",
-            "program": "${workspaceRoot}/bitcoin.js",
+            "name": "debug igor",
+            "program": "${workspaceRoot}/bitcoin-ie.js",
             "env": { },
         },
 
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/bitcoin.js",
+            "name": "debug gray",
+            "program": "${workspaceFolder}/bitcoin-gray.js",
+            "env": { }
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug celeste",
+            "program": "${workspaceFolder}/bitcoin-cg.js",
             "env": { }
         }
 
