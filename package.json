@@ -20,6 +20,10 @@
     "axios": "^0.18.0",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^4.0.1",
+<<<<<<< HEAD
+    "testnet-faucet": "^1.0.4"
+=======
     "request": "^2.88.0"
+>>>>>>> ce5d797579a7cee4e45387a4b2b868e16b649b06
   }
 }
