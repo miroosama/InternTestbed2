@@ -163,16 +163,3 @@ let apiUrl = 'https://testnet.blockexplorer.com/api/addr/'
 
 
 
-
-
-
-
-
-
-
-// function getPublicKey(node){
-//     return node.publicKey.hexSlice()
-// }
-
-
-
