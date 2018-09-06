@@ -1,0 +1,9 @@
+var wallet = {
+    seed: '',
+    pubKey: '',
+    prvKey: '',
+    addresses: [{
+        addr1: '',
+        
+    }]
+}
