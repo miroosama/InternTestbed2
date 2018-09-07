@@ -20,11 +20,15 @@
     "axios": "^0.18.0",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^4.0.1",
+<<<<<<< HEAD
     "chalk": "^2.4.1",
     "commander": "^2.18.0",
     "figlet": "^1.2.0",
     "inquirer": "^6.2.0",
     "request": "^2.88.0",
     "shelljs": "^0.8.2"
+=======
+    "request": "^2.88.0"
+>>>>>>> c92e5cc054b008c1b9b3ce6cc118a5d6b18d1bc7
   }
 }

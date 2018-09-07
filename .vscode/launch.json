@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+<<<<<<< HEAD
 
         {
             "type": "node",
@@ -11,22 +12,66 @@
             "name": "Debug bitcoin_gray.js",
             "program": "${workspaceRoot}/bitcoin_gray.js",
             "env": {},
+=======
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug bitcoinApp.js",
+            "program": "${workspaceRoot}/bitcoinApp.js",
+            "env": { },
         },
 
         {
             "type": "node",
             "request": "launch",
+            "name": "debug osama",
+            "program": "${workspaceRoot}/myBitcoin.js",
+            "env": { },
+>>>>>>> c92e5cc054b008c1b9b3ce6cc118a5d6b18d1bc7
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+<<<<<<< HEAD
             "name": "Debug bitcoin_ie.js",
             "program": "${workspaceRoot}/bitcoin_ie.js",
             "env": {},
+=======
+            "name": "debug igor",
+            "program": "${workspaceRoot}/bitcoin-ie.js",
+            "env": { },
+>>>>>>> c92e5cc054b008c1b9b3ce6cc118a5d6b18d1bc7
         },
 
         {
             "type": "node",
             "request": "launch",
+<<<<<<< HEAD
             "name": "Launch Program",
             "program": "${workspaceFolder}/bitcoin.js",
             "env": {}
+=======
+            "name": "debug gray",
+            "program": "${workspaceFolder}/bitcoin-gray.js",
+            "env": { }
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug celeste",
+            "program": "${workspaceFolder}/bitcoin-cg.js",
+            "env": { }
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug gray_index",
+            "program": "${workspaceFolder}/index.js",
+            "env": { }
+>>>>>>> c92e5cc054b008c1b9b3ce6cc118a5d6b18d1bc7
         }
 
 
