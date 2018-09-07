@@ -2,10 +2,11 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 var request = require('request');
 var axios = require('axios');
+// const funcs = require('./bitcoin_gray.js');
 
 var network = bitcoin.networks.testnet;
 
-var mnemonic = "fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss";
+var mnemonic = "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp";
 var seed = bip39.mnemonicToSeed(mnemonic);
 
 var Tree = bitcoin.bip32.fromSeed(seed, network);
@@ -43,16 +44,17 @@ function getPrivateKey(node) {
 
 function checkBalance(addr) {
   const url = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr;
-  axios({
+  return axios({
       url: url
+    }).then(function (resp) {
+      // console.log(resp.data);
+      // console.log("Balance: ", resp.data.final_balance);
+      return ("Balance: ", resp.data.final_balance);
     })
-    .then(function (resp) {
-      console.log(resp.data);
-      console.log("Balance: ", resp.data.final_balance)
-    });
+    .catch((err) => console.log(err));
 }
 
-console.log(checkBalance("mgTaJF2s7x8QdLUN91YGFCg134UwG121io"));
+// console.log(checkBalance("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq"));
 
 function createTx(vout, total, WIF, inputId, output1, output2, index) {
   const change = total - vout;
@@ -74,28 +76,28 @@ function pushTx(tx) {
     .catch(err => console.log(err))
 }
 
-pushTx(createTx(1400, 1800, "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch", '796c2c99b6d452769743942fd786d86d563d97af15fc53d2546175e98bf91c50', "mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", "mgTaJF2s7x8QdLUN91YGFCg134UwG121io", 0));
+// pushTx(createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
 
-var WIF = "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch";
-var txb = new bitcoin.TransactionBuilder(network);
-txb.addInput("107be8e4c1031b1527a4fd518a25e394a12f13245a41436db10612020271a672", 0);
-txb.addOutput("mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", 1000);
-txb.addOutput("mgTaJF2s7x8QdLUN91YGFCg134UwG121io", 800);
-let keypairSpend = bitcoin.ECPair.fromWIF(WIF, network);
-txb.sign(0, keypairSpend);
+// var WIF = "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch";
+// var txb = new bitcoin.TransactionBuilder(network);
+// txb.addInput("107be8e4c1031b1527a4fd518a25e394a12f13245a41436db10612020271a672", 0);
+// txb.addOutput("mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", 1000);
+// txb.addOutput("mgTaJF2s7x8QdLUN91YGFCg134UwG121io", 800);
+// let keypairSpend = bitcoin.ECPair.fromWIF(WIF, network);
+// txb.sign(0, keypairSpend);
 
-let tx_hex = txb.build().toHex();
-console.log("Hello!!!", tx_hex);
+// let tx_hex = txb.build().toHex();
+// console.log("Hello!!!", tx_hex);
 
 
 var mnemonic = bip39.generateMnemonic(256);
 
-console.log(mnemonic);
+// console.log(mnemonic);
 
 
-console.log(getPublicKey(Leaf));
-console.log(getPrivateKey(Leaf));
-console.log(getAddress(Leaf, network));
+// console.log(getPublicKey(Leaf));
+// console.log(getPrivateKey(Leaf));
+// console.log(getAddress(Leaf, network));
 
 
 
@@ -104,4 +106,18 @@ console.log(getAddress(Leaf, network));
 //var Leaf2 = node.deriveHardened(44).deriveHardened(1).deriveHardened(0);
 
 //https://coinomi.com/recovery-phrase-tool.html
-//https://iancoleman.io/bip39/
+//https://iancoleman.io/bip39/ 
+
+async function checkBalanceHandler() {
+  let data = await checkBalance("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
+  // console.log(data)
+  return data;
+}
+// console.log(checkBalanceHandler())
+
+module.exports.balance = checkBalance("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
+
+module.exports.handler = checkBalanceHandler();
+module.exports.public = getPublicKey(Leaf);
+
+module.exports.add = (a, b) => a + b;

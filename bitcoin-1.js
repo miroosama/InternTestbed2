@@ -52,6 +52,6 @@ function pushTx(tx) {
     .catch(err => console.log(err))
 }
 
-pushTx(createTx(1400, 1800, "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch", '796c2c99b6d452769743942fd786d86d563d97af15fc53d2546175e98bf91c50', "mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", "mgTaJF2s7x8QdLUN91YGFCg134UwG121io", 0));
+// pushTx(createTx(1400, 1800, "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch", '796c2c99b6d452769743942fd786d86d563d97af15fc53d2546175e98bf91c50', "mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", "mgTaJF2s7x8QdLUN91YGFCg134UwG121io", 0));
 
 checkBalance("mgTaJF2s7x8QdLUN91YGFCg134UwG121io");
