@@ -14,10 +14,15 @@ const Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(
 const Leaf2 = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0);
 // let txb = new bitcoin.TransactionBuilder()
 
-// async function checkBalanceHandler(){
-//     let data = await funcs.checkBalance(funcs.getAddress(Leaf, network))
-//     console.log(data)
-// }
-// checkBalanceHandler()
+async function checkBalanceHandler(){
+    let data = await funcs.checkBalance(funcs.getAddress(Leaf, network))
+    console.log("Balance: ", data.balance)
+    console.log("Unconfirmed Balance: ", data.unconfirmed_balance)
+    console.log("Final Balance: ", data.final_balance)
+}
+checkBalanceHandler()
 
-funcs(funcs.createTX(200, 2000, `cRyUBkZgD44iSxw844fAB2RnfnW3H7XencuEwbuUk1iXJ2Xw2sT6`, `966aa228397a9968894165d9adad2ced2d9492a178e6cd76401518dc2bfc5a5d`, `msTeEpLKa4dKbFj5WUQ962Tu7bWyQjM6wS`, `mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u`, 0))
+// console.log(funcs.checkBalance(funcs.getAddress(Leaf, network)))
+// console.log(
+//     funcs.createTX(200, 92000, `cSbU6VWqTPzocKmHq4Jgjzt8pnTdDXU4hQwrWceRjQCYUqnX1kiF`, `228970aa74900d1301abbc65e077db75dedcb348875cecab80de48b2a682749f`, `miLrxoayoWzX4fJ5WD8QVzmMrCUwbJBisS`, `mgHexm9UkuJipmka4zjSHJBXMRNAi3Werq`, 1)
+// )

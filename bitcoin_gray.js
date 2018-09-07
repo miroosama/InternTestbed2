@@ -18,7 +18,7 @@ exports.getPrivateKey = function (node) {
     return node.toWIF()
 }
 
-exports.checkBalance = function (addr) {
+exports.checkBalance = async function (addr) {
     const url = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
     return axios({url: url})
     .then( (resp) => {
@@ -45,7 +45,7 @@ exports.createTX = function (vout, balance, WIF, input1, output1, output2, type)
 }
 
 exports.pushTX = function (tx) {
-      axios.post('https://api.blockcypher.com/v1/bcy/test/txs/push', JSON.stringify({ tx: tx }) )
+      axios.post('https://chain.so/api/v2/send_tx/BTCTEST', { tx_hex: tx } )
         .then(function(d) { console.log(d) })
         .catch( (err) => { console.log(err) } )
 }
