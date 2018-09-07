@@ -35,6 +35,14 @@
             "name": "debug celeste",
             "program": "${workspaceFolder}/bitcoin-cg.js",
             "env": { }
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug gray_index",
+            "program": "${workspaceFolder}/index.js",
+            "env": { }
         }
 
     
