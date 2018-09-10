@@ -11,7 +11,7 @@
             "name": "Debug bitcoin_gray.js",
             "program": "${workspaceRoot}/bitcoin_gray.js",
             "env": {},
-        }
+        },
 
         {
 
@@ -36,17 +36,11 @@
             "name": "Debug bitcoin_ie.js",
             "program": "${workspaceRoot}/bitcoin_ie.js",
             "env": {},
-            "name": "debug igor",
-            "program": "${workspaceRoot}/bitcoin-ie.js",
-            "env": {},
         },
 
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/bitcoin.js",
-            "env": {},
             "name": "debug gray",
             "program": "${workspaceFolder}/bitcoin-gray.js",
             "env": {}
