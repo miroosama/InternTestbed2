@@ -4,10 +4,9 @@ const request = require('request');
 
 let seed
 
-
 const Wallet = (() => {
 
-    let walletIds = 1;
+    let walletIds = 0;
     let mnemonic
 
     return class {
@@ -21,7 +20,8 @@ const Wallet = (() => {
         }
 
         generateSeed(mnemonic) {
-            return seed = bip39.mnemonicToSeed(mnemonic);
+            seed = bip39.mnemonicToSeed(mnemonic);
+            return seed;
         }
 
         deriveAddress(seed) {
@@ -33,7 +33,7 @@ const Wallet = (() => {
         }
         
     }
-})()
+})();
 
 const thisWallet = new Wallet();
 console.log(thisWallet.generateMnemonic())
@@ -44,20 +44,25 @@ const Transaction = (() => {
     //while they are used to create transactions, these data live 
     //in a wallet 
     API_URL =  'https://testnet.blockexplorer.com/api/addr/'
-    const utxo = [];
 
     let addr 
     let balance
     let pubkey
     let privkey
     let txid
+    let changeAddr
+
+    let transactionid = 0;
+    let utxo = [];
     
     return class {
         constructor() {
+            this.id = transactionId++;
             this.addr = addr;
             this.pubkey = pubkey;
             this.prikey = privkey;
             this.txid = txid;
+            this.changeAddr = changeAddr;
             this.balance = balance;
         }
 
@@ -83,22 +88,37 @@ const Transaction = (() => {
             })
         }
 
-        createTransaction() {
+        createTransaction(recievingAddr, changeAddr) {
             let transaction = new bitcoin.TransactionBuilder(network);
-            tx.id
+
+            //handle amounts
+            let amountWeHave = utxo[this.id].satoshis
+            let amountToKeep = amountWeHave - 400
+            let transactionFee = 100
+            let amountToSend = amountWeHave - amountToKeep - transactionFee
+
+            //input
+            transaction.addInput(utxo[this.id].txid, 0); 
+
+            //outputs(0,1)
+            transaction.addOutput(recievingAddr="mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", amountToSend);
+            transaction.addOutput(changeAddr="mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn", amountToKeep);
         }
 
-        signTransaction(tx) {
-            privkey = node.toWIF()
+        signTransaction(transaction) {
+            prikey = node.toWIF();
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
-            tx.sign(0, signature)
+            transaction.sign(0, signature);
+        }
+
+        getHex(transaction) {
+            let tx = transaction.build();
+            txhex = tx.toHex();
         }
 
         pushTransaction(tx) {
-
+            //one day we will achieve this impossible task
         }
 
     }
-})()
-
-const thisTransaction = new Transaction();
+})();

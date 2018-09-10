@@ -8,6 +8,22 @@
         {
             "type": "node",
             "request": "launch",
+<<<<<<< HEAD
+            "name": "Debug myEther.js",
+            "program": "${workspaceRoot}/myEther.js",
+            "env": { },
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug myBitcoin.js",
+            "program": "${workspaceRoot}/myBitcoin.js",
+            "env": { },
+        },
+
+        {
+=======
             "name": "Debug bitcoin_gray.js",
             "program": "${workspaceRoot}/bitcoin_gray.js",
             "env": {},
@@ -15,6 +31,7 @@
 
         {
 
+>>>>>>> 1cfcf8318b60d422befd2c57e597a07a39eb746d
             "type": "node",
             "request": "launch",
             "name": "Debug bitcoinApp.js",
