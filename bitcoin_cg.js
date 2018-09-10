@@ -1,22 +1,13 @@
-//require bip39, 'mnemonic code for generating deterministic keys' - .generateMnemonic(), mnemonicToSeed()
 var bip39 = require('bip39');
-
-//require bitcoin, bip32 is accessible through it (what other bips?)
 var bitcoin = require('bitcoinjs-lib');
-
-//require request, it is a way to make HTTP calls
-//request( url, function (error, response, body) {
-    //can print error, if one occurred
-    //response is the status code
-    //body is the HTML of the url we are requesting
-//}
 const request = require('request');
+const axios = 
+let tx
+let balance
 
 var network = bitcoin.networks.testnet;
 
-//.generateMnemonic() will create a new Mnemonic everytime. this is the beginning of the 'account?' Cannot create a mnemonic on your own, because the last value is a checksum
 var mnemonic = "crisp real stone debris labor arrow seek conduct ozone science hat decrease"
-//we pass in the mnemonic into bip39.mnemonicToSeed(),
 var seed = bip39.mnemonicToSeed(mnemonic);
 
 var root = bitcoin.bip32.fromSeed(seed, network);
@@ -28,70 +19,64 @@ function getAddress(node, network) {
     return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
 }
 
-let addr =  'mgTaJF2s7x8QdLUN91YGFCg134UwG121io'
-let myaddr = 'mxJHejkmYcwc22iSpZEVfiAtFdkxx3PviN'
+let addr = 'mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn'
 let apiUrl = 'https://testnet.blockexplorer.com/api/addr/'
 
-    // log unspent transactions -- account as it stands
+    // log utxo
 request.get(apiUrl + addr + '/utxo', (err, req, body) => {
-    console.log(JSON.parse(body))
+    tx = JSON.parse(body)
+    console.log(tx)
    }
+)
+
+// log balance
+request.get(apiUrl + addr + '/balance', (err, req, body) => {
+    balance = JSON.parse(body)
+    console.log(balance))
+ }
 );
 
-
-const end = "end"
-
-
-
-// // log balance
-// request.get(apiUrl + addr + '/balance', (err, req, body) => {
-//   console.log(JSON.parse(body))
-//  }
-// );
-
-
-    // // { txid: '107be8e4c1031b1527a4fd518a25e394a12f13245a41436db10612020271a672',
-    // // vout: 0,
-    // // satoshis: 1800 }
-
-    // let tx = new bitcoin.TransactionBuilder(network);
-    // let input1 = 'f9acfccbee92232f20f2bd9e08ff096a40ea4cd500c7b3f7afbd03b37ed603a8'
-    // //1800 satoshis
-    // let input2 = 'd3b9e066894abb4e3cbf53890fb131ed9977126afb079f64db5efbb2aac0817b';
-    // //1907 satoshis
-
-    // let amountWeHave = 1907
-    // let amountToKeep = 1500
-    // let transactionFee = 100
-
-    // let amountToSend = amountWeHave - amountToKeep - transactionFee
-
-    // //input
-    // tx.addInput(t4, 0); 
-
-    // //output
-    // tx.addOutput("msTeEpLKa4dKbFj5WUQ962Tu7bWyQjM6wS", amountToSend);
-    // tx.addOutput("mgTaJF2s7x8QdLUN91YGFCg134UwG121io", amountToKeep);
-
-    // let WIF = node.toWIF()
-    // let signature = bitcoin.ECPair.fromWIF(WIF, network);
+//utxo
+[ { address: 'mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn',
+    txid:
+     'b6e8b3adabdd043d530dfbc446b388d55625957308c89850ba37c59cdd41f321',
+    vout: 0,
+    scriptPubKey: '76a9147373088fcaf8e9ab1364f3580f31b904ea64a21c88ac',
+    amount: 0.0003,
+    satoshis: 30000,
+    confirmations: 0,
+    ts: 1536343448 } ]
     
-    // tx.sign(0, signature)
+    let transaction = new bitcoin.TransactionBuilder(network);
+    let txid1 = 'f9acfccbee92232f20f2bd9e08ff096a40ea4cd500c7b3f7afbd03b37ed603a8'
 
-    // let transaction = tx.build()
-    // let txhex = transaction.toHex();
+    let amountWeHave = 30000
+    let amountToKeep = 29000
+    let transactionFee = 100
+
+    let amountToSend = amountWeHave - amountToKeep - transactionFee
+
+    //input
+    tx.addInput(txid1, 0); 
+
+    //output
+    tx.addOutput("mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", amountToSend);
+    tx.addOutput("mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn", amountToKeep);
+
+    let WIF = node.toWIF()
+    let signature = bitcoin.ECPair.fromWIF(WIF, network);
+    
+    tx.sign(0, signature)
+
+    let transaction = tx.build()
+    let txhex = transaction.toHex();
 
 
-    // console.log('our beautiful transaction:', txhex)
+    console.log('our beautiful transaction:', txhex)
 
-    // // request({
-    // //     url: 'https://testnet.blockexplorer.com/api/tx/send',
-    // //     method: "POST",
-    // //     json: true,
-    // //     body: `${txhex}`
-    // // }, function (error, response, body){
-    // //     console.log(response);
-    // // });
+        // axios.post('https://api.blockcypher.com/v1/bcy/test/txs/push', { tx: ${txhex} } )
+        //   .then(function(res) { console.log(res) })
+        //   .catch( (err) => { console.log(err) } )
 
 
 

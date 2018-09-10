@@ -4,9 +4,11 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "node",
             "request": "launch",
+<<<<<<< HEAD
             "name": "Debug myEther.js",
             "program": "${workspaceRoot}/myEther.js",
             "env": { },
@@ -21,11 +23,20 @@
         },
 
         {
+=======
+            "name": "Debug bitcoin_gray.js",
+            "program": "${workspaceRoot}/bitcoin_gray.js",
+            "env": {},
+        },
+
+        {
+
+>>>>>>> 1cfcf8318b60d422befd2c57e597a07a39eb746d
             "type": "node",
             "request": "launch",
             "name": "Debug bitcoinApp.js",
             "program": "${workspaceRoot}/bitcoinApp.js",
-            "env": { },
+            "env": {},
         },
 
         {
@@ -33,15 +44,15 @@
             "request": "launch",
             "name": "debug osama",
             "program": "${workspaceRoot}/myBitcoin.js",
-            "env": { },
+            "env": {},
         },
 
         {
             "type": "node",
             "request": "launch",
-            "name": "debug igor",
-            "program": "${workspaceRoot}/bitcoin-ie.js",
-            "env": { },
+            "name": "Debug bitcoin_ie.js",
+            "program": "${workspaceRoot}/bitcoin_ie.js",
+            "env": {},
         },
 
         {
@@ -49,7 +60,7 @@
             "request": "launch",
             "name": "debug gray",
             "program": "${workspaceFolder}/bitcoin-gray.js",
-            "env": { }
+            "env": {}
         },
 
         {
@@ -57,9 +68,17 @@
             "request": "launch",
             "name": "debug celeste",
             "program": "${workspaceFolder}/bitcoin-cg.js",
-            "env": { }
+            "env": {}
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug gray_index",
+            "program": "${workspaceFolder}/index.js",
+            "env": {}
         }
 
-    
+
     ]
 }
