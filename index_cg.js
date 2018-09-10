@@ -11,17 +11,18 @@ const Wallet = (() => {
     let mnemonic
 
     return class {
-        constructor(seed) {
+        constructor() {
             this.id = walletIds++;
             this.mnemonic = mnemonic; 
         }
 
         generateMnemonic() {
             mnemonic = bip39.generateMnemonic();
+            return mnemonic;
         }
 
         generateSeed(mnemonic) {
-            seed = bip39.mnemonicToSeed(mnemonic);
+            return seed = bip39.mnemonicToSeed(mnemonic);
         }
 
         deriveAddress(seed) {
@@ -33,7 +34,11 @@ const Wallet = (() => {
         }
         
     }
-})
+})()
+
+const thisWallet = new Wallet();
+console.log(thisWallet.generateMnemonic())
+console.log(thisWallet.generateSeed())
 
 const Transaction = (() => {
     //maybe we should store addr, balance pub/prv keys in wallet?
@@ -68,7 +73,7 @@ const Transaction = (() => {
 
         async getUtxo(addr) {
             request.get(API_URL + addr + '/utxo', (err, req, body) => {
-                let tx = await JSON.parse(body)
+                let tx = JSON.parse(body)
                 utxo.push(tx)
                 console.log(tx)
             })
@@ -76,7 +81,7 @@ const Transaction = (() => {
 
         async getBalance(addr) {
             request.get(API_URL + addr + '/balance', (err, req, body) => {
-                console.log(await JSON.parse(body))
+                console.log(JSON.parse(body))
             })
         }
 
@@ -85,11 +90,17 @@ const Transaction = (() => {
             tx.id
         }
 
-        signTransaction() {
+        signTransaction(tx) {
             privkey = node.toWIF()
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
             tx.sign(0, signature)
         }
 
+        pushTransaction(tx) {
+
+        }
+
     }
-})
+})()
+
+// const thisTransaction = new Transaction();
