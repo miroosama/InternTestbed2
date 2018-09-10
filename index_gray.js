@@ -1,6 +1,6 @@
 const bip39 = require('bip39');
 const bitcoin = require('bitcoinjs-lib');
-const funcs = require('./bitcoin_gray.js');
+const {promiseLog, checkBalance, getAddress} = require('./bitcoin_gray.js');
 
 // HDNode was deprecated: https://github.com/bitcoinjs/bitcoinjs-lib/issues/1206
 // and https://github.com/bitcoinjs/bitcoinjs-lib/issues/1047
@@ -8,19 +8,20 @@ const funcs = require('./bitcoin_gray.js');
 const network = bitcoin.networks.testnet; // bitcoin.networks.bitcoin for mainnet
 const mnemonic = "quality chaos left cabbage aware sponsor shop burger urge lottery face glimpse";
 const seed = bip39.mnemonicToSeed(mnemonic);
-const root = bitcoin.bip32.fromSeed(seed, network);
 const Tree = bitcoin.bip32.fromSeed(seed, network);
 const Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
 const Leaf2 = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0);
 // let txb = new bitcoin.TransactionBuilder()
 
-async function checkBalanceHandler(){
-    let data = await funcs.checkBalance(funcs.getAddress(Leaf, network))
-    console.log("Balance: ", data.balance)
-    console.log("Unconfirmed Balance: ", data.unconfirmed_balance)
-    console.log("Final Balance: ", data.final_balance)
+function checkBalanceHandler(){
+    let data = checkBalance(getAddress(Leaf, network))
+    // console.log("Balance: ", data.balance)
+    // console.log("Unconfirmed Balance: ", data.unconfirmed_balance)
+    // console.log("Final Balance: ", data.final_balance)
+    return data;
 }
-checkBalanceHandler()
+promiseLog(checkBalanceHandler())
+
 
 // console.log(funcs.checkBalance(funcs.getAddress(Leaf, network)))
 // console.log(
