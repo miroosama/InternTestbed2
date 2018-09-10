@@ -50,6 +50,11 @@ exports.pushTX = function (tx) {
         .catch( (err) => { console.log(err) } )
 }
 
+exports.promiseLog = async (promise) => {
+    // accepts async promises as input, will wait until promise is fulfilled then print. forces console.log() into synchronous behavior.
+    console.log(await promise)
+}
+
 // checkBalance(getAddress(Leaf, network))
 // console.log("Public Key: ", getPublicKey(Leaf))
 // console.log("Private Key: ", getPrivateKey(Leaf))
