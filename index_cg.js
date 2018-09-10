@@ -13,7 +13,7 @@ const Wallet = (() => {
     return class {
         constructor(seed) {
             this.id = walletIds++;
-            this.mnemonic = mnemonic;
+            this.mnemonic = mnemonic; 
         }
 
         generateMnemonic() {
@@ -36,11 +36,13 @@ const Wallet = (() => {
 })
 
 const Transaction = (() => {
-
+    //maybe we should store addr, balance pub/prv keys in wallet?
+    //while they are used to create transactions, these data live 
+    //in a wallet 
     API_URL =  'https://testnet.blockexplorer.com/api/addr/'
     const utxo = [];
 
-    let addr
+    let addr 
     let balance
     let pubkey
     let privkey
@@ -64,18 +66,17 @@ const Transaction = (() => {
             addr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
         }
 
-        getUtxo(addr) {
+        async getUtxo(addr) {
             request.get(API_URL + addr + '/utxo', (err, req, body) => {
-                tx = JSON.parse(body)
+                let tx = await JSON.parse(body)
                 utxo.push(tx)
                 console.log(tx)
             })
         }
 
-        getBalance(addr) {
+        async getBalance(addr) {
             request.get(API_URL + addr + '/balance', (err, req, body) => {
-                balance = JSON.parse(body)
-                console.log(balance)
+                console.log(await JSON.parse(body))
             })
         }
 
