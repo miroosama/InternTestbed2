@@ -12,13 +12,14 @@
             "program": "${workspaceRoot}/bitcoin_gray.js",
             "env": {},
         },
-        
+
         {
+
             "type": "node",
             "request": "launch",
             "name": "Debug bitcoinApp.js",
             "program": "${workspaceRoot}/bitcoinApp.js",
-            "env": { },
+            "env": {},
         },
 
         {
@@ -26,7 +27,7 @@
             "request": "launch",
             "name": "debug osama",
             "program": "${workspaceRoot}/myBitcoin.js",
-            "env": { },
+            "env": {},
         },
 
         {
@@ -37,20 +38,12 @@
             "env": {},
         },
 
-        {   
-            "type": "node",
-            "request": "launch",
-            "name": "debug igor",
-            "program": "${workspaceRoot}/bitcoin-ie.js",
-            "env": { },
-        },
-
         {
             "type": "node",
             "request": "launch",
             "name": "debug gray",
             "program": "${workspaceFolder}/bitcoin-gray.js",
-            "env": { }
+            "env": {}
         },
 
         {
@@ -58,7 +51,7 @@
             "request": "launch",
             "name": "debug celeste",
             "program": "${workspaceFolder}/bitcoin-cg.js",
-            "env": { }
+            "env": {}
         },
 
         {
@@ -66,7 +59,7 @@
             "request": "launch",
             "name": "debug gray_index",
             "program": "${workspaceFolder}/index.js",
-            "env": { }
+            "env": {}
         }
 
 
