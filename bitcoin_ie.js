@@ -68,15 +68,15 @@ function createTx(vout, total, WIF, inputId, output1, output2, index) {
   return tx_hex;
 }
 
-// function pushTx(tx) {
-//   axios.post('https://api.blockcypher.com/v1/bcy/test/txs/push', JSON.stringify({
-//       tx: tx
-//     }))
-//     .then(resp => console.log(resp))
-//     .catch(err => console.log(err))
-// }
+function pushTx(tx) {
+  axios.post('https://api.blockcypher.com/v1/bcy/test/txs/push', JSON.stringify({
+      tx: tx
+    }))
+    .then(resp => console.log(resp))
+    .catch(err => console.log(err))
+}
 
-// pushTx(createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
+// pushTx(createTx(7000, 7100, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", 'ae930949adbad7cf9da3584e8155dea01f234c18eef42c53e7ab4ac85ac5e143', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
 
 // var WIF = "cNVu4ia2waxd7qb6LNauU9haMG9bd5JCRCpferBN9Lq4uZgjLNch";
 // var txb = new bitcoin.TransactionBuilder(network);
@@ -118,12 +118,14 @@ async function checkBalanceHandler() {
 // module.exports.balance = checkBalance("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
 module.exports.balance = checkBalanceHandler("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
 
-// module.exports.handler = checkBalanceHandler();
+module.exports.handler = checkBalanceHandler();
 module.exports.public = getPublicKey(Leaf);
 module.exports.private = getPrivateKey(Leaf);
 module.exports.address = getAddress(Leaf, network);
 module.exports.tx = createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0);
 // module.exports.push = pushTx(createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
+
+module.exports.mnemonic = mnemonic;
 
 module.exports.add = (a, b) => a + b;
 module.exports.hello = () => console.log("Hello!!!");

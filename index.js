@@ -29,12 +29,12 @@ const check = async () => {
   console.log(run_bitcoin.balance);
 }
 
-// check();
+check();
 // run();
 
 // console.log(run_bitcoin.add(2, 2));
 // console.log(run_bitcoin.balance);
 // console.log(run_bitcoin.public);
-console.log(run_bitcoin.handler);
+// console.log(run_bitcoin.handler);
 // console.log(run_bitcoin.public);
 // console.log(run_bitcoin.private);
