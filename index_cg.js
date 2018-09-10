@@ -17,8 +17,7 @@ const Wallet = (() => {
         }
 
         generateMnemonic() {
-            mnemonic = bip39.generateMnemonic();
-            return mnemonic;
+            return mnemonic = bip39.generateMnemonic();
         }
 
         generateSeed(mnemonic) {
@@ -30,7 +29,7 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
             const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
-            address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
+            let address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
         }
         
     }
@@ -58,7 +57,6 @@ const Transaction = (() => {
             this.addr = addr;
             this.pubkey = pubkey;
             this.prikey = privkey;
-            this.tx = tx;
             this.txid = txid;
             this.balance = balance;
         }
@@ -103,4 +101,4 @@ const Transaction = (() => {
     }
 })()
 
-// const thisTransaction = new Transaction();
+const thisTransaction = new Transaction();
