@@ -3,7 +3,7 @@ var bitcoin = require('bitcoinjs-lib');
 const request = require('request')
 const axios = require('axios')
 
-var mnemonic = "charge point slender artist gravity turn business remember provide increase nerve rich artist drastic orange"
+var mnemonic = "pond number pioneer mango noise much want lab weapon vibrant option clutch girl baby love"
 
 var network = bitcoin.networks.testnet;
 
@@ -21,21 +21,28 @@ function getAddress (node, network) {
 
     return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
 }
+
+// mpQCsG15rjAwA3mdfkyBnTenjD5zZdA5ws
+// cSf5eD28q12GRreZeqfNp9odE4f5CdFCNrHq2k6ohwpGrV5kGEoW
+
+// mjmu9niWYZkTfi4rdiQx1E5t3dPjXenzJv
+
+
 let transactionFee = 1000
 let amountWeHave = 22000
 let amountToKeep = 15000
 let amountToSend = amountWeHave - amountToKeep - transactionFee
 let transaction = new bitcoin.TransactionBuilder(network)
-transaction.addInput('ebdf6971f3b09b565dc3cc11e0b3ea97c187912107d453dff07095dbd327fe20', 1)
+transaction.addInput('b6e8b3adabdd043d530dfbc446b388d55625957308c89850ba37c59cdd41f321', 1)
 
-transaction.addOutput("mgZ8bRtxoMaRKaemwbv99EooWZdt2CMy8u", 1000)
-transaction.addOutput("msTeEpLKa4dKbFj5WUQ962Tu7bWyQjM6wS", 10500)
+transaction.addOutput('mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq', 20000)
+transaction.addOutput("n23n4sRqg99t5sikysfia4JE98nsbLCCVG", 90500)
 
-let WIF = "cTgK1PJEvGRT1EJMNib1dEJ7V2o9ZhDoivHqD8Rrv6FXx6aTQkwL";
+let WIF = "cUybd7CyzgicT2kJw9FVEokuPqgC93SUihu7cX7YkT53y851FCbH";
 
 let apiUrl = 'https://testnet.blockexplorer.com/api/addr/';
 let addr = 'msTeEpLKa4dKbFj5WUQ962Tu7bWyQjM6wS';
-// let apiURL = 'https://api.blockcypher.com/v1/btc/main/txs/'
+// let apiURL = 'https://api.blockcypher.com/v1/bcy/test/txs/push'
 // log unspent transactions
 
 
@@ -109,22 +116,34 @@ console.log(txhex)
 //     console.log(response);
 // });
 
-let txsend = {
-    tx: txhex
-}
-axios({
-    method: 'post',
-    url: 'https://api.blockcypher.com/v1/bcy/test/txs/push',
-    data: {
-        tx: `${txhex}`
-    }
-  }).then(function(response) {
-    console.log(response.data);
-    console.log(response.status);
-  }).catch(function(error){
-      console.log(error)
-  });
+// var 
 
+// axios.post('https://api.blockcypher.com/v1/bcy/test/txs/decode', JSON.stringify(decode))
+//   .then(function(d) {console.log(d)});
+
+
+var newtx = {
+    inputs: [{addresses: ['n23n4sRqg99t5sikysfia4JE98nsbLCCVG']}],
+    outputs: [{addresses: ['mfk1DQn8Kx5nTUrrAyGnZe58CafjQkua5e'], value: 900000}]
+  };
+
+  axios.post('https://api.blockcypher.com/v1/bcy/test/txs/new', JSON.stringify(newtx))
+    .then(function(d) {console.log(d)});
+
+
+// axios({
+//     method: 'post',
+//     url: 'https://api.blockcypher.com/v1/bcy/test/txs/send',
+//     data: {
+//         tx: `${txhex}`
+//     }
+//   }).then(function(response) {
+//     console.log(response.data);
+//     console.log(response.status);
+//   }).catch(function(error){
+//       console.log(error)
+//   });
+// https://chain.so/api/v2/send_tx/{NETWORK}
 //   request({
 //     url: 'https://api.blockcypher.com/v1/bcy/test/txs/push',
 //     method: "POST",

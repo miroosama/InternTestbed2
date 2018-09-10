@@ -7,6 +7,22 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Debug myEther.js",
+            "program": "${workspaceRoot}/myEther.js",
+            "env": { },
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug myBitcoin.js",
+            "program": "${workspaceRoot}/myBitcoin.js",
+            "env": { },
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug bitcoinApp.js",
             "program": "${workspaceRoot}/bitcoinApp.js",
             "env": { },
