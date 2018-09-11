@@ -4,40 +4,34 @@ const request = require('request');
 
 let address = [];
 let utxo = [];
-let seed
 
 
 const Wallet = (() => {
 
     let walletIds = 0;
-    let mnemonic
-    let seed
-    let node
-    let addr
     // let network
 
     return class {
-        constructor(seed) {
+        constructor() {
             this.id = walletIds++;
-            this.seed = seed
         }
 
         generateMnemonic() {
-            mnemonic = bip39.generateMnemonic();
-            return mnemonic;
+            this.mnemonic = bip39.generateMnemonic();
+            return this.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            seed = bip39.mnemonicToSeed(mnemonic);
-            return seed;
+            this.seed = bip39.mnemonicToSeed(mnemonic);
+            return this.seed;
         }
 
         deriveAddress(seed) {
             let network = bitcoin.networks.testnet;
             console.log(seed)
             const root = bitcoin.bip32.fromSeed(seed, network);
-            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            addr = bitcoin.payments.p2pkh({
+            let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            let addr = bitcoin.payments.p2pkh({
                 pubkey: node.publicKey,
                 network
             }).address
