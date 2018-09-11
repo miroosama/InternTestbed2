@@ -10,11 +10,11 @@ let seed
 const Wallet = (() => {
 
     let walletIds = 0;
-    let mnemonic
-    let seed
-    let node
-    let addr
-    // let network
+    let mnemonic;
+    let seed;
+    let node;
+    let addr;
+    let network;
 
     return class {
         constructor(seed) {
@@ -33,18 +33,20 @@ const Wallet = (() => {
         }
 
         deriveAddress(seed) {
-            let network = bitcoin.networks.testnet;
-            console.log(seed)
+            network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
             node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            // console.log(node)
             addr = bitcoin.payments.p2pkh({
                 pubkey: node.publicKey,
                 network
             }).address
             address.push(addr)
+            return address
         }
     }
 })();
+
 
 const thisWallet = new Wallet();
 console.log(thisWallet.generateMnemonic())
@@ -53,13 +55,13 @@ console.log(thisWallet.generateSeed())
 
 console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
+
+
 const Transaction = (() => {
 
-    API_URL = 'https://testnet.blockexplorer.com/api/addr/'
+    API_URL = 'https://testnet.blockexplorer.com/api/addr/';
 
-    // let network
-
-    let transaction
+    let transaction;
 
     let transactionId = 0;
 
