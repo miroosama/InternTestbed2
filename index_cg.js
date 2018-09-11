@@ -2,21 +2,23 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
-let seed
+let address = [];
+let utxo = [];
 
 const Wallet = (() => {
 
     let walletIds = 0;
     let mnemonic
+    let seed
 
     return class {
         constructor() {
             this.id = walletIds++;
-            this.mnemonic = mnemonic; 
         }
 
         generateMnemonic() {
-            return mnemonic = bip39.generateMnemonic();
+            mnemonic = bip39.generateMnemonic();
+            return mnemonic;
         }
 
         generateSeed(mnemonic) {
@@ -29,7 +31,8 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
             const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
-            let address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
+            addr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
+            address.push(addr);
         }
         
     }
@@ -40,27 +43,21 @@ console.log(thisWallet.generateMnemonic())
 console.log(thisWallet.generateSeed())
 
 const Transaction = (() => {
-    //maybe we should store addr, balance pub/prv keys in wallet?
-    //while they are used to create transactions, these data live 
-    //in a wallet 
+
     API_URL =  'https://testnet.blockexplorer.com/api/addr/'
 
-    let addr 
     let balance
     let pubkey
     let privkey
     let txid
     let changeAddr
 
-    let transactionid = 0;
-    let utxo = [];
+    let transactionId = 0;
     
     return class {
-        constructor() {
+        constructor(addr) {
             this.id = transactionId++;
             this.addr = addr;
-            this.pubkey = pubkey;
-            this.prikey = privkey;
             this.txid = txid;
             this.changeAddr = changeAddr;
             this.balance = balance;
@@ -82,11 +79,29 @@ const Transaction = (() => {
             })
         }
 
-        async getBalance(addr) {
-            request.get(API_URL + addr + '/balance', (err, req, body) => {
-                console.log(JSON.parse(body))
-            })
-        }
+        // async getBalance(addr) {
+        //     request.get(API_URL + addr + '/balance', (err, req, body) => {
+        //         balance = JSON.parse(body)
+        //         console.log(balance)
+        //     })
+        // }
+        
+        // exports.checkBalance = (addr) => {
+        //     const url = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
+        //     return new Promise( (resolve, reject) => {
+        //         request( {url: url}, (err,resp,body) => {
+        //             if (err) {
+        //                 reject(err);
+        //             } else {
+        //                 resolve({
+        //                     balance: JSON.parse(body).balance,
+        //                     unconfirmed_balance: JSON.parse(body).unconfirmed_balance,
+        //                     final_balance: JSON.parse(body).final_balance                    
+        //                 })
+        //             }
+        //         })
+        //     }) 
+        // }
 
         createTransaction(recievingAddr, changeAddr) {
             let transaction = new bitcoin.TransactionBuilder(network);
@@ -105,7 +120,7 @@ const Transaction = (() => {
             transaction.addOutput(changeAddr="mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn", amountToKeep);
         }
 
-        signTransaction(transaction) {
+        signTransaction() {
             prikey = node.toWIF();
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
             transaction.sign(0, signature);
@@ -117,7 +132,7 @@ const Transaction = (() => {
         }
 
         pushTransaction(tx) {
-            //one day we will achieve this impossible task
+            //one day we will achieve this!!
         }
 
     }
