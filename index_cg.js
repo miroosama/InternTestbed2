@@ -28,6 +28,16 @@ const Wallet = (() => {
             return seed;
         }
 
+        deriveAddress(seed) {
+            network = bitcoin.networks.testnet;
+            const root = bitcoin.bip32.fromSeed(seed, network);
+            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            addr = bitcoin.payments.p2pkh({
+                pubkey: node.publicKey,
+                network
+            }).address
+            address.push(addr)
+        }
     }
 })();
 
@@ -53,18 +63,7 @@ const Transaction = (() => {
             this.changeAddr = changeAddr;
         }
 
-        deriveAddress(seed) {
-            network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
-            const path = "m/44'/1'/0'/0/0";
-            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            addr = bitcoin.payments.p2pkh({
-                pubkey: node.publicKey,
-                network
-            }).address
-            address.push(addr)
-        }
-
+        
         async getUtxo(addr) {
             request.get(API_URL + addr + '/utxo', (err, req, body) => {
                 let tx = JSON.parse(body)
