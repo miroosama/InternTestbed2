@@ -28,7 +28,7 @@ const Wallet = (() => {
 
         deriveAddress(seed) {
             let network = bitcoin.networks.testnet;
-            console.log(seed)
+            console.log(this.seed)
             const root = bitcoin.bip32.fromSeed(seed, network);
             let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
             let addr = bitcoin.payments.p2pkh({
