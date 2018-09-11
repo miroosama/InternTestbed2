@@ -6,11 +6,15 @@ let address = [];
 let utxo = [];
 let seed
 
+
 const Wallet = (() => {
 
     let walletIds = 0;
     let mnemonic
     let seed
+    let node
+    let addr
+    // let network
 
     return class {
         constructor(seed) {
@@ -28,6 +32,17 @@ const Wallet = (() => {
             return seed;
         }
 
+        deriveAddress(seed) {
+            let network = bitcoin.networks.testnet;
+            console.log(seed)
+            const root = bitcoin.bip32.fromSeed(seed, network);
+            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            addr = bitcoin.payments.p2pkh({
+                pubkey: node.publicKey,
+                network
+            }).address
+            address.push(addr)
+        }
     }
 })();
 
@@ -35,12 +50,15 @@ const thisWallet = new Wallet();
 console.log(thisWallet.generateMnemonic())
 console.log(thisWallet.generateSeed())
 
+
+console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+
 const Transaction = (() => {
 
     API_URL = 'https://testnet.blockexplorer.com/api/addr/'
 
-    let network
-    let node
+    // let network
+
     let transaction
 
     let transactionId = 0;
@@ -53,17 +71,6 @@ const Transaction = (() => {
             this.changeAddr = changeAddr;
         }
 
-        deriveAddress(seed) {
-            network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
-            const path = "m/44'/1'/0'/0/0";
-            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            addr = bitcoin.payments.p2pkh({
-                pubkey: node.publicKey,
-                network
-            }).address
-            address.push(addr)
-        }
 
         async getUtxo(addr) {
             request.get(API_URL + addr + '/utxo', (err, req, body) => {
@@ -132,5 +139,4 @@ const Transaction = (() => {
     }
 })();
 
-const thisTransaction = new Transaction();
-// console.log(thisTransaction.deriveAddress())
+// const thisTransaction = new Transaction();
