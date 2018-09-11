@@ -13,14 +13,7 @@ const Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(
 const Leaf2 = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0);
 // let txb = new bitcoin.TransactionBuilder()
 
-function checkBalanceHandler(){
-    let data = checkBalance(getAddress(Leaf, network))
-    // console.log("Balance: ", data.balance)
-    // console.log("Unconfirmed Balance: ", data.unconfirmed_balance)
-    // console.log("Final Balance: ", data.final_balance)
-    return data;
-}
-promiseLog(checkBalanceHandler())
+promiseLog(checkBalance(getAddress(Leaf, network)))
 
 
 // console.log(funcs.checkBalance(funcs.getAddress(Leaf, network)))

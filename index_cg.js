@@ -2,99 +2,135 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
+let address = [];
+let utxo = [];
 let seed
-
 
 const Wallet = (() => {
 
-    let walletIds = 1;
+    let walletIds = 0;
     let mnemonic
+    let seed
 
     return class {
         constructor(seed) {
             this.id = walletIds++;
-            this.mnemonic = mnemonic;
+            this.seed = seed
         }
 
         generateMnemonic() {
-            return mnemonic = bip39.generateMnemonic();
+            mnemonic = bip39.generateMnemonic();
+            return mnemonic;
         }
 
         generateSeed(mnemonic) {
-            return seed = bip39.mnemonicToSeed(mnemonic);
-        }
-
-        deriveAddress(seed) {
-            const network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
-            const path = "m/44'/1'/0'/0/0";
-            const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
-            const address = bitcoin.payments.p2pkh({
-                pubkey: node.publicKey,
-                network
-            }).address;
+            seed = bip39.mnemonicToSeed(mnemonic);
+            return seed;
         }
 
     }
 })();
 
+const thisWallet = new Wallet();
+console.log(thisWallet.generateMnemonic())
+console.log(thisWallet.generateSeed())
+
 const Transaction = (() => {
 
     API_URL = 'https://testnet.blockexplorer.com/api/addr/'
-    const utxo = [];
 
-    let addr
-    let balance
-    let pubkey
-    let privkey
-    let txid
+    let network
+    let node
+    let transaction
+
+    let transactionId = 0;
 
     return class {
-        constructor() {
-            this.addr = addr;
-            this.pubkey = pubkey;
-            this.privkey = privkey;
-            this.tx = tx;
-            this.txid = txid;
-            this.balance = balance;
+        constructor(addr, recievingAddr, changeAddr) {
+            this.id = transactionId++;
+            this.addr = address;
+            this.recievingAddr = recievingAddr;
+            this.changeAddr = changeAddr;
         }
 
         deriveAddress(seed) {
-            const network = bitcoin.networks.testnet;
+            network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
-            const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
             addr = bitcoin.payments.p2pkh({
                 pubkey: node.publicKey,
                 network
             }).address
+            address.push(addr)
         }
 
-        getUtxo(addr) {
+        async getUtxo(addr) {
             request.get(API_URL + addr + '/utxo', (err, req, body) => {
-                tx = JSON.parse(body)
+                let tx = JSON.parse(body)
                 utxo.push(tx)
                 console.log(tx)
             })
         }
 
-        getBalance(addr) {
-            request.get(API_URL + addr + '/balance', (err, req, body) => {
-                balance = JSON.parse(body);
-                console.log(balance);
-            });
+        // async getBalance(addr) {
+        //     request.get(API_URL + addr + '/balance', (err, req, body) => {
+        //         balance = JSON.parse(body)
+        //         console.log(balance)
+        //     })
+        // }
+
+        // exports.checkBalance = (addr) => {
+        //     const url = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
+        //     return new Promise( (resolve, reject) => {
+        //         request( {url: url}, (err,resp,body) => {
+        //             if (err) {
+        //                 reject(err);
+        //             } else {
+        //                 resolve({
+        //                     balance: JSON.parse(body).balance,
+        //                     unconfirmed_balance: JSON.parse(body).unconfirmed_balance,
+        //                     final_balance: JSON.parse(body).final_balance                    
+        //                 })
+        //             }
+        //         })
+        //     }) 
+        // }
+
+        createTransaction(recievingAddr, changeAddr) {
+            transaction = new bitcoin.TransactionBuilder(network);
+
+            //handle amounts
+            let amountWeHave = utxo[this.id - 1].satoshis;
+            let amountToKeep = amountWeHave - 400;
+            let transactionFee = 100;
+            let amountToSend = amountWeHave - amountToKeep - transactionFee;
+
+            //input
+            transaction.addInput(utxo[this.id - 1].txid, 0);
+
+            //outputs(0,1)
+            transaction.addOutput(recievingAddr, amountToSend);
+            transaction.addOutput(changeAddr, amountToKeep);
         }
 
-        createTransaction() {
-            let transaction = new bitcoin.TransactionBuilder(network);
-            tx.id;
-        }
-
-        signTransaction() {
-            privkey = node.toWIF()
+        signTransaction(transaction, node, network) {
+            prikey = node.toWIF();
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
-            tx.sign(0, signature)
+            transaction.sign(0, signature);
+        }
+
+        getHex(transaction) {
+            let tx = transaction.build();
+            txhex = tx.toHex();
+        }
+
+        pushTransaction(tx) {
+            //one day we will achieve this!!
         }
 
     }
 })();
+
+const thisTransaction = new Transaction();
+// console.log(thisTransaction.deriveAddress())

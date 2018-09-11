@@ -51,7 +51,7 @@ exports.pushTX = function (tx) {
 }
 
 exports.promiseLog = async (promise) => {
-    // accepts async promises as input, will wait until promise is fulfilled then print. forces console.log() into synchronous behavior.
+    //Force logging into async behavior
     console.log(await promise)
 }
 
