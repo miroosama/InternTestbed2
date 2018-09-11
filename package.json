@@ -1,0 +1,32 @@
+{
+  "name": "interntestbed2-master",
+  "version": "1.0.0",
+  "description": "Testbed for Interns",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bitcoin-core": "^2.0.0",
+    "bitcoinjs-lib": "^4.0.1",
+    "request": "^2.88.0",
+    "npm": "^6.4.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10thFloorSoft/InternTestbed2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/10thFloorSoft/InternTestbed2/issues"
+  },
+  "homepage": "https://github.com/10thFloorSoft/InternTestbed2#readme"
+}
