@@ -4,6 +4,7 @@ const request = require('request');
 
 let address = [];
 let utxo = [];
+let seed
 
 const Wallet = (() => {
 
@@ -12,8 +13,9 @@ const Wallet = (() => {
     let seed
 
     return class {
-        constructor() {
+        constructor(seed) {
             this.id = walletIds++;
+            this.seed = seed
         }
 
         generateMnemonic() {
@@ -26,15 +28,6 @@ const Wallet = (() => {
             return seed;
         }
 
-        deriveAddress(seed) {
-            const network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
-            const path = "m/44'/1'/0'/0/0";
-            const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
-            addr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
-            address.push(addr);
-        }
-        
     }
 })();
 
@@ -46,29 +39,27 @@ const Transaction = (() => {
 
     API_URL =  'https://testnet.blockexplorer.com/api/addr/'
 
-    let balance
-    let pubkey
-    let privkey
-    let txid
-    let changeAddr
+    let network
+    let node
+    let transaction
 
     let transactionId = 0;
     
     return class {
-        constructor(addr) {
+        constructor(addr, recievingAddr, changeAddr) {
             this.id = transactionId++;
-            this.addr = addr;
-            this.txid = txid;
+            this.addr = address;
+            this.recievingAddr = recievingAddr;
             this.changeAddr = changeAddr;
-            this.balance = balance;
         }
 
         deriveAddress(seed) {
-            const network = bitcoin.networks.testnet;
+            network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
-            const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
             addr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+            address.push(addr)
         }
 
         async getUtxo(addr) {
@@ -104,23 +95,23 @@ const Transaction = (() => {
         // }
 
         createTransaction(recievingAddr, changeAddr) {
-            let transaction = new bitcoin.TransactionBuilder(network);
+            transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
-            let amountWeHave = utxo[this.id].satoshis
+            let amountWeHave = utxo[this.id-1].satoshis
             let amountToKeep = amountWeHave - 400
             let transactionFee = 100
             let amountToSend = amountWeHave - amountToKeep - transactionFee
 
             //input
-            transaction.addInput(utxo[this.id].txid, 0); 
+            transaction.addInput(utxo[this.id-1].txid, 0); 
 
             //outputs(0,1)
-            transaction.addOutput(recievingAddr="mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", amountToSend);
-            transaction.addOutput(changeAddr="mr3Pon6aTEQa7XGUa7iuooJjHHy71jL4rn", amountToKeep);
+            transaction.addOutput(recievingAddr, amountToSend);
+            transaction.addOutput(changeAddr, amountToKeep);
         }
 
-        signTransaction() {
+        signTransaction(transaction, node, network) {
             prikey = node.toWIF();
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
             transaction.sign(0, signature);
@@ -137,3 +128,6 @@ const Transaction = (() => {
 
     }
 })();
+
+const thisTransaction = new Transaction();
+// console.log(thisTransaction.deriveAddress())
