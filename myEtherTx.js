@@ -6,18 +6,19 @@ const web3 = new Web3(Web3.givenProvider || infura)
 
 class EtherTransactions {
 
-    buildingTx(acc1, acc2, prk) {
+    buildingTx(acc1, acc2, prk, amount) {
+        const privateKey = Buffer.from(prk, 'hex')
     web3.eth.getTransactionCount(acc1, (err, txCount) => {
         const txObject = {
             nonce: web3.utils.toHex(txCount),
             to: acc2,
-            value: web3.utils.toHex(web3.utils.toWei('1', 'ether')),
+            value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
             gasLimit: web3.utils.toHex(21000),
             gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei'))
         }
 
         const tx = new Tx(txObject) 
-        tx.sign(prk)
+        tx.sign(privateKey)
 
         const serializedTransaction = tx.serialize() 
         const raw = '0x' + serializedTransaction.toString('hex')
