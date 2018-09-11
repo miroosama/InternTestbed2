@@ -9,7 +9,6 @@ let utxo = [];
 const Wallet = (() => {
 
     let walletIds = 0;
-    // let network
 
     return class {
         constructor() {
@@ -40,9 +39,8 @@ const Wallet = (() => {
     }
 })();
 
-const thisWallet = new Wallet();
-console.log(thisWallet.generateMnemonic())
-console.log(thisWallet.generateSeed())
+const firstWallet = new Wallet();
+const secondWallet = new Wallet();
 
 
 console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
@@ -133,4 +131,5 @@ const Transaction = (() => {
     }
 })();
 
-// const thisTransaction = new Transaction();
+const firstTransaction = new Transaction();
+const secondTransaction = new Transaction();
