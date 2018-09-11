@@ -33,6 +33,14 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "debug index_cg",
+            "program": "${workspaceRoot}/index_cg.js",
+            "env": {},
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug bitcoin_ie.js",
             "program": "${workspaceRoot}/bitcoin_ie.js",
             "env": {},

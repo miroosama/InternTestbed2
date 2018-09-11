@@ -17,11 +17,11 @@ const Wallet = (() => {
         }
 
         generateMnemonic() {
-            mnemonic = bip39.generateMnemonic();
+            return mnemonic = bip39.generateMnemonic();
         }
 
         generateSeed(mnemonic) {
-            seed = bip39.mnemonicToSeed(mnemonic);
+            return seed = bip39.mnemonicToSeed(mnemonic);
         }
 
         deriveAddress(seed) {
@@ -29,15 +29,18 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
             const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
-            address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address;
+            const address = bitcoin.payments.p2pkh({
+                pubkey: node.publicKey,
+                network
+            }).address;
         }
-        
+
     }
-})
+})();
 
 const Transaction = (() => {
 
-    API_URL =  'https://testnet.blockexplorer.com/api/addr/'
+    API_URL = 'https://testnet.blockexplorer.com/api/addr/'
     const utxo = [];
 
     let addr
@@ -45,12 +48,12 @@ const Transaction = (() => {
     let pubkey
     let privkey
     let txid
-    
+
     return class {
         constructor() {
             this.addr = addr;
             this.pubkey = pubkey;
-            this.prikey = privkey;
+            this.privkey = privkey;
             this.tx = tx;
             this.txid = txid;
             this.balance = balance;
@@ -61,7 +64,10 @@ const Transaction = (() => {
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
             const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            addr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+            addr = bitcoin.payments.p2pkh({
+                pubkey: node.publicKey,
+                network
+            }).address
         }
 
         getUtxo(addr) {
@@ -74,14 +80,14 @@ const Transaction = (() => {
 
         getBalance(addr) {
             request.get(API_URL + addr + '/balance', (err, req, body) => {
-                balance = JSON.parse(body)
-                console.log(balance)
-            })
+                balance = JSON.parse(body);
+                console.log(balance);
+            });
         }
 
         createTransaction() {
             let transaction = new bitcoin.TransactionBuilder(network);
-            tx.id
+            tx.id;
         }
 
         signTransaction() {
@@ -91,4 +97,4 @@ const Transaction = (() => {
         }
 
     }
-})
+})();
