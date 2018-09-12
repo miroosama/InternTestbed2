@@ -83,14 +83,17 @@ const Transaction = (() => {
     API_URL = 'https://testnet.blockexplorer.com/api/addr/';
 
     let transaction;
+    let myWallet
+    let theirWallet
 
     let transactionId = 0;
 
     //dynamincally input wallet # that are involved in the transaction, we would know the wallet numbers by the name they provide
 
     return class {
-        constructor() { 
+        constructor(myWallet, theirWallet) { 
             this.id = transactionId++;
+            this.myWallet = 
             this.addr = walletStore[0].address[0][0];
             this.changeAddr = walletStore[0].address[0][1];
             this.recievingAddr = walletStore[1].address[0][2];
