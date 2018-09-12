@@ -2,8 +2,25 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
-let address = [];
-let utxo = [];
+let walletStore = {
+
+    0:{
+        address : [
+            ["wow", "it", "works!"],
+            ["im", "so", "happy"],
+            ["addr", "changeAddr", "recievingAddr"]   
+        ],
+        utxo: []
+    },
+
+    1: {
+        address: [
+            ["addr", "changeAddr", "recievingAddr"]   
+        ],
+        utxo: []
+    }
+
+};
 
 
 const Wallet = (() => {
@@ -30,11 +47,14 @@ const Wallet = (() => {
             console.log(this.seed)
             const root = bitcoin.bip32.fromSeed(seed, network);
             let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            //generate three addresses
             let addr = bitcoin.payments.p2pkh({
                 pubkey: node.publicKey,
                 network
             }).address
             address.push(addr)
+            //need to create key value pair, address.(this.id) = "addr"
+            return addr;
         }
     }
 })();
@@ -43,24 +63,23 @@ const firstWallet = new Wallet();
 const secondWallet = new Wallet();
 
 
-console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
 const Transaction = (() => {
 
     API_URL = 'https://testnet.blockexplorer.com/api/addr/'
 
-    // let network
-
     let transaction
-
     let transactionId = 0;
 
+    //need input for wallet # (needs input), address # (dynamic)
+
     return class {
-        constructor(addr, recievingAddr, changeAddr) {
+        constructor(addr, recievingAddr, changeAddr) { 
             this.id = transactionId++;
-            this.addr = address;
-            this.recievingAddr = recievingAddr;
-            this.changeAddr = changeAddr;
+            this.addr = address[0][0];
+            this.recievingAddr = address[1][0];
+            this.changeAddr = address[0][1];
         }
 
 
