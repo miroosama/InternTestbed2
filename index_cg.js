@@ -63,9 +63,9 @@ const Transaction = (() => {
             this.index = transactionIndex++;
             this.sender = sender0;
             this.reciever = sender1; 
-            this.addr = walletStore[sender0.id].address[this.index][0];
-            this.changeAddr = walletStore[sender0.id].address[this.index][1];
-            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            // this.addr = walletStore[sender0.id].address[this.index][0];
+            // this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
             
         }
 
