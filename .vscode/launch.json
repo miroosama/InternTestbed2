@@ -68,6 +68,14 @@
             "name": "debug gray_index",
             "program": "${workspaceFolder}/index.js",
             "env": {}
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug web3_tx_ie",
+            "program": "${workspaceFolder}/web3_tx_ie.js",
+            "env": {}
         }
 
 
