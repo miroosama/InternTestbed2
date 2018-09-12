@@ -31,8 +31,6 @@ function createAccount() {
 // console.log(createAccount());
 asyncLog(getBalance(address));
 
-module.exports.balance = asyncLog(getBalance(address));
-
 
 // function getBalance(addr) {
 //   web3.eth.getBalance(address, (err, bal) => {

@@ -2,78 +2,106 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
-let address = [];
-let utxo = [];
-let seed
+let walletStore = { };
 
 
 const Wallet = (() => {
 
     let walletIds = 0;
-    let mnemonic
-    let seed
-    let node
-    let addr
-    // let network
 
     return class {
-        constructor(seed) {
+        constructor() {
             this.id = walletIds++;
-            this.seed = seed
+            walletStore[this.id] = { 
+                address:[],
+                utxo: []
+            }
         }
 
         generateMnemonic() {
-            mnemonic = bip39.generateMnemonic();
-            return mnemonic;
+            this.mnemonic = bip39.generateMnemonic();
+            return this.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            seed = bip39.mnemonicToSeed(mnemonic);
-            return seed;
+            this.seed = bip39.mnemonicToSeed(mnemonic);
+            return this.seed;
         }
 
-        deriveAddress(seed) {
+        deriveAddresses(seed) {
             let network = bitcoin.networks.testnet;
-            console.log(seed)
             const root = bitcoin.bip32.fromSeed(seed, network);
-            node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            addr = bitcoin.payments.p2pkh({
-                pubkey: node.publicKey,
-                network
-            }).address
-            address.push(addr)
+            let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+            const arr = [];
+            for (let i = 0; i < 3; i++) {
+                arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
+                }
+            walletStore[this.id].address.push(arr)
+            return arr;
         }
     }
 })();
 
-const thisWallet = new Wallet();
-console.log(thisWallet.generateMnemonic())
-console.log(thisWallet.generateSeed())
+const firstWallet = new Wallet();
+const secondWallet = new Wallet();
 
 
-console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+
+
 
 const Transaction = (() => {
 
-    API_URL = 'https://testnet.blockexplorer.com/api/addr/'
+    let walletStore = {
 
-    // let network
+        0:{
+            address : [
+                ["wow", "it", "works!"],
+                ["im", "so", "happy"],
+                ["addr", "changeAddr", "recievingAddr"]   
+            ],
+            utxo: []
+        },
+    
+        1: {
+            address: [
+                ["addr", "changeAddr", "recievingAddr"]   
+            ],
+            utxo: []
+        },
+        
+        2: {
+            address: [
+                ["addr", "changeAddr", "recievingAddr"]   
+            ],
+            utxo: []
+        }
+    
+    };
 
-    let transaction
+
+    API_URL = 'https://testnet.blockexplorer.com/api/addr/';
+
+    let transaction;
+    let myWallet
+    let theirWallet
 
     let transactionId = 0;
 
+    //dynamincally input wallet # that are involved in the transaction, we would know the wallet numbers by the name they provide
+
     return class {
-        constructor(addr, recievingAddr, changeAddr) {
+        constructor(myWallet, theirWallet) { 
             this.id = transactionId++;
-            this.addr = address;
-            this.recievingAddr = recievingAddr;
-            this.changeAddr = changeAddr;
+            this.myWallet = 
+            this.addr = walletStore[0].address[0][0];
+            this.changeAddr = walletStore[0].address[0][1];
+            this.recievingAddr = walletStore[1].address[0][2];
         }
 
 
         async getUtxo(addr) {
-            request.get(API_URL + addr + '/utxo', (err, req, body) => {
+            request.get(API_URL + this.addr + '/utxo', (err, req, body) => {
                 let tx = JSON.parse(body)
                 utxo.push(tx)
                 console.log(tx)
@@ -117,8 +145,8 @@ const Transaction = (() => {
             transaction.addInput(utxo[this.id - 1].txid, 0);
 
             //outputs(0,1)
-            transaction.addOutput(recievingAddr, amountToSend);
-            transaction.addOutput(changeAddr, amountToKeep);
+            transaction.addOutput(this.recievingAddr, amountToSend);
+            transaction.addOutput(this.changeAddr, amountToKeep);
         }
 
         signTransaction(transaction, node, network) {
@@ -139,4 +167,5 @@ const Transaction = (() => {
     }
 })();
 
-// const thisTransaction = new Transaction();
+const firstTransaction = new Transaction();
+const secondTransaction = new Transaction();
