@@ -42,61 +42,31 @@ const Wallet = (() => {
     }
 })();
 
-const firstWallet = new Wallet();
-const secondWallet = new Wallet();
-
-
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-
+let new0 = new Wallet();
+new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+sender0 = new0
+let new1 = new Wallet();
+new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+sender1 = new1
 
 const Transaction = (() => {
 
-    let walletStore = {
-
-        0:{
-            address : [
-                ["wow", "it", "works!"],
-                ["im", "so", "happy"],
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        },
-    
-        1: {
-            address: [
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        },
-        
-        2: {
-            address: [
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        }
-    
-    };
-
-
     API_URL = 'https://testnet.blockexplorer.com/api/addr/';
-
-    let transaction;
-    let myWallet
-    let theirWallet
-
-    let transactionId = 0;
-
-    //dynamincally input wallet # that are involved in the transaction, we would know the wallet numbers by the name they provide
+    
+    let transactionIndex = 0;
 
     return class {
-        constructor(myWallet, theirWallet) { 
-            this.id = transactionId++;
-            this.myWallet = 
-            this.addr = walletStore[0].address[0][0];
-            this.changeAddr = walletStore[0].address[0][1];
-            this.recievingAddr = walletStore[1].address[0][2];
+        //we are passing in variables of whole wallet instances, there could be a convention for how we save them
+        constructor(sender, reciever) { 
+            this.index = transactionIndex++;
+            this.sender = sender0;
+            this.reciever = sender1; 
+            this.addr = walletStore[sender0.id].address[this.index][0];
+            this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            
         }
 
 
