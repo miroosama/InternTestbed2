@@ -34,7 +34,7 @@ function sendTx(add1, add2) {
   });
 }
 
-// sendTx(address1, address2);
+sendTx(address1, address2);
 
 asyncLog(getBalance(address2));
 

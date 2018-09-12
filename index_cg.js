@@ -42,19 +42,18 @@ const Wallet = (() => {
             return this.seed;
         }
 
-        deriveAddress(seed) {
+        deriveAddresses(seed) {
             let network = bitcoin.networks.testnet;
             console.log(this.seed)
             const root = bitcoin.bip32.fromSeed(seed, network);
             let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            //generate three addresses
+            //generate three addresses, in a loop
             let addr = bitcoin.payments.p2pkh({
                 pubkey: node.publicKey,
                 network
             }).address
             address.push(addr)
-            //need to create key value pair, address.(this.id) = "addr"
-            return addr;
+            return address
         }
     }
 })();
@@ -65,11 +64,14 @@ const secondWallet = new Wallet();
 
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
+
+
 const Transaction = (() => {
 
-    API_URL = 'https://testnet.blockexplorer.com/api/addr/'
+    API_URL = 'https://testnet.blockexplorer.com/api/addr/';
 
-    let transaction
+    let transaction;
+
     let transactionId = 0;
 
     //need input for wallet # (needs input), address # (dynamic)
