@@ -4,7 +4,6 @@ const request = require('request');
 
 let walletStore = { };
 
-
 const Wallet = (() => {
 
     let walletIds = 0;
@@ -29,11 +28,12 @@ const Wallet = (() => {
         }
 
         deriveAddresses(seed) {
+            //we need a counter in here to move down the address line in clusters of three
             let network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
-            let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
             const arr = [];
             for (let i = 0; i < 3; i++) {
+                let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(i++)
                 arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
                 }
             walletStore[this.id].address.push(arr)
@@ -42,70 +42,29 @@ const Wallet = (() => {
     }
 })();
 
-const firstWallet = new Wallet();
-const secondWallet = new Wallet();
-
-
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-
+let new0 = new Wallet();
+new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+sender0 = new0
+let new1 = new Wallet();
+new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+sender1 = new1
 
 const Transaction = (() => {
 
-    let walletStore = {
-
-        0:{
-            address : [
-                ["wow", "it", "works!"],
-                ["im", "so", "happy"],
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        },
-    
-        1: {
-            address: [
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        },
-        
-        2: {
-            address: [
-                ["addr", "changeAddr", "recievingAddr"]   
-            ],
-            utxo: []
-        }
-    
-    };
-
-
     API_URL = 'https://testnet.blockexplorer.com/api/addr/';
-
-    let transaction;
-    let myWallet
-    let theirWallet
-
-    let transactionId = 0;
-
-    //dynamincally input wallet # that are involved in the transaction, we would know the wallet numbers by the name they provide
+    
+    let transactionIndex = 0;
 
     return class {
-        constructor(myWallet, theirWallet) { 
-            this.id = transactionId++;
-            this.myWallet = 
-            this.addr = walletStore[0].address[0][0];
-            this.changeAddr = walletStore[0].address[0][1];
-            this.recievingAddr = walletStore[1].address[0][2];
-        }
-
-
-        async getUtxo(addr) {
-            request.get(API_URL + this.addr + '/utxo', (err, req, body) => {
-                let tx = JSON.parse(body)
-                utxo.push(tx)
-                console.log(tx)
-            })
+        constructor(sender, reciever) { 
+            this.index = transactionIndex++;
+            this.sender = sender0;
+            this.reciever = sender1; 
+            this.addr = walletStore[sender0.id].address[this.index][0];
+            this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
         // async getBalance(addr) {
@@ -115,28 +74,11 @@ const Transaction = (() => {
         //     })
         // }
 
-        // exports.checkBalance = (addr) => {
-        //     const url = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
-        //     return new Promise( (resolve, reject) => {
-        //         request( {url: url}, (err,resp,body) => {
-        //             if (err) {
-        //                 reject(err);
-        //             } else {
-        //                 resolve({
-        //                     balance: JSON.parse(body).balance,
-        //                     unconfirmed_balance: JSON.parse(body).unconfirmed_balance,
-        //                     final_balance: JSON.parse(body).final_balance                    
-        //                 })
-        //             }
-        //         })
-        //     }) 
-        // }
-
-        createTransaction(recievingAddr, changeAddr) {
+        createTransaction() {
             transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
-            let amountWeHave = utxo[this.id - 1].satoshis;
+            let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis;
             let amountToKeep = amountWeHave - 400;
             let transactionFee = 100;
             let amountToSend = amountWeHave - amountToKeep - transactionFee;
@@ -150,7 +92,7 @@ const Transaction = (() => {
         }
 
         signTransaction(transaction, node, network) {
-            prikey = node.toWIF();
+            prikey = this.node.toWIF();
             let signature = bitcoin.ECPair.fromWIF(prikey, network);
             transaction.sign(0, signature);
         }
@@ -163,6 +105,14 @@ const Transaction = (() => {
         pushTransaction(tx) {
             //one day we will achieve this!!
         }
+
+        // async addUtxo(addr) {
+        //     request.get(API_URL + this.addr + '/utxo', (err, req, body) => {
+        //         let tx = JSON.parse(body)
+        //         walletStore[this[this.indexutxo.push(tx)
+        //         console.log(tx)
+        //     })
+        // }
 
     }
 })();
