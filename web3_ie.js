@@ -39,3 +39,7 @@ asyncLog(getBalance(address));
 // }
 
 // 0x53d284357ec70cE289D6D64134DfAc8E511c8a3D
+
+module.exports = {
+  getBalance
+};

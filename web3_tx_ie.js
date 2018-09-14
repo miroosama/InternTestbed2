@@ -31,31 +31,31 @@ web3.eth.getBalance(account3, (err, bal) => {
     web3.utils.fromWei(bal, 'ether'))
 })
 
-web3.eth.getTransactionCount(account2, (err, txCount) => {
-  // Build the transaction: 
-  const txObject = {
-    nonce: web3.utils.toHex(txCount),
-    to: account1,
-    value: web3.utils.toHex(web3.utils.toWei('0.5', 'ether')),
-    gasLimit: web3.utils.toHex('21000'),
-    gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei'))
-  }
+// web3.eth.getTransactionCount(account2, (err, txCount) => {
+//   // Build the transaction: 
+//   const txObject = {
+//     nonce: web3.utils.toHex(txCount),
+//     to: account1,
+//     value: web3.utils.toHex(web3.utils.toWei('0.5', 'ether')),
+//     gasLimit: web3.utils.toHex('21000'),
+//     gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei'))
+//   }
 
-  console.log(txObject)
+//   console.log(txObject)
 
-  // Sign the transaction: 
-  const tx = new Tx(txObject);
-  tx.sign(privateKey2)
+//   // Sign the transaction: 
+//   const tx = new Tx(txObject);
+//   tx.sign(privateKey2)
 
-  const serializedTransaction = tx.serialize();
-  const raw = '0x' + serializedTransaction.toString('hex');
+//   const serializedTransaction = tx.serialize();
+//   const raw = '0x' + serializedTransaction.toString('hex');
 
-  // Broadcast the transaction: 
-  web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-    console.log(raw)
-    console.log('txHash:', txHash)
-  })
-})
+//   // Broadcast the transaction: 
+//   web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+//     console.log(raw)
+//     console.log('txHash:', txHash)
+//   })
+// })
 
 
 
