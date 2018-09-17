@@ -11,6 +11,7 @@ const Wallet = (() => {
     return class {
         constructor() {
             this.id = walletIds++;
+
             walletStore[this.id] = { 
                 derived: 0,
                 address:[],
@@ -30,15 +31,16 @@ const Wallet = (() => {
 
         deriveAddresses(seed) {
             let network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
+            const root = bitcoin.bip32.fromSeed(this.seed, network);
             const arr = [];
-
-            let i = walletStore[this.id].derive
+            
+            let i = walletStore[this.id].derived
             console.log(i)
+
             for (i = 0; i < 3; i++) {
-                let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(i++)
+                let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
                 arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
-                walletStore[this.id].derive++;
+                walletStore[this.id].derived++;
             }
             walletStore[this.id].address.push(arr)
             return arr;
@@ -46,19 +48,18 @@ const Wallet = (() => {
     }
 })();
 
-// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-// let new0 = new Wallet();
-// new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
-// sender0 = new0
-// let new1 = new Wallet();
-// new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
-// sender1 = new1
+let test = new Wallet()
+let new0 = new Wallet();
+new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+sender0 = new0
+let new1 = new Wallet();
+new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+sender1 = new1
 
 const Transaction = (() => {
 
-    API_URL = 'https://testnet.blockexplorer.com/api/addr/';
-    
     let transactionIndex = 0;
 
     return class {
@@ -66,17 +67,17 @@ const Transaction = (() => {
             this.index = transactionIndex++;
             this.sender = sender0;
             this.reciever = sender1; 
-            // this.addr = walletStore[sender0.id].address[this.index][0];
-            // this.changeAddr = walletStore[sender0.id].address[this.index][1];
-            // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            this.addr = walletStore[sender0.id].address[this.index][0];
+            this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
-        // async getBalance(addr) {
-        //     request.get(API_URL + addr + '/balance', (err, req, body) => {
-        //         balance = JSON.parse(body)
-        //         console.log(balance)
-        //     })
-        // }
+        async getBalance(addr) {
+            request.get(API_URL + addr + '/balance', (err, req, body) => {
+                balance = JSON.parse(body)
+                console.log(balance)
+            })
+        }
 
         createTransaction() {
             transaction = new bitcoin.TransactionBuilder(network);
