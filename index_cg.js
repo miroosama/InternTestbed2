@@ -12,6 +12,7 @@ const Wallet = (() => {
         constructor() {
             this.id = walletIds++;
             walletStore[this.id] = { 
+                derived: 0,
                 address:[],
                 utxo: []
             }
@@ -28,14 +29,17 @@ const Wallet = (() => {
         }
 
         deriveAddresses(seed) {
-            //we need a counter in here to move down the address line in clusters of three
             let network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
             const arr = [];
-            for (let i = 0; i < 3; i++) {
+
+            let i = walletStore[this.id].derive
+            console.log(i)
+            for (i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(i++)
                 arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
-                }
+                walletStore[this.id].derive++;
+            }
             walletStore[this.id].address.push(arr)
             return arr;
         }
@@ -44,12 +48,12 @@ const Wallet = (() => {
 
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-let new0 = new Wallet();
-new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
-sender0 = new0
-let new1 = new Wallet();
-new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
-sender1 = new1
+// let new0 = new Wallet();
+// new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+// sender0 = new0
+// let new1 = new Wallet();
+// new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+// sender1 = new1
 
 const Transaction = (() => {
 
@@ -62,9 +66,9 @@ const Transaction = (() => {
             this.index = transactionIndex++;
             this.sender = sender0;
             this.reciever = sender1; 
-            this.addr = walletStore[sender0.id].address[this.index][0];
-            this.changeAddr = walletStore[sender0.id].address[this.index][1];
-            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            // this.addr = walletStore[sender0.id].address[this.index][0];
+            // this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
         // async getBalance(addr) {
@@ -78,7 +82,7 @@ const Transaction = (() => {
             transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
-            let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis;
+            // let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis;
             let amountToKeep = amountWeHave - 400;
             let transactionFee = 100;
             let amountToSend = amountWeHave - amountToKeep - transactionFee;
