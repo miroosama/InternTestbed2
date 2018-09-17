@@ -11,33 +11,39 @@ const Wallet = (() => {
     return class {
         constructor() {
             this.id = walletIds++;
-            walletStore[this.id] = { 
+            // @deriveCounter assumes fresh wallet for MVP
+            walletStore[this.id] = {
+                mnemonic: "",
                 address:[],
-                utxo: []
+                utxo: [],
+                stxos: [],
+                deriveCounter: 0
             }
         }
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            return this.mnemonic;
+            return walletSTthis.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            this.seed = bip39.mnemonicToSeed(mnemonic);
+            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
             return this.seed;
         }
 
         deriveAddresses(seed) {
             //we need a counter in here to move down the address line in clusters of three
+            const currentPosition = walletStore[this.id].deriveCounter;
             let network = bitcoin.networks.testnet;
             const root = bitcoin.bip32.fromSeed(seed, network);
             const arr = [];
             for (let i = 0; i < 3; i++) {
-                let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(i++)
+                let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(n)
                 arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
                 }
             walletStore[this.id].address.push(arr)
             return arr;
+            walletStore[this.id].deriveCounter++;
         }
     }
 })();
