@@ -1,26 +1,17 @@
 const request = require('request')
 
-const headers = {
-    'User-Agent':       'Super Agent/0.0.1',
-    'Content-Type':     'application/json-rpc',
-    'Accept':'application/json-rpc'
-}
-
-const options = {
-    url: "http://18.222.107.97:18332",
-    method: 'POST',
-    auth: {user:'btcuser',pass:'btcpassword'},
-    headers: headers,
-    body: JSON.stringify({jsonrpc: "1.0", method: "getblockchaininfo", params: []})
-}
+// const headers = {
+//     'User-Agent':       'Super Agent/0.0.1',
+//     'Content-Type':     'application/json-rpc',
+//     'Accept':'application/json-rpc'
+// } 
 
 function rpcPost(method, params = []) {
     const options = {
         url: "http://18.222.107.97:18332",
         method: 'POST',
         auth: {user:'btcuser',pass:'btcpassword'},
-        headers: headers,
-        body: JSON.stringify({jsonrpc: "1.0", method: method, params: []})
+        body: JSON.stringify({jsonrpc: "1.0", method: method, params: params})
     }
     return new Promise( (resolve, reject) => {
         request(options, (err,res,body) => {
@@ -39,6 +30,6 @@ const promiseLog = (promise) => {
     .then( (resp) => console.log(resp) )
     .catch( (err) => console.log(err) )    
 }
-
+promiseLog(rpcPost('getblockcount'))
 promiseLog(rpcPost('getblockchaininfo'))
 promiseLog(rpcPost('getwalletinfo'))
