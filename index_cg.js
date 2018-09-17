@@ -15,17 +15,19 @@ const Wallet = (() => {
             walletStore[this.id] = { 
                 derived: 0,
                 address:[],
-                utxo: []
+                utxo: [],
+                stxos: [],
+                deriveCounter: 0
             }
         }
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            return this.mnemonic;
+            return walletSTthis.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            this.seed = bip39.mnemonicToSeed(mnemonic);
+            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
             return this.seed;
         }
 
@@ -44,6 +46,7 @@ const Wallet = (() => {
             }
             walletStore[this.id].address.push(arr)
             return arr;
+            walletStore[this.id].deriveCounter++;
         }
     }
 })();
