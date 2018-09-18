@@ -38,9 +38,9 @@ class BitcoinTransactions {
                let tx = transaction.build()
                this.txhex = tx.toHex();
                console.log(this.txhex)
-               let rpc = new RPC()
+              //  let rpc = new RPC()
             //    let params = [`${this.txhex}`]
-              rpc.rpcPost("sendrawtransaction", this.txhex)
+              // rpc.rpcPost("sendrawtransaction", this.txhex)
             //    this.broadcastTx(this.txhex)
            }
 
