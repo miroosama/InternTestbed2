@@ -1,4 +1,4 @@
-export.BTCWallet = (() => {
+exports.BTCWallet = (() => {
 
     let walletIds = 1;
     let mnemonic
