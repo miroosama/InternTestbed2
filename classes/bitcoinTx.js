@@ -27,7 +27,7 @@ class BitcoinTransactions {
 
          transactionBuilding(utxo, sendAddr, sendAMT, changeAddr, changeAMT, prk){
             let transaction = new bitcoin.TransactionBuilder(network)
-               transaction.addInput(utxo, 1)
+               transaction.addInput(utxo, 0)
                // for(let i = 0; i < outputs.length; i++){
                //     transaction.addOutput(outputs[i].address, outputs[i].amount)
                // }
@@ -38,9 +38,9 @@ class BitcoinTransactions {
                let tx = transaction.build()
                this.txhex = tx.toHex();
                console.log(this.txhex)
-               let rpc = new RPC()
-               let params = [`${this.txhex}`]
-              rpc.rpcPost("sendrawtransaction", params)
+              //  let rpc = new RPC()
+            //    let params = [`${this.txhex}`]
+              // rpc.rpcPost("sendrawtransaction", this.txhex)
             //    this.broadcastTx(this.txhex)
            }
 

@@ -6,12 +6,8 @@ var axios = require('axios');
 
 var network = bitcoin.networks.testnet;
 
-var mnemonic = "medal meat stay crisp aerobic parent grit absurd steel flip minimum search";
+var mnemonic = "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp";
 var seed = bip39.mnemonicToSeed(mnemonic);
-console.log(seed)
-console.log(JSON.stringify(seed))
-
-// "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp"
 
 var Tree = bitcoin.bip32.fromSeed(seed, network);
 var Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
@@ -27,6 +23,16 @@ function getAddress(node, network) {
 //   var publicKeyHash = bitcoin.crypto.hash160(node.publicKey);
 //   return bitcoin.address.toBase58Check(publicKeyHash, network.pubKeyHash);
 // }
+
+function mnemonic12() {
+  return bip39.generateMnemonic();
+}
+
+function mnemonic24() {
+  return bip39.generateMnemonic(256);
+}
+
+console.log(mnemonic24())
 
 function getPublicKey(node) {
   return node.publicKey.hexSlice();
@@ -120,16 +126,24 @@ async function checkBalanceHandler() {
 // console.log(checkBalanceHandler());
 
 // module.exports.balance = checkBalance("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
-module.exports.balance = checkBalanceHandler("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
+// module.exports.balance = checkBalanceHandler("mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq");
 
-module.exports.handler = checkBalanceHandler();
-module.exports.public = getPublicKey(Leaf);
-module.exports.private = getPrivateKey(Leaf);
-module.exports.address = getAddress(Leaf, network);
-module.exports.tx = createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0);
-// module.exports.push = pushTx(createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
+// module.exports.handler = checkBalanceHandler();
+// module.exports.public = getPublicKey(Leaf);
+// module.exports.private = getPrivateKey(Leaf);
+// module.exports.address = getAddress(Leaf, network);
+// module.exports.tx = createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0);
+// // module.exports.push = pushTx(createTx(15000, 20000, "cN66Qp23DXb2x9s7aXs7So31z9ZBHW8NZcvUjBHfmGWZsxtqnRia", '40181e4293ccc0148a16bb26bd91711cf24042c931780d3a742fe823e722189c', "mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5", "mneSrzhURsCs3JYdxakDdcBqbF9y1XCEZq", 0));
 
-module.exports.mnemonic = mnemonic;
+// module.exports.mnemonic = mnemonic;
 
-module.exports.add = (a, b) => a + b;
-module.exports.hello = () => console.log("Hello!!!");
+// module.exports.add = (a, b) => a + b;
+// module.exports.hello = () => console.log("Hello!!!");
+
+module.exports = {
+  getAddress,
+  getPublicKey,
+  getPrivateKey,
+  mnemonic12,
+  mnemonic24
+}

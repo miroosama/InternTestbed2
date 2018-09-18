@@ -1,6 +1,6 @@
 const request = require('request')
 
-exports.RPCAdapter = (()=>{
+exports.RPCAdapter = ( () => {
     // returns singleton class of RPC adapter. can be imported
     // via a simple const { RPCAdapter } = require('../classes/RPCAdapter');
     // statement at the head of any file. This provides a fully 

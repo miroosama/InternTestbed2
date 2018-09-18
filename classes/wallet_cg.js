@@ -29,8 +29,11 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(seed, network);
             const path = "m/44'/1'/0'/0/0";
             const node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-            address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+            address = bitcoin.payments.p2pkh({
+                pubkey: node.publicKey,
+                network
+            }).address
         }
-        
     }
-})
+})()
+

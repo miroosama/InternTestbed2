@@ -1,5 +1,8 @@
 {
-  "name": "InternTestbed2-master",
+  "name": "InternTestbed2",
+  "jest": {
+    "verbose": true
+  },
   "version": "1.0.0",
   "description": "Testbed for Interns",
   "main": "index.js",
@@ -8,14 +11,20 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.0",
     "bip39": "^2.5.0",
     "bitcoin-core": "^2.0.0",
     "bitcoinjs-lib": "^4.0.1",
+    "chalk": "^2.4.1",
+    "commander": "^2.18.0",
+    "eslint-plugin-jest": "^21.22.0",
     "ethereumjs-tx": "^1.3.7",
+    "figlet": "^1.2.0",
+    "inquirer": "^6.2.0",
     "jest": "^23.6.0",
-    "npm": "^6.4.1",
-    "request": "^2.88.0",
-    "web3": "^1.0.0-beta.36"
+    "readline": "^1.3.0",
+    "run-func": "^1.0.2",
+    "shelljs": "^0.8.2"
   },
   "devDependencies": {},
   "scripts": {
