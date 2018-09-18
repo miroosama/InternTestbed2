@@ -72,11 +72,13 @@ const Wallet = (() => {
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            return walletSTthis.mnemonic;
+            return this.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
+            // changed walletStore[this.id].mnemonic to just mnemonic for the sake 
+            // of testing
+            this.seed = bip39.mnemonicToSeed(mnemonic);
             return this.seed;
         }
 
@@ -85,7 +87,7 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(this.seed, network);
             const arr = [];
 
-            for (i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
                 arr.push(bitcoin.payments.p2pkh({
                     pubkey: node.publicKey,
@@ -100,15 +102,15 @@ const Wallet = (() => {
     }
 })();
 
-console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-let test = new Wallet()
-let new0 = new Wallet();
-new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
-sender0 = new0
-let new1 = new Wallet();
-new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
-sender1 = new1
+// let test = new Wallet()
+// let new0 = new Wallet();
+// new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+// sender0 = new0
+// let new1 = new Wallet();
+// new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+// sender1 = new1
 
 const Transaction = (() => {
 
@@ -117,8 +119,8 @@ const Transaction = (() => {
     return class {
         constructor(sender, reciever) {
             this.index = transactionIndex++;
-            this.sender = sender0;
-            this.reciever = sender1;
+            this.sender = sender;
+            this.reciever = sender;
             // this.addr = walletStore[sender0.id].address[this.index][0];
             // this.changeAddr = walletStore[sender0.id].address[this.index][1];
             // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
@@ -166,6 +168,7 @@ const Transaction = (() => {
 })();
 
 module.exports = {
+    Wallet,
     Transaction
 };
 

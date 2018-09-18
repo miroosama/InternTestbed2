@@ -1,14 +1,8 @@
 const request = require('request')
 
-// const headers = {
-//     'User-Agent':       'Super Agent/0.0.1',
-//     'Content-Type':     'application/json-rpc',
-//     'Accept':'application/json-rpc'
-// } 
-
 class RPC {
 
-    rpcPost(method, params) {
+    rpcPost(method, params=[]) {
         const options = {
             url: "http://18.222.107.97:18332",
             method: 'POST',
@@ -19,7 +13,7 @@ class RPC {
             body: JSON.stringify({
                 jsonrpc: "1.0",
                 method: method,
-                params: [params]
+                params: params
             })
         }
         return new Promise((resolve, reject) => {
@@ -28,7 +22,6 @@ class RPC {
                     reject(err)
                 } else {
                     resolve(JSON.parse(body).result)
-                    console.log("MADE IT TO PROM", JSON.parse(body).result, options)
                 }
             })
         })

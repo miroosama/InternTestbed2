@@ -2,9 +2,7 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
-const {
-  Wallet
-} = require("./index_cg")
+const { Wallet } = require("../classes/index_cg")
 
 let newWallet = new Wallet();
 

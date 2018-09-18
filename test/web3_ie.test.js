@@ -7,7 +7,7 @@ const address = '0xfaa3ca002157629651ef65f304f98b46e7dc6ba8'; //this address is 
 
 const {
   getBalance
-} = require("./web3_ie");
+} = require("../devbin/web3_ie");
 
 test("getBalance returns a promise that can be resolved", () => {
   return getBalance(address).then(resp => {
