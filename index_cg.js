@@ -138,7 +138,7 @@ const Transaction = (() => {
             let amountToSend = amountWeHave - amountToKeep - transactionFee;
 
             //input
-            transaction.addInput(utxo[this.id - 1].txid, 0);
+            // transaction.addInput(utxo[this.id - 1].txid, 0);
 
             //outputs(0,1)
             transaction.addOutput(this.recievingAddr, amountToSend);
