@@ -46,14 +46,6 @@ let walletStore = {};
 //setTimeout to restart?
 
 
-
-
-
-
-
-
-
-
 const Wallet = (() => {
 
     let walletIds = 0;
@@ -72,17 +64,11 @@ const Wallet = (() => {
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            return this.mnemonic;
+            return walletSTthis.mnemonic;
         }
 
         generateSeed(mnemonic) {
-<<<<<<< HEAD
-            // changed walletStore[this.id].mnemonic to just mnemonic for the sake of testing
-=======
-            // changed walletStore[this.id].mnemonic to just mnemonic for the sake 
-            // of testing
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
-            this.seed = bip39.mnemonicToSeed(mnemonic);
+            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
             return this.seed;
         }
 
@@ -91,7 +77,7 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(this.seed, network);
             const arr = [];
 
-            for (let i = 0; i < 3; i++) {
+            for (i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
                 arr.push(bitcoin.payments.p2pkh({
                     pubkey: node.publicKey,
@@ -106,22 +92,15 @@ const Wallet = (() => {
     }
 })();
 
-<<<<<<< HEAD
-module.exports = {
-    Wallet
-}
+console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-=======
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
-// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
-
-// let test = new Wallet()
-// let new0 = new Wallet();
-// new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
-// sender0 = new0
-// let new1 = new Wallet();
-// new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
-// sender1 = new1
+let test = new Wallet()
+let new0 = new Wallet();
+new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
+sender0 = new0
+let new1 = new Wallet();
+new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
+sender1 = new1
 
 const Transaction = (() => {
 
@@ -130,11 +109,8 @@ const Transaction = (() => {
     return class {
         constructor(sender, reciever) {
             this.index = transactionIndex++;
-            this.sender = sender;
-            this.reciever = sender;
-            // this.addr = walletStore[sender0.id].address[this.index][0];
-            // this.changeAddr = walletStore[sender0.id].address[this.index][1];
-            // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            this.sender = sender0;
+            this.reciever = sender1;
         }
 
         // async getBalance(addr) {
@@ -145,6 +121,11 @@ const Transaction = (() => {
         // }
 
         createTransaction() {
+            //call to generate addresses for the sender and reciever wallets
+            this.addr = walletStore[sender0.id].address[transactionIndex++][0];
+            this.changeAddr = walletStore[sender0.id].address[transactionIndex++][1];
+            this.recievingAddr = walletStore[sender1.id].address[transactionIndex++][2];
+
             transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
@@ -168,6 +149,7 @@ const Transaction = (() => {
         }
 
         getHex(transaction) {
+        
             let tx = transaction.build();
             txhex = tx.toHex();
         }
@@ -178,16 +160,9 @@ const Transaction = (() => {
     }
 })();
 
-<<<<<<< HEAD
-// module.exports = {
-//     Transaction
-// };
-=======
 module.exports = {
-    Wallet,
     Transaction
 };
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
 
 const firstTransaction = new Transaction();
 const secondTransaction = new Transaction();

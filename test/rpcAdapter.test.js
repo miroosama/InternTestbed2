@@ -1,6 +1,5 @@
 const RPC = require('../classes/rpcAdapter');
 const newRPC = new RPC();
-
 test("rpcPost returns an object", () => {
   expect(typeof newRPC.rpcPost('getblockchaininfo')).toBe("object")
 })
