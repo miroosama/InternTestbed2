@@ -4,6 +4,56 @@ const request = require('request');
 
 let walletStore = {};
 
+//hi! what would you like to do?
+// create a wallet  |  send money
+
+//***create a wallet***
+//what would you like this wallet to be called?
+// gets.chomp input equivalent 
+
+//***generate a faucet with a specified amount***
+//you have x BTC in your wallet! spend it wisely. use the command BLANK to add x BTC if your funds are too low.
+
+//hi! what would you like to do?
+// create a wallet  |  send money
+
+//***send money***
+//what is your wallet called?
+// gets.chomp input equivalent
+
+//what is the name of the wallet you would like to send money to?
+// gets.chomp input equivalent
+
+//your balance is x BTC. How much would you like to send to *string of last input*?
+// gets.chomp input equivalent
+
+// how much would you like to pay in miner's fees?
+// gets.chomp input equivalent
+
+// With these amounts, you will be left with x BTC in your wallet. Does that sound good to you?
+// yes, send!  |  adjust amounts
+
+//**adjust amounts**//
+//How much would you like to send to *string of last input*?
+// how much would you like to pay in miner's fees?
+// gets.chomp input equivalent
+// With these amounts, you will be left with x BTC in your wallet. Does that sound good to you?
+// yes  |  adjust amounts
+
+//**yes, send!**//
+// great! you have send x BTC to *name of recipient wallet.*
+
+//setTimeout to restart?
+
+
+
+
+
+
+
+
+
+
 const Wallet = (() => {
 
     let walletIds = 0;
@@ -15,29 +65,27 @@ const Wallet = (() => {
             walletStore[this.id] = {
                 derived: 0,
                 address: [],
-                utxo: []
+                utxo: [],
+                stxos: [],
             }
         }
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            // console.log(this.mnemonic)
-            // console.log(bip39.mnemonicToSeed(this.mnemonic))
-            return this.mnemonic;
+            return walletSTthis.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            this.seed = bip39.mnemonicToSeed(mnemonic);
+            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
             return this.seed;
         }
 
         deriveAddresses(seed) {
-            //we need a counter in here to move down the address line in clusters of three
             let network = bitcoin.networks.testnet;
-            const root = bitcoin.bip32.fromSeed(seed, network);
+            const root = bitcoin.bip32.fromSeed(this.seed, network);
             const arr = [];
-            let i = walletStore[this.id].derived
-            for (let i = 0; i < 3; i++) {
+
+            for (i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
                 arr.push(bitcoin.payments.p2pkh({
                     pubkey: node.publicKey,
@@ -45,18 +93,16 @@ const Wallet = (() => {
                 }).address)
                 walletStore[this.id].derived++;
             }
+            walletStore[this.id].address.push(arr)
             return arr;
+            walletStore[this.id].deriveCounter++;
         }
     }
 })();
 
-module.exports = {
-    Wallet
-};
+console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
-
-// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
-
+let test = new Wallet()
 let new0 = new Wallet();
 new0.deriveAddresses(new0.generateSeed(new0.generateMnemonic()))
 sender0 = new0
@@ -65,8 +111,6 @@ new1.deriveAddresses(new1.generateSeed(new1.generateMnemonic()))
 sender1 = new1
 
 const Transaction = (() => {
-
-    API_URL = 'https://testnet.blockexplorer.com/api/addr/';
 
     let transactionIndex = 0;
 
@@ -80,24 +124,24 @@ const Transaction = (() => {
             // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
-        // async getBalance(addr) {
-        //     request.get(API_URL + addr + '/balance', (err, req, body) => {
-        //         balance = JSON.parse(body)
-        //         console.log(balance)
-        //     })
-        // }
+        async getBalance(addr) {
+            request.get(API_URL + addr + '/balance', (err, req, body) => {
+                balance = JSON.parse(body)
+                console.log(balance)
+            })
+        }
 
         createTransaction() {
             transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
-            let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis];
+            // let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis;
             let amountToKeep = amountWeHave - 400;
             let transactionFee = 100;
             let amountToSend = amountWeHave - amountToKeep - transactionFee;
 
             //input
-            transaction.addInput(utxo[this.id - 1].txid, 0);
+            // transaction.addInput(utxo[this.id - 1].txid, 0);
 
             //outputs(0,1)
             transaction.addOutput(this.recievingAddr, amountToSend);
