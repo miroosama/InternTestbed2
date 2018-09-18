@@ -6,8 +6,12 @@ var axios = require('axios');
 
 var network = bitcoin.networks.testnet;
 
-var mnemonic = "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp";
+var mnemonic = "medal meat stay crisp aerobic parent grit absurd steel flip minimum search";
 var seed = bip39.mnemonicToSeed(mnemonic);
+console.log(seed)
+console.log(JSON.stringify(seed))
+
+// "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp"
 
 var Tree = bitcoin.bip32.fromSeed(seed, network);
 var Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);

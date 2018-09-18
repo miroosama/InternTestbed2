@@ -4,7 +4,7 @@ const request = require('request');
 
 const {
   Wallet
-} = require("./index_cg")
+} = require("../classes/index_cg")
 
 let newWallet = new Wallet();
 
@@ -26,7 +26,7 @@ test("generateSeed generates a valid seed", () => {
 });
 
 test("always the same seed is generated from the same mnemonic", () => {
-  let mnemonic = "medal meat stay crisp aerobic parent grit absurd steel flip minimum search";
+  const mnemonic = "medal meat stay crisp aerobic parent grit absurd steel flip minimum search";
   expect(JSON.stringify(newWallet.generateSeed(mnemonic))).toBe('{"type":"Buffer","data":[118,254,239,47,219,224,91,242,130,37,2,214,87,229,97,102,217,178,178,229,225,125,46,139,75,176,177,98,129,241,192,220,219,194,138,136,70,135,155,67,245,178,106,172,111,125,184,211,122,198,104,179,211,216,217,3,119,170,31,1,76,35,189,35]}')
 });
 

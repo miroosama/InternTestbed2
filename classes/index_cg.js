@@ -72,11 +72,12 @@ const Wallet = (() => {
 
         generateMnemonic() {
             this.mnemonic = bip39.generateMnemonic();
-            return walletSTthis.mnemonic;
+            return this.mnemonic;
         }
 
         generateSeed(mnemonic) {
-            this.seed = bip39.mnemonicToSeed(walletStore[this.id].mnemonic);
+            // changed walletStore[this.id].mnemonic to just mnemonic for the sake of testing
+            this.seed = bip39.mnemonicToSeed(mnemonic);
             return this.seed;
         }
 
@@ -85,7 +86,7 @@ const Wallet = (() => {
             const root = bitcoin.bip32.fromSeed(this.seed, network);
             const arr = [];
 
-            for (i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
                 arr.push(bitcoin.payments.p2pkh({
                     pubkey: node.publicKey,
@@ -100,7 +101,11 @@ const Wallet = (() => {
     }
 })();
 
-console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
+module.exports = {
+    Wallet
+}
+
+// console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
 let test = new Wallet()
 let new0 = new Wallet();
@@ -165,9 +170,9 @@ const Transaction = (() => {
     }
 })();
 
-module.exports = {
-    Transaction
-};
+// module.exports = {
+//     Transaction
+// };
 
 const firstTransaction = new Transaction();
 const secondTransaction = new Transaction();
