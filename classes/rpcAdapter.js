@@ -1,8 +1,9 @@
 const request = require('request')
 
 exports.RPCAdapter = ( () => {
-    // returns singleton class of RPC adapter. can be imported
-    // via a simple const { RPCAdapter } = require('../classes/RPCAdapter');
+    // returns singleton class of RPC adapter. 
+    // can be imported via a simple 
+    // const { RPCAdapter } = require('../classes/RPCAdapter');
     // statement at the head of any file. This provides a fully 
     // instantiated interface (as opposed to a constructor,) 
     // and is useable out of the box. 
