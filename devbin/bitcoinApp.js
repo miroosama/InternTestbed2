@@ -2,19 +2,19 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request')
 const axios = require('axios')
-const BitcoinTransaction = require('./bitcoinTx')
-const Wallet = require('./bitcoin.js')
+const BitcoinTransaction = require('../classes/bitcoinTx')
+const Wallet = require('../classes/bitcoin.js')
 
 
 const wallet = new Wallet()
 
-wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog","false")
+wallet.createOrUpdateAccount("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss", "false")
 
 console.log("BLAH", wallet.address)
 
 const bitcoinTx = new BitcoinTransaction()
 
-//bitcoinTx.checkUTxO(wallet.address)
+// bitcoinTx.checkUTxO(wallet.address)
 
 
 
@@ -24,7 +24,7 @@ wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct
 //bitcoinTx.transactionBuilding(utxo, sendAddr, sendAMT, wallet.changeAddr, changeAMT, wallet.privateKey)
 
 
-bitcoinTx.transactionBuilding('966aa228397a9968894165d9adad2ced2d9492a178e6cd76401518dc2bfc5a5d', "mwxes15YzbWfpFhMtpbJRX7o8qd2vc4Ad3", 700, wallet.changeAddr, 100, wallet.privateKey)
+bitcoinTx.transactionBuilding('594b9e09c3ecffc9a4c43a6ae16790ac928f9d40aebf83179425afcd11be66b0', "n42A3CDhFCHAVjaznedDErm9EhsofjGWNX", 7000, wallet.changeAddr, 800, wallet.privateKey)
 
 
 
