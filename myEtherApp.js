@@ -1,13 +1,13 @@
 const EtherTransaction = require('./myEtherTx')
 const Wallet = require('./myEther')
 
-// const wallet = new Wallet()
-// wallet.createAccount("vitalik is a great guy")
-// console.log("HIAHHAD", wallet.account.privateKey)
+const wallet = new Wallet()
+wallet.createAccount("vitalik is a great guy")
+console.log("HIAHHAD", wallet.account.privateKey)
 
 // wallet.displayBalance("0xaa98f82ab403663748e10b6f7256e3c29cdd0051")
 
- const etherTx = new EtherTransaction()
+//  const etherTx = new EtherTransaction()
 
 // etherTx.buildingTx(wallet.account.address, sendaddr, wallet.account.privateKey)
 

@@ -101,15 +101,17 @@ constructor(){
     console.log("HII",prk)
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
-    this.privateKey = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+    this.privateKey = prk
   }
 
   getChangeAddress (node, network, prk) {
     console.log("HII",prk)
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
-    this.changePrivateKey = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+    this.changePrivateKey = prk
   }
+
+
 
 }
 

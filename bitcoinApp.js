@@ -5,6 +5,7 @@ const axios = require('axios')
 const BitcoinTransaction = require('./bitcoinTx')
 const Wallet = require('./bitcoin.js')
 
+
 const wallet = new Wallet()
 
 wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog","false")
@@ -13,15 +14,17 @@ console.log("BLAH", wallet.address)
 
 const bitcoinTx = new BitcoinTransaction()
 
-bitcoinTx.checkUTxO(wallet.address)
+//bitcoinTx.checkUTxO(wallet.address)
 
-//wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "true")
+
+
+wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "true")
 
 
 //bitcoinTx.transactionBuilding(utxo, sendAddr, sendAMT, wallet.changeAddr, changeAMT, wallet.privateKey)
 
 
-bitcoinTx.transactionBuilding('966aa228397a9968894165d9adad2ced2d9492a178e6cd76401518dc2bfc5a5d', "n1h4g9FkQe2N68uY5cwQFHcweGhGqSK78v", 900, "cRyUBkZgD44iSxw844fAB2RnfnW3H7XencuEwbuUk1iXJ2Xw2sT6")
+bitcoinTx.transactionBuilding('966aa228397a9968894165d9adad2ced2d9492a178e6cd76401518dc2bfc5a5d', "mwxes15YzbWfpFhMtpbJRX7o8qd2vc4Ad3", 700, wallet.changeAddr, 100, wallet.privateKey)
 
 
 

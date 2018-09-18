@@ -27,6 +27,9 @@ rl.question("Enter a function: ", (answer) => {
     case 'push':
       saySomething(console.log(run_bitcoin.push));
       break;
+    case 'mnemonic':
+      saySomething(console.log(run_bitcoin.mnemonic));
+      break;
     default:
       saySomething('pelase enter a valid function')
   }

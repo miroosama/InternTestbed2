@@ -2,7 +2,8 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request')
 const axios = require('axios')
-
+const network = bitcoin.networks.testnet;
+const RPC = require('./rpcAdapter.js')
 
 
 class BitcoinTransactions {
@@ -24,7 +25,7 @@ class BitcoinTransactions {
         
         }
 
-         transactionBuilding(utxo, sendAddr, sendAMT, changeAddr, changeAMT, prk, str){
+         transactionBuilding(utxo, sendAddr, sendAMT, changeAddr, changeAMT, prk){
             let transaction = new bitcoin.TransactionBuilder(network)
                transaction.addInput(utxo, 1)
                // for(let i = 0; i < outputs.length; i++){
@@ -36,28 +37,32 @@ class BitcoinTransactions {
                transaction.sign(0, keypairSpend)
                let tx = transaction.build()
                this.txhex = tx.toHex();
-               this.broadcastTx(this.txhex)
+               console.log(this.txhex)
+               let rpc = new RPC()
+               let params = [`${this.txhex}`]
+              rpc.rpcPost("sendrawtransaction", params)
+            //    this.broadcastTx(this.txhex)
            }
 
 
          //'https://api.blockcypher.com/v1/bcy/test/txs/push'
          // https://chain.so/api/v2/send_tx/{NETWORK}
          
-         broadcastTx(txhex){
-             axios({
-                 method: 'post',
-                 url: `https://api.blockcypher.com/v1/bcy/test/txs/push`,
-                 data: {
-                     tx_hex: `${txhex}`
-                 }
-               }).then(function(response) {
-                 console.log(response.data);
-                 console.log(response.status);
-               }).catch(function(error){
-                   console.log(error)
-               });
+        //  broadcastTx(txhex){
+        //      axios({
+        //          method: 'post',
+        //          url: `https://api.blockcypher.com/v1/bcy/test/txs/push`,
+        //          data: {
+        //              tx_hex: `${txhex}`
+        //          }
+        //        }).then(function(response) {
+        //          console.log(response.data);
+        //          console.log(response.status);
+        //        }).catch(function(error){
+        //            console.log(error)
+        //        });
 
-            }
+        //     }
 
 }
 
