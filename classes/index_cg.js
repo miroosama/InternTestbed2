@@ -124,12 +124,12 @@ const Transaction = (() => {
             // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
-        async getBalance(addr) {
-            request.get(API_URL + addr + '/balance', (err, req, body) => {
-                balance = JSON.parse(body)
-                console.log(balance)
-            })
-        }
+        // async getBalance(addr) {
+        //     request.get(API_URL + addr + '/balance', (err, req, body) => {
+        //         balance = JSON.parse(body)
+        //         console.log(balance)
+        //     })
+        // }
 
         createTransaction() {
             transaction = new bitcoin.TransactionBuilder(network);
@@ -160,17 +160,8 @@ const Transaction = (() => {
         }
 
         pushTransaction(tx) {
-            //one day we will achieve this!!
+            //one day!
         }
-
-        // async addUtxo(addr) {
-        //     request.get(API_URL + this.addr + '/utxo', (err, req, body) => {
-        //         let tx = JSON.parse(body)
-        //         walletStore[this[this.indexutxo.push(tx)
-        //         console.log(tx)
-        //     })
-        // }
-
     }
 })();
 
