@@ -2,7 +2,7 @@ var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const request = require('request');
 
-let walletStore = { };
+let walletStore = {};
 
 //hi! what would you like to do?
 // create a wallet  |  send money
@@ -62,9 +62,9 @@ const Wallet = (() => {
         constructor() {
             this.id = walletIds++;
 
-            walletStore[this.id] = { 
+            walletStore[this.id] = {
                 derived: 0,
-                address:[],
+                address: [],
                 utxo: [],
                 stxos: [],
             }
@@ -87,7 +87,10 @@ const Wallet = (() => {
 
             for (i = 0; i < 3; i++) {
                 let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(walletStore[this.id].derived)
-                arr.push(bitcoin.payments.p2pkh({pubkey: node.publicKey, network}).address)
+                arr.push(bitcoin.payments.p2pkh({
+                    pubkey: node.publicKey,
+                    network
+                }).address)
                 walletStore[this.id].derived++;
             }
             walletStore[this.id].address.push(arr)
@@ -112,13 +115,13 @@ const Transaction = (() => {
     let transactionIndex = 0;
 
     return class {
-        constructor(sender, reciever) { 
+        constructor(sender, reciever) {
             this.index = transactionIndex++;
             this.sender = sender0;
-            this.reciever = sender1; 
-            this.addr = walletStore[sender0.id].address[this.index][0];
-            this.changeAddr = walletStore[sender0.id].address[this.index][1];
-            this.recievingAddr = walletStore[sender1.id].address[this.index][2];
+            this.reciever = sender1;
+            // this.addr = walletStore[sender0.id].address[this.index][0];
+            // this.changeAddr = walletStore[sender0.id].address[this.index][1];
+            // this.recievingAddr = walletStore[sender1.id].address[this.index][2];
         }
 
         // async getBalance(addr) {
@@ -162,5 +165,13 @@ const Transaction = (() => {
     }
 })();
 
+module.exports = {
+    Transaction
+};
+
 const firstTransaction = new Transaction();
 const secondTransaction = new Transaction();
+
+// console.log(new0.generateMnemonic())
+
+// console.log(Wallet)
