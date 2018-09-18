@@ -1,25 +1,40 @@
-const Client = require('bitcoin-core');
-const client = new Client({
-    host: '18.222.107.97',
-    network: 'testnet',
-    username: 'btcuser',
-    password: 'btcpassword'
-});
+const request = require('request')
 
-client.getWalletInfo((promise) => {
-    (promise)
-    .then((resp) => console.log(resp))
-        .catch((error) => console.log(error))
-})
-
-client.getInfo().then((help) => console.log(help));
-
-client.getDifficulty(function (err, difficulty) {
-    if (err) {
-        return console.error(err);
+function rpcPost(method, params = []) {
+    const options = {
+        url: "http://18.222.107.97:18332",
+        method: 'POST',
+        auth: {
+            user: 'btcuser',
+            pass: 'btcpassword'
+        },
+        body: JSON.stringify({
+            jsonrpc: "1.0",
+            method: method,
+            params: params
+        })
     }
+    return new Promise((resolve, reject) => {
+        request(options, (err, res, body) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(JSON.parse(body).result)
+            }
+        })
+    })
+}
 
-    console.log('Difficulty: ' + difficulty);
-});
+const promiseLog = (promise) => {
+    //Force logging into promised behavior
+    promise
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err))
+}
 
-// client.getInfo().then((help) => console.log(help));
+promiseLog(rpcPost('getblockchaininfo'))
+promiseLog(rpcPost('getwalletinfo'))
+
+module.exports = {
+    rpcPost
+}

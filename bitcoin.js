@@ -6,7 +6,7 @@ var netwrk = bitcoin.networks.testnet;
 
 var mnemonic = "fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss";
 var seed = bip39.mnemonicToSeed(mnemonic);
-var root = bitcoin.bip32.fromSeed(seed, network);
+var root = bitcoin.bip32.fromSeed(seed, netwrk);
 // HDNode was deprecated: https://github.com/bitcoinjs/bitcoinjs-lib/issues/1206
 // and https://github.com/bitcoinjs/bitcoinjs-lib/issues/1047
 
@@ -18,7 +18,7 @@ console.log(Leaf.toWIF())
 
 // const mnemonic = 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
 // const seed = bip39.mnemonicToSeed(mnemonic)
-const root = bitcoin.bip32.fromSeed(seed)
+// const root = bitcoin.bip32.fromSeed(seed)
 
 var p = Leaf.deriveHardened(0)
 
@@ -31,24 +31,27 @@ const child = root.derivePath(path)
 //     network: bitcoin.networks.testnet
 //   })
 
-  
 
-  // function getAddress (node, network) {
-  //   return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
-  // }
 
-  // let ad = bitcoin.payments.p2pkh({ pubkey: Leaf.publicKey, netwrk }).address
-  
-  // let add = assert.strictEqual(getAddress(root.derivePath("m/44'/1'/0'/0/0")), '1wd1BwtJvh9rDzkRSZtRHTgB4tENCczMH')
+// function getAddress (node, network) {
+//   return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+// }
+
+// let ad = bitcoin.payments.p2pkh({ pubkey: Leaf.publicKey, netwrk }).address
+
+// let add = assert.strictEqual(getAddress(root.derivePath("m/44'/1'/0'/0/0")), '1wd1BwtJvh9rDzkRSZtRHTgB4tENCczMH')
 
 var publicKeyHash = bitcoin.crypto.hash160(child.publicKey);
 var address1 = bitcoin.address.toBase58Check(publicKeyHash, netwrk.pubKeyHash);
 
 console.log(getAddress(node, network));
 
-function getAddress (node, network) {
+function getAddress(node, network) {
 
-    return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+  return bitcoin.payments.p2pkh({
+    pubkey: node.publicKey,
+    network
+  }).address
 }
 
 // Compare with:
@@ -56,4 +59,3 @@ function getAddress (node, network) {
 //https://iancoleman.io/bip39/
 
 //Next get the private key
-
