@@ -24,3 +24,7 @@ Testbed for Interns
 ``` bash
   node bitcoin.js
   mgTaJF2s7x8QdLUN91YGFCg134UwG121io
+
+## NOTES
+electrum RPC calls hit port 50001
+should the counter be set by the amount of utxos or the last utxo `
