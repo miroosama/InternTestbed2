@@ -31,15 +31,15 @@ var network = bitcoin.networks.testnet;
 //     network: bitcoin.networks.testnet
 //   })
 
-  
 
-  // function getAddress (node, network) {
-  //   return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
-  // }
 
-  // let ad = bitcoin.payments.p2pkh({ pubkey: Leaf.publicKey, netwrk }).address
-  
-  // let add = assert.strictEqual(getAddress(root.derivePath("m/44'/1'/0'/0/0")), '1wd1BwtJvh9rDzkRSZtRHTgB4tENCczMH')
+// function getAddress (node, network) {
+//   return bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+// }
+
+// let ad = bitcoin.payments.p2pkh({ pubkey: Leaf.publicKey, netwrk }).address
+
+// let add = assert.strictEqual(getAddress(root.derivePath("m/44'/1'/0'/0/0")), '1wd1BwtJvh9rDzkRSZtRHTgB4tENCczMH')
 
 // var publicKeyHash = bitcoin.crypto.hash160(child.publicKey);
 // var address1 = bitcoin.address.toBase58Check(publicKeyHash, netwrk.pubKeyHash);
@@ -59,55 +59,67 @@ var network = bitcoin.networks.testnet;
 
 class Wallet {
 
-constructor(){
-  this.counter = 0,
-  this.address = "",
-  this.privateKey = "",
-  this.changeAddr = "",
-  this.changePrivateKey = ""
-}
-    createOrUpdateAccount(str, val){
-      if(val == "false"){
+  constructor() {
+    this.counter = 0,
+      this.address = "",
+      this.privateKey = "",
+      this.changeAddr = "",
+      this.changePrivateKey = ""
+  }
+  createOrUpdateAccount(str, val) {
+    if (val == "false") {
       let seed = bip39.mnemonicToSeed(str);
-       let root = this.getRoot(seed)
-       return this.getNode(root)
-      } else {
-        let seed = bip39.mnemonicToSeed(str);
-        let root = this.getRoot(seed)
-        return this.getNewNode(root)
-      }
+      let root = this.getRoot(seed)
+      return this.getNode(root)
+    } else {
+      let seed = bip39.mnemonicToSeed(str);
+      let root = this.getRoot(seed)
+      return this.getNewNode(root)
     }
-
-    
-    getRoot(seed){
-      // var root = bitcoin.bip32.fromSeed(seed, network);
-      return bitcoin.bip32.fromSeed(seed, network);
-  }
-  
-   getNode(root){
-      var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
-      let prk = node.toWIF()
-      return this.getAddress(node, network, prk)
   }
 
-    getNewNode(root){
-      this.counter += 1
-      var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(this.counter)
-      let prk = node.toWIF()
-      return this.getChangeAddress(node, network, prk)
+
+  getRoot(seed) {
+    // var root = bitcoin.bip32.fromSeed(seed, network);
+    return bitcoin.bip32.fromSeed(seed, network);
   }
 
-  getAddress (node, network, prk) {
-    console.log("HII",prk)
-    console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
-    this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+  getNode(root) {
+    var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0)
+    let prk = node.toWIF()
+    return this.getAddress(node, network, prk)
+  }
+
+  getNewNode(root) {
+    this.counter += 1
+    var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(this.counter)
+    let prk = node.toWIF()
+    return this.getChangeAddress(node, network, prk)
+  }
+
+  getAddress(node, network, prk) {
+    console.log("HII", prk)
+    console.log(bitcoin.payments.p2pkh({
+      pubkey: node.publicKey,
+      network
+    }).address)
+    this.address = bitcoin.payments.p2pkh({
+      pubkey: node.publicKey,
+      network
+    }).address
     this.privateKey = prk
   }
 
-  getChangeAddress (node, network, prk) {
-    console.log("HII",prk)
-    console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
-    this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+  getChangeAddress(node, network, prk) {
+    console.log("HII", prk)
+    console.log(bitcoin.payments.p2pkh({
+      pubkey: node.publicKey,
+      network
+    }).address)
+    this.changeAddr = bitcoin.payments.p2pkh({
+      pubkey: node.publicKey,
+      network
+    }).address
     this.changePrivateKey = prk
   }
 
@@ -119,5 +131,3 @@ constructor(){
 // wallet.createAccount("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss")
 
 module.exports = Wallet;
-
-
