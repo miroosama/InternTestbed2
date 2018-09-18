@@ -31,14 +31,14 @@ const Transaction = (() => {
                 tx = JSON.parse(body)
                 utxo.push(tx)
                 console.log(tx)
-            }
+            })
         }
 
         getBalance(addr) {
             request.get(API_URL + addr + '/balance', (err, req, body) => {
                 balance = JSON.parse(body)
                 console.log(balance)
-             }
+            })
         }
 
     }
