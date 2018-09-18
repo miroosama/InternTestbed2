@@ -76,12 +76,8 @@ const Wallet = (() => {
         }
 
         generateSeed(mnemonic) {
-<<<<<<< HEAD
-            // changed walletStore[this.id].mnemonic to just mnemonic for the sake of testing
-=======
             // changed walletStore[this.id].mnemonic to just mnemonic for the sake 
             // of testing
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
             this.seed = bip39.mnemonicToSeed(mnemonic);
             return this.seed;
         }
@@ -106,13 +102,6 @@ const Wallet = (() => {
     }
 })();
 
-<<<<<<< HEAD
-module.exports = {
-    Wallet
-}
-
-=======
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
 // let test = new Wallet()
@@ -178,16 +167,10 @@ const Transaction = (() => {
     }
 })();
 
-<<<<<<< HEAD
-// module.exports = {
-//     Transaction
-// };
-=======
 module.exports = {
     Wallet,
     Transaction
 };
->>>>>>> 80c19e7aa7862f5628b4a809e94f0f7ad19b1617
 
 const firstTransaction = new Transaction();
 const secondTransaction = new Transaction();
