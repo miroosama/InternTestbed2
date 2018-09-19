@@ -1,4 +1,7 @@
-const Wallet = (() => {
+var bip39 = require('bip39');
+var bitcoin = require('bitcoinjs-lib');
+
+exports.Wallet = (() => {
     let walletStore = {};
     let walletIds = 0;
 

@@ -1,4 +1,6 @@
-const Transaction = (() => {
+var bitcoin = require('bitcoinjs-lib');
+
+exports.Transaction = (() => {
 
     let transactionIndex = 0;
 
@@ -20,7 +22,7 @@ const Transaction = (() => {
         // }
 
         createTransaction() {
-            transaction = new bitcoin.TransactionBuilder(network);
+            let transaction = new bitcoin.TransactionBuilder(network);
 
             //handle amounts
             // let amountWeHave = walletStore[this.sender[transactionid].utxo[this.id - 1].satoshis;
