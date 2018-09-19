@@ -69,7 +69,8 @@ constructor(){
   this.privateKey = "",
   this.changeAddr = "",
   this.changePrivateKey = "",
-  this.addresses = []
+  this.addresses = [],
+  this.scripthash = ""
 }
     createOrUpdateAccount(str, val){
       if(val == "false"){
@@ -110,6 +111,7 @@ constructor(){
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
     this.privateKey = prk
+    this.scripthash = node.publicKey
   }
 
   getChangeAddress (node, network, prk) {
@@ -125,5 +127,6 @@ constructor(){
 
 // let wallet = new Wallet()
 // wallet.createAccount("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss")
-
+let wal = new Wallet()
+wal.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "false")
 module.exports = Wallet;

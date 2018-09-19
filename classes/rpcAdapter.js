@@ -4,7 +4,7 @@ class RPC {
 
     rpcPost(method, params = []) {
         const options = {
-            url: "http://18.222.107.97:18332",
+            url: `http://18.222.107.97:50001`,
             method: 'POST',
             auth: {
                 user: 'btcuser',

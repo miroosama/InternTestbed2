@@ -14,15 +14,18 @@ class BitcoinTransactions {
 
      checkUTxO(addr){
 
-        let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
-        console.log(apiUrl)
-        axios({
-            url: apiUrl
-          })
-          .then(function (resp) {
-            console.log("Balance: ", resp.data)
-          })
-        
+        // let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
+        // console.log(apiUrl)
+        // axios({
+        //     url: apiUrl
+        //   })
+        //   .then(function (resp) {
+        //     console.log("Balance: ", resp.data)
+        //   })
+
+        let rpc = new RPC()
+        rpc.rpcPost("blockchain.scripthash.utxos", addr)
+
         }
 
          transactionBuilding(utxo, sendAddr, sendAMT, changeAddr, changeAMT, prk){
