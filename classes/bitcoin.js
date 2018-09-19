@@ -41,7 +41,7 @@ constructor(){
   }
 
     getNewNode(root){
-      // this.counter += 1
+       this.counter += 1
       // store.set('addressCounter', `${this.counter}`)
       // let newAddress = store.data.addressCounter
       var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(this.counter)
@@ -69,8 +69,5 @@ constructor(){
 
 }
 
-// let wallet = new Wallet()
-// wallet.createAccount("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss")
-// let wal = new Wallet()
-// wal.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "false")
+
 module.exports = Wallet;

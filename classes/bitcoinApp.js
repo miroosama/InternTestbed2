@@ -52,7 +52,8 @@ class User {
 
     sendTransaction(sendAddr, sendAMT){
         console.log("hereeee", sendAddr, sendAMT, this.scripthash)
-        // const bitcoinTx = new BitcoinTransaction()
+        const bitcoinTx = new BitcoinTransaction()
+         bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey)
         // this.changeAddress = wallet.changeAddr
         // bitcoinTx.transactionBuilding(utxo, sendAddr, sendAMT, this.changeAddress, changeAMT, this.privateKey)  
         rl.close()
