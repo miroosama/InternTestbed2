@@ -1,16 +1,14 @@
 const request = require('request')
 
-exports.RPCAdapter = (() => {
-    // returns singleton class of RPC adapter. 
+exports.RPCAdapter = ( () => {
+    // returns singleton instance of RPC adapter. 
     // can be imported via a simple 
     // const { RPCAdapter } = require('../classes/RPCAdapter');
-    // statement at the head of any file. This provides a fully 
-    // instantiated interface (as opposed to a constructor,) 
-    // and is useable out of the box. 
+    // statement at the head of any file. 
     return new class {
-        post(method, params = []) {
+        post(method, params=[], port=18332) {
             const options = {
-                url: "http://18.222.107.97:18332",
+                url: `http://18.222.107.97:${port}`,
                 method: 'POST',
                 auth: {
                     user: 'btcuser',
