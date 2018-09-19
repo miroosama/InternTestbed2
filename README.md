@@ -24,3 +24,49 @@ Testbed for Interns
 ``` bash
   node bitcoin.js
   mgTaJF2s7x8QdLUN91YGFCg134UwG121io
+
+## NOTES
+electrum RPC calls hit port 50001
+should the counter be set by the amount of utxos or the last utxo 
+
+## Dialog for interface 
+//hi! what would you like to do?
+// create a wallet  |  send money
+
+//***create a wallet***
+//what would you like this wallet to be called?
+// gets.chomp input equivalent 
+
+//***generate a faucet with a specified amount***
+//you have x BTC in your wallet! spend it wisely. use the command BLANK to add x BTC if your funds are too low.
+
+//hi! what would you like to do?
+// create a wallet  |  send money
+
+//***send money***
+//what is your wallet called?
+// gets.chomp input equivalent
+
+//what is the name of the wallet you would like to send money to?
+// gets.chomp input equivalent
+
+//your balance is x BTC. How much would you like to send to *string of last input*?
+// gets.chomp input equivalent
+
+// how much would you like to pay in miner's fees?
+// gets.chomp input equivalent
+
+// With these amounts, you will be left with x BTC in your wallet. Does that sound good to you?
+// yes, send!  |  adjust amounts
+
+//**adjust amounts**//
+//How much would you like to send to *string of last input*?
+// how much would you like to pay in miner's fees?
+// gets.chomp input equivalent
+// With these amounts, you will be left with x BTC in your wallet. Does that sound good to you?
+// yes  |  adjust amounts
+
+//**yes, send!**//
+// great! you have send x BTC to *name of recipient wallet.*
+
+//setTimeout to restart?
