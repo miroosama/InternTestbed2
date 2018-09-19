@@ -76,8 +76,12 @@ const Wallet = (() => {
         }
 
         generateSeed(mnemonic) {
+<<<<<<< HEAD:classes/index_cg.js
+            // changed walletStore[this.id].mnemonic to just mnemonic for the sake of testing
+=======
             // changed walletStore[this.id].mnemonic to just mnemonic for the sake 
             // of testing
+>>>>>>> 9fd4519706c0a558b06ac07b4d695c5940c3a86d:classes/classbin/index_cg.js
             this.seed = bip39.mnemonicToSeed(mnemonic);
             return this.seed;
         }
@@ -102,6 +106,15 @@ const Wallet = (() => {
     }
 })();
 
+<<<<<<< HEAD:classes/index_cg.js
+
+module.exports = {
+    Wallet
+}
+
+
+=======
+>>>>>>> 9fd4519706c0a558b06ac07b4d695c5940c3a86d:classes/classbin/index_cg.js
 // console.log(thisWallet.deriveAddress(thisWallet.generateSeed(thisWallet.generateMnemonic())));
 
 // let test = new Wallet()
@@ -167,10 +180,22 @@ const Transaction = (() => {
     }
 })();
 
+<<<<<<< HEAD:classes/index_cg.js
+
+// module.exports = {
+//     Transaction
+// };
+
+=======
+>>>>>>> 9fd4519706c0a558b06ac07b4d695c5940c3a86d:classes/classbin/index_cg.js
 module.exports = {
     Wallet,
     Transaction
 };
+<<<<<<< HEAD:classes/index_cg.js
+
+=======
+>>>>>>> 9fd4519706c0a558b06ac07b4d695c5940c3a86d:classes/classbin/index_cg.js
 
 const firstTransaction = new Transaction();
 const secondTransaction = new Transaction();

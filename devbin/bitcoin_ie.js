@@ -8,12 +8,13 @@ var network = bitcoin.networks.testnet;
 
 var mnemonic = "medal meat stay crisp aerobic parent grit absurd steel flip minimum search";
 var seed = bip39.mnemonicToSeed(mnemonic);
-console.log(seed)
-console.log(JSON.stringify(seed))
+// console.log(seed)
+// console.log(JSON.stringify(seed))
 
 // "maple give attract network afraid clog rocket mirror increase outdoor curious suffer bamboo matter ramp"
 
 var Tree = bitcoin.bip32.fromSeed(seed, network);
+// console.log(Tree)
 var Leaf = Tree.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(0);
 
 function getAddress(node, network) {
