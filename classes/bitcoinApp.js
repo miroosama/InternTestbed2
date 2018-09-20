@@ -38,9 +38,23 @@ class User {
     this.privateKey = wallet.privateKey
     this.changeAddress = wallet.changeAddr
     this.scripthash = wallet.scripthash
-    this.sendMoney()
+    this.sendOrCheck()
     }
 
+    sendOrCheck(){
+        rl.question("Check Balance or Send Transaction? ", (answer) => {
+            switch (answer) {
+              case 'check balance: '
+                this.checkBalance(this.address);
+                break;
+              case 'send transaction ':
+                this.sendMoney();
+                break;
+            default:
+            console.log("cmon guy we aint got all day")
+        }
+    })
+}
 
     sendMoney(){
         console.log("CHECKING ADDR", this.firstAddress)

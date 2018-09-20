@@ -19,6 +19,16 @@ class BitcoinTransactions {
         this.outputs = ""
     }
 
+    checkBalance(addr){
+              let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
+        console.log(apiUrl)
+        axios({
+            url: apiUrl
+          })
+          .then(function (resp) {
+            console.log("Balance: ", resp.data)
+          })
+    }
 
     // sendAddr, sendAMT, changeAddress, privateKey
     async checkUTxO(addr, sendAddr, sendAMT, changeAddress, privateKey){
