@@ -41,8 +41,9 @@ class User {
     this.sendMoney()
     }
 
+
     sendMoney(){
-        console.log(this.firstAddress)
+        console.log("CHECKING ADDR", this.firstAddress)
         rl.question("Send bitcoin address: ", (answer) =>{
             rl.question("Send bitcoin amount: " , (answer2) =>{
                     this.sendTransaction(answer, answer2)
@@ -51,11 +52,10 @@ class User {
     }
 
     sendTransaction(sendAddr, sendAMT){
-        console.log("hereeee", sendAddr, sendAMT, this.scripthash)
         const bitcoinTx = new BitcoinTransaction()
          bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey)
         // this.changeAddress = wallet.changeAddr
-        // bitcoinTx.transactionBuilding(utxo, sendAddr, sendAMT, this.changeAddress, changeAMT, this.privateKey)  
+        // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
         rl.close()
       }
 }

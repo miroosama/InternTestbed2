@@ -55,7 +55,8 @@ constructor(){
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
     this.privateKey = prk
-    this.scripthash = node.publicKey
+    this.scripthash = node.publicKey.hexSlice()
+    return this.address
   }
 
   getChangeAddress (node, network, prk) {
@@ -63,6 +64,7 @@ constructor(){
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
     this.changePrivateKey = prk
+    return this.address
   }
 
 
