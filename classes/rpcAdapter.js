@@ -6,7 +6,7 @@ exports.RPCAdapter = ( () => {
     // const { RPCAdapter } = require('../classes/RPCAdapter');
     // statement at the head of any file. 
     return new class {
-        post(method, params=[], port=18332) {
+        post(method, params=[], port) {
             const options = {
                 url: `http://18.222.107.97:${port}`,
                 method: 'POST',
