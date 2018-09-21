@@ -3,6 +3,8 @@ var bitcoin = require('bitcoinjs-lib');
 const request = require('request')
 const axios = require('axios')
 const network = bitcoin.networks.testnet;
+const User = require('./bitcoinApp')
+
 // const coinSelect = require('coinselect/blackjack')
 const coinSelect = require('./coinSelect.js')
 
@@ -19,19 +21,24 @@ class BitcoinTransactions {
         this.outputs = ""
     }
 
-    checkBalance(addr){
+    async getBalance(addr, mnemonic){
               let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
         console.log(apiUrl)
-        axios({
+        const bal = await axios({
             url: apiUrl
           })
           .then(function (resp) {
-            console.log("Balance: ", resp.data)
-          })
+            console.log("Balance: ", resp.data.balance)
+            return resp.data.balance
+          }).catch(error => {
+            console.log(error)
+        });
+        return bal
     }
 
+
     // sendAddr, sendAMT, changeAddress, privateKey
-    async checkUTxO(addr, sendAddr, sendAMT, changeAddress, privateKey){
+    async checkUTxO(addr, sendAddr, sendAMT, changeAddress, privateKey, scripthash){
         let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
         console.log(apiUrl)
         const response = await axios({
@@ -41,12 +48,10 @@ class BitcoinTransactions {
           }).catch(error => {
             console.log(error)
         });
-            // this.transactionBuilding(sendAddr, sendAMT, changeAddress, privateKey)
-            // console.log(this.utxos)
-          //  console.log(response.data.txrefs)
-           this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
-            console.log(error)
-        });
+          //   RPCAdapter.post("blockchain.scripthash.utxos", scripthash)
+          //  this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
+          //   console.log(error)
+        // });
         }
 
         // RPCAdaptor.post("blockchain.scripthash.utxos", addr)
@@ -86,11 +91,11 @@ class BitcoinTransactions {
                let tx = transaction.build()
                this.txhex = tx.toHex();
                console.log(this.txhex)
-              // RPCAdaptor.post("sendrawtransaction", this.txhex)
+               RPCAdaptor.post("blockchain.transaction.broadcast", this.txhex, 8000)
               //  let rpc = new RPC()
             //    let params = [`${this.txhex}`]
               // rpc.rpcPost("sendrawtransaction", this.txhex)
-            //    this.broadcastTx(this.txhex)
+              //  this.broadcastTx(this.txhex)
            }
 
 }

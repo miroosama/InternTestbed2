@@ -1,7 +1,8 @@
 var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
-
-
+const Store = require('data-store');
+const store = new Store({ path: 'config.json' })
+store.set('addressCounter', 0)
 var network = bitcoin.networks.testnet;
 
 
@@ -41,10 +42,10 @@ constructor(){
   }
 
     getNewNode(root){
-       this.counter += 1
-      // store.set('addressCounter', `${this.counter}`)
-      // let newAddress = store.data.addressCounter
-      var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(this.counter)
+      let updateAddress = store.data.addressCounter +=1
+      store.set('addressCounter', updateAddress)
+      let newAddress = parseInt(store.data.addressCounter)
+      var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(newAddress)
       let prk = node.toWIF()
       return this.getChangeAddress(node, network, prk)
 

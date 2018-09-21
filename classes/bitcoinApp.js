@@ -5,6 +5,7 @@ const axios = require('axios')
 const BitcoinTransaction = require('./bitcoinTx')
 const Wallet = require('./bitcoin.js')
 const readline = require('readline');
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -34,6 +35,7 @@ class User {
     const wallet = new Wallet()
     wallet.createOrUpdateAccount(mnemonic, val)
     wallet.createOrUpdateAccount(mnemonic, "true")
+    this.mnemonic = mnemonic
     this.firstAddress = wallet.address
     this.privateKey = wallet.privateKey
     this.changeAddress = wallet.changeAddr
@@ -41,13 +43,13 @@ class User {
     this.sendOrCheck()
     }
 
-    sendOrCheck(){
+     sendOrCheck(){
         rl.question("Check Balance or Send Transaction? ", (answer) => {
             switch (answer) {
-              case 'check balance: '
-                this.checkBalance(this.address);
+              case 'check balance':
+                this.checkBalance();
                 break;
-              case 'send transaction ':
+              case 'send transaction':
                 this.sendMoney();
                 break;
             default:
@@ -55,6 +57,12 @@ class User {
         }
     })
 }
+
+    checkBalance(){
+        const bitcoinCh = new BitcoinTransaction()
+         bitcoinCh.getBalance(this.firstAddress, this.mnemonic)
+         this.startSession()
+    }
 
     sendMoney(){
         console.log("CHECKING ADDR", this.firstAddress)
@@ -67,15 +75,19 @@ class User {
 
     sendTransaction(sendAddr, sendAMT){
         const bitcoinTx = new BitcoinTransaction()
-         bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey)
+         bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
         // this.changeAddress = wallet.changeAddr
         // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
         rl.close()
       }
 }
+module.exports = User;
 
-const user = new User()
-user.startSession()
+
+
+
+// n1h4g9FkQe2N68uY5cwQFHcweGhGqSK78v
+
 
 
 // console.log("HIIIIIIIIIOOOO",wallet.changeAddr)
