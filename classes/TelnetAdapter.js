@@ -1,3 +1,4 @@
+const Telnet = require('telnet-client');
 
 exports.TelnetAdapter = ( () => {
     return class {

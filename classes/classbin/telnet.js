@@ -148,11 +148,7 @@ function getData(connection) {
     return new Promise((resolve, reject) => {
         let request = {
             id: "Intern",
-<<<<<<< HEAD:classes/classbin/telnet.js
             params: [`681faba49c3539db51d870be7cb7f02f452d981895ac4c27f630c361176c8c35`],
-=======
-            params: [`f108ef8b84f62e37260de3a44f3c5e7514b0b85a31fbf52636bcf320c0817dc2`],
->>>>>>> 4e8149eaeab7921fcb4b98382c62bf13c31ca499:classes/telnet.js
             method: "blockchain.scripthash.listunspent"
         }
         connection.send(JSON.stringify(request), (e, r) => {
