@@ -19,7 +19,7 @@ constructor(){
 }
     createOrUpdateAccount(str, val){
       // let script = bitcoin.crypto.sha256(Buffer.from(str))
-      // let reversedHash = script
+      // let reversedHash = script.reverse()
       // this.scripthash = reversedHash.toString('hex')
       if(val == "false"){
       let seed = bip39.mnemonicToSeed(str);
@@ -59,8 +59,9 @@ constructor(){
     console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
     this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
     this.privateKey = prk
-    let script = node.publicKey
-    let reversedHash = script.reverse()
+    let script = bitcoin.address.toOutputScript(this.address, network)
+    let hash = bitcoin.crypto.sha256(Buffer.from(script))
+    let reversedHash = hash.reverse()
     this.scripthash = reversedHash.toString('hex')
     return this.address
   }
