@@ -1,4 +1,5 @@
-const request = require('request')
+// const request = require('request')
+// var request = require('request-stream')
 
 exports.RPCAdapter = ( () => {
     // returns singleton instance of RPC adapter. 
@@ -6,15 +7,12 @@ exports.RPCAdapter = ( () => {
     // const { RPCAdapter } = require('../classes/RPCAdapter');
     // statement at the head of any file. 
     return new class {
-        post(method, params=[], port) {
+        post(method, params) {
             const options = {
-                url: `http://18.222.107.97:${port}`,
+                url: `http://18.191.234.50:50001`,
                 method: 'POST',
-                auth: {
-                    user: 'btcuser',
-                    pass: 'btcpassword'
-                },
                 body: JSON.stringify({
+                    id: "1",
                     jsonrpc: "1.0",
                     method: method,
                     params: params
@@ -32,3 +30,5 @@ exports.RPCAdapter = ( () => {
         }
     }
 })()
+
+// {"id": "1", "method": "blockchain.address.get_balance", "params": ["miMP7JSuBAccnBiV1WWxqjvxk1KsutvMZ5"], "jsonrpc" : "1.0"}
