@@ -49,9 +49,9 @@ class BitcoinTransactions {
             console.log(error)
         });
           //   RPCAdapter.post("blockchain.scripthash.utxos", scripthash)
-          //  this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
-          //   console.log(error)
-        // });
+           this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
+            console.log(error)
+        });
         }
 
         // RPCAdaptor.post("blockchain.scripthash.utxos", addr)
