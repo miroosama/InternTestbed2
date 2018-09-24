@@ -1,9 +1,5 @@
-var bip39 = require('bip39');
-var bitcoin = require('bitcoinjs-lib');
-const request = require('request')
-const axios = require('axios')
-const BitcoinTransaction = require('./bitcoinTx')
-const Wallet = require('./bitcoin.js')
+const BitcoinTransaction = require('./BTCTx')
+const Wallet = require('./BTCWallet')
 const readline = require('readline');
 
 const rl = readline.createInterface({

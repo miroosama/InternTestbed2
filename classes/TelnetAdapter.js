@@ -1,10 +1,6 @@
 
 exports.TelnetAdapter = ( () => {
-    // returns singleton instance of TelnetAdapter. 
-    // can be imported via a simple 
-    // const { TelnetAdapter } = require('../classes/TelnetAdapter');
-    // statement at the head of any file. 
-    return new class {
+    return class {
         makeRequest() {
             return new Promise((resolve, reject) => {
                 let connection = new Telnet();
@@ -29,13 +25,13 @@ exports.TelnetAdapter = ( () => {
             })
         }
     
-        getData(connection, endpoint, params) {
+        getData(connection, command, params) {
             return new Promise((resolve, reject) => {
                 let request = {
                     id: "Intern",
                     params: [`${params}`]
                 }
-                request.method = endpoint === "estimatefee" ? 'blockchain.estimatefee' : `blockchain.address.${endpoint}`;
+                request.method = command;
                 connection.send(JSON.stringify(request), (e, r) => {
                     if (e) {
                         reject(e);

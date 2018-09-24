@@ -24,8 +24,17 @@ Testbed for Interns
 ``` bash
   node bitcoin.js
   mgTaJF2s7x8QdLUN91YGFCg134UwG121io
+```
+## Demo Notes
+#### Our Test Mnemonics:
+  Igor:
+  Gray: quality chaos left cabbage aware sponsor shop burger urge lottery face glimpse
+  Celeste:
+  Osama:
 
-## NOTES
+
+
+## DEV NOTES
 electrum RPC calls hit port 50001
 should the counter be set by the amount of utxos or the last utxo 
 
