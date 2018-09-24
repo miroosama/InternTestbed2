@@ -40,6 +40,7 @@ class User {
     this.privateKey = wallet.privateKey
     this.changeAddress = wallet.changeAddr
     this.scripthash = wallet.scripthash
+    console.log("SH", this.scripthash)
     this.sendOrCheck()
     }
 
@@ -90,33 +91,7 @@ module.exports = User;
 
 
 
-// console.log("HIIIIIIIIIOOOO",wallet.changeAddr)
-
-
-//bitcoinTx.transactionBuilding(utxo, sendAddr, sendAMT, wallet.changeAddr, changeAMT, wallet.privateKey)
-
-//the following transaction sends completed txhash
-//bitcoinTx.transactionBuilding('966aa228397a9968894165d9adad2ced2d9492a178e6cd76401518dc2bfc5a5d', "mwxes15YzbWfpFhMtpbJRX7o8qd2vc4Ad3", 300, wallet.changeAddr, 100, wallet.privateKey)
-
-
-
-// bitcoinTx.checkUTxO(wallet.address)
-
-
-
-//transactionBuilding('61ba161083ccd17a0743539e4ed55a312eb356567a403fea40da350f365be4b8', [{address: 'mmGR83JQaV5cFkNmG8TcWERTjPu69kK6J5', amount:960000}, {address:"mpQCsG15rjAwA3mdfkyBnTenjD5zZdA5ws" , amount: 2000}], 'cSRSxzdgMtwKztMT6mcPhNVXv1xS6SvxsYkHjuFuimJ3fw8E1T76')
-
-// const wallet = new Wallet()
-// wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog","false")
-// }
-// console.log("BLAH", wallet.address)
-
-//  const bitcoinTx = new BitcoinTransaction()
-
-
 // wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "true")
-
-// bitcoinTx.transactionBuilding('ebdf6971f3b09b565dc3cc11e0b3ea97c187912107d453dff07095dbd327fe20', "mfrU7eT9mXTSizqG1z2hynjKse8T9JNpiW", 300, wallet.changeAddr, 100, wallet.privateKey)
 
 
 
@@ -124,9 +99,9 @@ module.exports = User;
 
 // "{\"jsonrpc\":\"1.0\",\"id\":\"interns\",\"method\":\"getbalance\",\"params\": [\"\"]   }" 18.222.107.97:50001
 
-// curl --user btcuser:btcpassword --data-binary "{\"jsonrpc\":\"1.0\",\"id\":\"interns\",\"method\":\"getaddressbalance\",\"params\":[\"mwxes15YzbWfpFhMtpbJRX7o8qd2vc4Ad3\"]} 18.222.107.97:50001
+// curl --user btcuser:btcpassword --data-binary "{\"jsonrpc\":\"1.0\",\"id\":\"interns\",\"method\":\"blockchain.transaction.get\",\"params\":[\"\"]}" 18.191.234.50:50001
 
 // electrumx_rpc env DB_DIRECTORY=/data/db/ RPC_HOST=0.0.0.0 HOST= TCP_PORT=50001 DAEMON_URL=http://btcuser:btcpassword@127.0.0.1:18332 COIN=BitcoinSegwit NET=testnet /usr/local/bin/electrumx_server.py > ~/electrumx_server.log 2>&1 &
 
 
-// {"jsonrpc": "1.0", "id": "interns", "method":"blockchain.transaction.get","params":["fc992bd10bbcbd54ee2279de497ad4bd49ce6a64c27f2a2d3293f761d2a5a3a3"]}
+//curl --user btcuser:btcpassword --data-binary {"jsonrpc": "1.0", "id": "interns", "method":"blockchain.transaction.get","params":["fc992bd10bbcbd54ee2279de497ad4bd49ce6a64c27f2a2d3293f761d2a5a3a3"]}

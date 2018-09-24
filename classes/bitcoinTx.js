@@ -9,8 +9,7 @@ const User = require('./bitcoinApp')
 const coinSelect = require('./coinSelect.js')
 
 const { RPCAdapter } = require('../classes/RPCAdapter');
-
-
+// const RPC = require('./rpcAdapter')
 
 class BitcoinTransactions {
 
@@ -49,9 +48,9 @@ class BitcoinTransactions {
             console.log(error)
         });
           //   RPCAdapter.post("blockchain.scripthash.utxos", scripthash)
-          //  this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
-          //   console.log(error)
-        // });
+           this.transactionBuilding(response.data.txrefs,sendAddr, sendAMT, changeAddress, privateKey).catch(error => {
+            console.log(error)
+        });
         }
 
         // RPCAdaptor.post("blockchain.scripthash.utxos", addr)
@@ -91,11 +90,11 @@ class BitcoinTransactions {
                let tx = transaction.build()
                this.txhex = tx.toHex();
                console.log(this.txhex)
-               RPCAdaptor.post("blockchain.transaction.broadcast", this.txhex, 8000)
+               let params = [`${this.txhex}`]
               //  let rpc = new RPC()
-            //    let params = [`${this.txhex}`]
-              // rpc.rpcPost("sendrawtransaction", this.txhex)
-              //  this.broadcastTx(this.txhex)
+              //  rpc.rpcPost("sendrawtransaction", params)
+               RPCAdapter.post("blockchain.transaction.broadcast", params)
+              // RPCAdapter.post("sendrawtransaction", this.txhex)
            }
 
 }
