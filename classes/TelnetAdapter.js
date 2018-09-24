@@ -43,4 +43,4 @@ exports.TelnetAdapter = ( () => {
             });
         }
     }
-})()
+})();
