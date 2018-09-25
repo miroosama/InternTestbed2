@@ -24,10 +24,34 @@ Testbed for Interns
 ``` bash
   node bitcoin.js
   mgTaJF2s7x8QdLUN91YGFCg134UwG121io
+```
+## Demo Notes
+#### Our Test Mnemonics:
+  Igor:
+  Gray: quality chaos left cabbage aware sponsor shop burger urge lottery face glimpse
+  Celeste:
+  Osama: column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog
 
-## NOTES
+
+
+## DEV NOTES
 electrum RPC calls hit port 50001
 should the counter be set by the amount of utxos or the last utxo 
+
+(from btctransact)
+// n1h4g9FkQe2N68uY5cwQFHcweGhGqSK78v
+// wallet.createOrUpdateAccount("column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog", "true")
+// "{\"id\":\"myquery\",\"method\":\"getaddressbalance\",\"params\":[\"14vuRY354EaxDu4WrgjtvoDEwntDNwMVbx\"]}
+
+// "{\"jsonrpc\":\"1.0\",\"id\":\"interns\",\"method\":\"getbalance\",\"params\": [\"\"]   }" 18.222.107.97:50001
+
+// curl --user btcuser:btcpassword --data-binary "{\"jsonrpc\":\"1.0\",\"id\":\"interns\",\"method\":\"blockchain.transaction.get\",\"params\":[\"\"]}" 18.191.234.50:50001
+
+// electrumx_rpc env DB_DIRECTORY=/data/db/ RPC_HOST=0.0.0.0 HOST= TCP_PORT=50001 DAEMON_URL=http://btcuser:btcpassword@127.0.0.1:18332 COIN=BitcoinSegwit NET=testnet /usr/local/bin/electrumx_server.py > ~/electrumx_server.log 2>&1 &
+
+
+//curl --user btcuser:btcpassword --data-binary {"jsonrpc": "1.0", "id": "interns", "method":"blockchain.transaction.get","params":["fc992bd10bbcbd54ee2279de497ad4bd49ce6a64c27f2a2d3293f761d2a5a3a3"]}
+
 
 ## Dialog for interface 
 //hi! what would you like to do?
