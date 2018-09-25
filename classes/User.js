@@ -1,4 +1,4 @@
-const BitcoinTransaction = require('./BTCTx')
+const { BTCTx } = require('./BTCTx')
 const { Wallet } = require('./BTCWallet')
 const readline = require('readline');
 
@@ -56,7 +56,7 @@ exports.User = ( () => {
         }
     
         checkBalance(){
-            const bitcoinCh = new BitcoinTransaction()
+            const bitcoinCh = new BTCTx()
             bitcoinCh.getBalance(this.firstAddress, this.mnemonic)
             this.startSession()
         }
@@ -71,7 +71,7 @@ exports.User = ( () => {
         }
     
         sendTransaction(sendAddr, sendAMT){
-            const bitcoinTx = new BitcoinTransaction()
+            const bitcoinTx = new BTCTx()
              bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
             // this.changeAddress = wallet.changeAddr
             // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
