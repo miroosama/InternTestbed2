@@ -1,33 +1,37 @@
-const { BTCTx } = require('./BTCTx')
-const { Wallet } = require('./BTCWallet')
+const {
+    BTCTx
+} = require('./BTCTx')
+const {
+    Wallet
+} = require('./BTCWallet')
 const readline = require('readline');
 
-exports.User = ( () => {
+exports.User = (() => {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
-      })
+    })
 
     return class {
-        constructor(){
+        constructor() {
             this.mnemonic = ""
             this.firstAddress = "",
-            this.privateKey = "",
-            this.changeAddress = "",
-            this.scripthash = ""
+                this.privateKey = "",
+                this.changeAddress = "",
+                this.scripthash = ""
         }
-    
-        startSession(){
-            rl.question("Sign in with mnemonic: ", (answer) =>{
-                switch(answer){
+
+        startSession() {
+            rl.question("Sign in with mnemonic: ", (answer) => {
+                switch (answer) {
                     default:
                         this.mnemonic = answer
                         this.createWallet(answer, "false")
                 }
             })
         }
-    
-        createWallet(mnemonic, val){
+
+        createWallet(mnemonic, val) {
             const wallet = new Wallet()
             wallet.createOrUpdateAccount(mnemonic, val)
             wallet.createOrUpdateAccount(mnemonic, "true")
@@ -38,44 +42,47 @@ exports.User = ( () => {
             this.scripthash = wallet.scripthash
             console.log("SH", this.scripthash)
             this.sendOrCheck()
+            return [this.firstAddress, this.changeAddress];
         }
-    
-        sendOrCheck(){
+
+        sendOrCheck() {
             rl.question("Check Balance or Send Transaction? ", (answer) => {
                 switch (answer) {
-                  case 'check balance':
-                    this.checkBalance();
-                    break;
-                  case 'send transaction':
-                    this.sendMoney();
-                    break;
-                default:
-                console.log("cmon guy we aint got all day")
+                    case 'check balance':
+                        this.checkBalance();
+                        break;
+                    case 'send transaction':
+                        this.sendMoney();
+                        break;
+                    default:
+                        console.log("try again: invalid input")
+                        this.sendOrCheck()
                 }
             })
         }
-    
-        checkBalance(){
+
+        checkBalance() {
             const bitcoinCh = new BTCTx()
             bitcoinCh.getBalance(this.scripthash)
             this.startSession()
+            return bitcoinCh.getBalance(this.scripthash)
         }
-    
-        sendMoney(){
+
+        sendMoney() {
             console.log("CHECKING ADDR", this.firstAddress)
-            rl.question("Send bitcoin address: ", (answer) =>{
-                rl.question("Send bitcoin amount: " , (answer2) =>{
-                        this.sendTransaction(answer, answer2)
+            rl.question("Send bitcoin address: ", (answer) => {
+                rl.question("Send bitcoin amount: ", (answer2) => {
+                    this.sendTransaction(answer, answer2)
                 })
             })
         }
-    
-        sendTransaction(sendAddr, sendAMT){
+
+        sendTransaction(sendAddr, sendAMT) {
             const bitcoinTx = new BTCTx()
-             bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
+            bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
             // this.changeAddress = wallet.changeAddr
             // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
             rl.close()
-          }
+        }
     }
 })();

@@ -1,7 +1,7 @@
 // const request = require('request')
-// var request = require('request-stream')
+var request = require('request-stream')
 
-exports.RPCAdapter = ( () => {
+exports.RPCAdapter = (() => {
     // returns singleton instance of RPC adapter. 
     // can be imported via a simple 
     // const { RPCAdapter } = require('../classes/RPCAdapter');
