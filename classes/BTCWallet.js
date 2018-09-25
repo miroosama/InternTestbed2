@@ -59,10 +59,7 @@ exports.Wallet = ( () => {
       let script = bitcoin.address.toOutputScript(this.address, network)
       let hash = bitcoin.crypto.sha256(Buffer.from(script))
       let reversedHash = hash.reverse()
-<<<<<<< HEAD
       this.scripthash = reversedHash.toString('hex')
-=======
->>>>>>> 7c535d8fa5dca897be2043523112c9a0725e1ab8
       return this.address
     }
 

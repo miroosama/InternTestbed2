@@ -57,11 +57,7 @@ exports.User = ( () => {
     
         checkBalance(){
             const bitcoinCh = new BTCTx()
-<<<<<<< HEAD
             bitcoinCh.getBalance(this.scripthash)
-=======
-            bitcoinCh.getBalance(this.firstAddress, this.mnemonic)
->>>>>>> 7c535d8fa5dca897be2043523112c9a0725e1ab8
             this.startSession()
         }
     
@@ -76,11 +72,7 @@ exports.User = ( () => {
     
         sendTransaction(sendAddr, sendAMT){
             const bitcoinTx = new BTCTx()
-<<<<<<< HEAD
              bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
-=======
-             bitcoinTx.checkUTxO(this.firstAddress, sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
->>>>>>> 7c535d8fa5dca897be2043523112c9a0725e1ab8
             // this.changeAddress = wallet.changeAddr
             // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
             rl.close()
