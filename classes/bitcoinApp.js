@@ -61,7 +61,7 @@ class User {
 
     checkBalance(){
         const bitcoinCh = new BitcoinTransaction()
-         bitcoinCh.getBalance(this.firstAddress, this.mnemonic)
+         bitcoinCh.getBalance(this.scripthash)
          this.startSession()
     }
 

@@ -4,6 +4,7 @@ const request = require('request')
 const axios = require('axios')
 const network = bitcoin.networks.testnet;
 const User = require('./bitcoinApp')
+const TelnetAdapter = require("./telnet.js")
 
 // const coinSelect = require('coinselect/blackjack')
 const coinSelect = require('./coinSelect.js')
@@ -20,19 +21,22 @@ class BitcoinTransactions {
         this.outputs = ""
     }
 
-    async getBalance(addr, mnemonic){
-              let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
-        console.log(apiUrl)
-        const bal = await axios({
-            url: apiUrl
-          })
-          .then(function (resp) {
-            console.log("Balance: ", resp.data.balance)
-            return resp.data.balance
-          }).catch(error => {
-            console.log(error)
-        });
-        return bal
+     async getBalance(scripthash){
+       console.log(scripthash)
+        //       let apiUrl = "https://api.blockcypher.com/v1/btc/test3/addrs/" + addr
+        // console.log(apiUrl)
+        // const bal = await axios({
+        //     url: apiUrl
+        //   })
+        //   .then(function (resp) {
+        //     console.log("Balance: ", resp.data.balance)
+        //     return resp.data.balance
+        //   }).catch(error => {
+        //     console.log(error)
+        // });
+        let telnetAdapter = new TelnetAdapter()
+        let bal = await telnetAdapter.telnetConstructor("blockchain.scripthash.get_balance", scripthash)
+        console.log(bal)
     }
 
 
