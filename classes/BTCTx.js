@@ -14,9 +14,10 @@ exports.BTCTx = (() => {
         this.outputs = ""
     }
 
-     async getBalance(scripthash){
+     async getBalance(addr, scripthash){
         let telnetAdapter = new TelnetAdapter()
-        let bal = await telnetAdapter.telnetConstructor("blockchain.scripthash.get_balance", scripthash).then(function (resp) {
+        console.log(addr)
+        let bal = await telnetAdapter.telnetConstructor("blockchain.address.get_balance", addr).then(function (resp) {
           console.log("Balance: ", resp.result.confirmed)
           return resp
         }).catch(error => {
@@ -77,18 +78,14 @@ exports.BTCTx = (() => {
         this.txhex = tx.toHex();
         console.log(this.txhex)
         let params = [`${this.txhex}`]
-        
-      //  let rpc = new RPC()
-      //  rpc.rpcPost("sendrawtransaction", params)
-        // RPCAdapter.post("blockchain.transaction.broadcast", params)
-      // RPCAdapter.post("sendrawtransaction", this.txhex)
-    //   let telnetAdaptor = new TelnetAdapter()
-    //   let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
-    //     console.log(resp)
-    //     return resp
-    //   }).catch(error => {
-    //     console.log(error)
-    // });
+
+      let telnetAdaptor = new TelnetAdapter()
+      let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
+        console.log(resp)
+        return resp
+      }).catch(error => {
+        console.log(error)
+    });
     }
   }
 })();

@@ -22,7 +22,7 @@ module.exports = function blackjack (utxos, outputs, feeRate) {
   console.log(inputValue)
 
     if ((inAccum + inputValue) > (outAccum + fee + threshold)){
-console.log("IN HEREEEE")
+
     bytesAccum += inputBytes
     inAccum += inputValue
     inputs.push(input)

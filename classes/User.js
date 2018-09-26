@@ -50,15 +50,16 @@ exports.User = ( () => {
                     this.sendMoney();
                     break;
                 default:
-                console.log("cmon guy we aint got all day")
+                console.log("try again: invalid input")
+                this.sendOrCheck()
                 }
             })
         }
     
-        checkBalance(){
+        async checkBalance(){
             const bitcoinCh = new BTCTx()
-            bitcoinCh.getBalance(this.scripthash)
-            this.startSession()
+            await bitcoinCh.getBalance(this.firstAddress, this.scripthash)
+            this.sendOrCheck()
         }
     
         sendMoney(){
@@ -79,3 +80,5 @@ exports.User = ( () => {
           }
     }
 })();
+
+// {"id": "1", "method": "blockchain.address.get_balance", "params": ["n1s4prKnN1MYALQLYYYQRWxGHkrxL2JFyN"], "jsonrpc" : "1.0"}

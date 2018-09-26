@@ -11,6 +11,7 @@ exports.Wallet = ( () => {
     constructor(){
       this.address = "",
       this.privateKey = "",
+      this.extendedPrivateKey = "",
       this.changeAddr = "",
       this.changePrivateKey = "",
       this.addresses = [],
@@ -38,6 +39,12 @@ exports.Wallet = ( () => {
     getNode(root) {
       let address = parseInt(store.data.addressCounter)
       var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(address)
+      var extNode = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0)
+      let extPrv = extNode.toBase58()
+      this.extendedPrivateKey = extPrv
+      console.log("Extended Private Key", this.extendedPrivateKey)
+      // let extPub = node.neutered().toBase58()
+      // console.log(extPub)
       let prk = node.toWIF()
       return this.getAddress(node, network, prk)
     }
@@ -53,7 +60,7 @@ exports.Wallet = ( () => {
 
     getAddress (node, network, prk) {
       console.log("PrivateKey1",prk)
-      console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
+      console.log("address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
       this.privateKey = prk
       let script = bitcoin.address.toOutputScript(this.address, network)
@@ -65,7 +72,7 @@ exports.Wallet = ( () => {
 
     getChangeAddress (node, network, prk) {
       console.log("PrivateKey2",prk)
-      console.log(bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
+      console.log("change address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
       this.changePrivateKey = prk
       return this.address
