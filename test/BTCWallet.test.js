@@ -23,15 +23,15 @@ test("when called Wallet instantiates a new wallet", () => {
 });
 
 test("createOrUpdateAccount returns a valid address", () => {
-  expect(newWallet.createOrUpdateAccount(str, val)).toEqual("mjzPPZdKjuT4TkEzuFvytywZMJaep7ft18")
+  expect(newWallet.createOrUpdateAccount(str, val)).toEqual("mgTaJF2s7x8QdLUN91YGFCg134UwG121io")
 });
 
 test("getNode derives an address", () => {
-  expect(newWallet.getNode(root)).toEqual("mjzPPZdKjuT4TkEzuFvytywZMJaep7ft18")
+  expect(newWallet.getNode(root)).toEqual("mgTaJF2s7x8QdLUN91YGFCg134UwG121io")
 });
 
 test("getNewNode derives an address", () => {
-  expect(newWallet.getNewNode(root)).toEqual("mjzPPZdKjuT4TkEzuFvytywZMJaep7ft18")
+  expect(newWallet.getNewNode(root)).toEqual("mgTaJF2s7x8QdLUN91YGFCg134UwG121io")
 });
 
 test("getAddress returns a valid address", () => {

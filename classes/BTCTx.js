@@ -89,17 +89,17 @@ exports.BTCTx = (() => {
       let params = [`${this.txhex}`]
       return this.txhex
 
-      //  let rpc = new RPC()
-      //  rpc.rpcPost("sendrawtransaction", params)
-      // RPCAdapter.post("blockchain.transaction.broadcast", params)
-      // RPCAdapter.post("sendrawtransaction", this.txhex)
-      //   let telnetAdaptor = new TelnetAdapter()
-      //   let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
-      //     console.log(resp)
-      //     return resp
-      //   }).catch(error => {
-      //     console.log(error)
-      // });
+      let rpc = new RPC()
+      rpc.rpcPost("sendrawtransaction", params)
+      RPCAdapter.post("blockchain.transaction.broadcast", params)
+      RPCAdapter.post("sendrawtransaction", this.txhex)
+      let telnetAdaptor = new TelnetAdapter()
+      let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
+        console.log(resp)
+        return resp
+      }).catch(error => {
+        console.log(error)
+      });
     }
   }
 })();

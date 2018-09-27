@@ -61,10 +61,10 @@ exports.User = (() => {
             })
         }
 
-        checkBalance() {
+        async checkBalance() {
             const bitcoinCh = new BTCTx()
-            bitcoinCh.getBalance(this.scripthash)
-            this.startSession()
+            await bitcoinCh.getBalance(this.scripthash)
+            this.sendOrCheck()
             return bitcoinCh.getBalance(this.scripthash)
         }
 
