@@ -86,3 +86,5 @@ exports.User = (() => {
         }
     }
 })();
+
+// {"id": "1", "method": "blockchain.address.get_balance", "params": ["n1s4prKnN1MYALQLYYYQRWxGHkrxL2JFyN"], "jsonrpc" : "1.0"}

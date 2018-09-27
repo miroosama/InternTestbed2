@@ -13,6 +13,7 @@ exports.Wallet = (() => {
     constructor() {
       this.address = "",
         this.privateKey = "",
+        this.extendedPrivateKey = "",
         this.changeAddr = "",
         this.changePrivateKey = "",
         this.addresses = [],
@@ -33,15 +34,23 @@ exports.Wallet = (() => {
 
 
     getRoot(seed) {
-      // var root = bitcoin.bip32.fromSeed(seed, network);
+      var root = bitcoin.bip32.fromSeed(seed, network);
+      console.log(root)
       return bitcoin.bip32.fromSeed(seed, network);
     }
 
     getNode(root) {
       let address = parseInt(store.data.addressCounter)
       var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(address)
+      var extNode = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0)
+      let extPrv = extNode.toBase58()
+      this.extendedPrivateKey = extPrv
+      console.log("Extended Private Key", this.extendedPrivateKey)
+      // let extPub = node.neutered().toBase58()
+      // console.log(extPub)
       let prk = node.toWIF()
-      return this.getAddress(node, network, prk)
+      this.getAddress(node, network, prk)
+      return this.extendedPrivateKey
     }
 
     getNewNode(root) {

@@ -18,10 +18,11 @@ exports.BTCTx = (() => {
         this.outputs = ""
     }
 
-    async getBalance(scripthash) {
+    async getBalance(addr, scripthash) {
       let telnetAdapter = new TelnetAdapter()
-      let bal = await telnetAdapter.telnetConstructor("blockchain.scripthash.get_balance", scripthash).then(function (resp) {
-        console.log("Balance: ", resp.result.confirmed)
+      console.log(addr)
+      let bal = await telnetAdapter.telnetConstructor("blockchain.address.get_balance", addr).then(function (resp) {
+        console.log("Balance: ", resp.result)
         return resp
       }).catch(error => {
         console.log(error)
@@ -63,8 +64,8 @@ exports.BTCTx = (() => {
       let targets = [{
         address: sendAddr,
         value: amount
-      }]
-      console.log(targets)
+      }];
+      console.log(targets);
 
       let {
         inputs,
@@ -89,10 +90,28 @@ exports.BTCTx = (() => {
       let params = [`${this.txhex}`]
       return this.txhex
 
-      let rpc = new RPC()
-      rpc.rpcPost("sendrawtransaction", params)
-      RPCAdapter.post("blockchain.transaction.broadcast", params)
-      RPCAdapter.post("sendrawtransaction", this.txhex)
+      let {
+        inputs,
+        outputs,
+        fee
+      } = coinSelect(utxos, targets, feeRate)
+      if (!inputs) throw new Error('No valid Transaction exists')
+      let transaction = new bitcoin.TransactionBuilder(network)
+      // console.log(utxos)
+      inputs.forEach(input => transaction.addInput(input.txId, input.vout))
+      outputs.forEach(output => {
+        if (!output.address) {
+          output.address = changeAddr
+        }
+        transaction.addOutput(output.address, output.value)
+      })
+      let keypairSpend = bitcoin.ECPair.fromWIF(prk, network)
+      transaction.sign(0, keypairSpend)
+      let tx = transaction.build()
+      this.txhex = tx.toHex();
+      console.log(this.txhex)
+      let params = [`${this.txhex}`]
+
       let telnetAdaptor = new TelnetAdapter()
       let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
         console.log(resp)
