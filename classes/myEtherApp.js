@@ -3,6 +3,7 @@ const Wallet = require('./myEther')
 const readline = require('readline');
 const Web3 = require('web3')
 var Tx = require('ethereumjs-tx')
+var fs = require('fs')
 // const infura = 'https://ropsten.infura.io/v3/e7e240cdeda947cdbaf41a2092c85ff5'
 // const web3 = new Web3(Web3.givenProvider || infura)
 web3 = new Web3(new Web3.providers.HttpProvider("http://13.58.39.53:8545"))
@@ -15,18 +16,22 @@ const rl = readline.createInterface({
 
 
 class User {
-    constructor(privateKey = ""){
+    constructor(account = false){
         this.mnemonic = "",
-        this.privateKey = privateKey
+        this.account = JSON.parse(account)
     }
 
 
     startSession(){
-        if(this.privateKey.length > 1){
+        if(this.account !== false){
             rl.question("check balance or send transaction: ", (answer) =>{
                 switch(answer){
-                    default:
-                    this.checkBalance()
+                    case 'check balance':
+                    this.checkBalance();
+                    break;
+                  case 'send transaction':
+                    this.sendMoney();
+                    break;
                 }
             })
         } else {
@@ -42,14 +47,25 @@ class User {
 
     createEtherWallet(){
         let wallet = new Wallet()
-        let account = wallet.createAccount(this.mnemonic)
-        this.privateKey = account.privateKey
+        let newAccount = wallet.createAccount(this.mnemonic)
+        this.account = newAccount
+        this.startSession()
     }
 
     checkBalance(){
-        let account = web3.eth.accounts.privateKeyToAccount(this.privateKey)
-        let tx = new EtherTransaction(account)
+        // let account = web3.eth.accounts.privateKeyToAccount(this.account.privateKey)
+        let tx = new EtherTransaction(this.account)
         tx.displayBalance()
+    }
+
+    sendMoney(){
+        let tx = new EtherTransaction(this.account)
+        rl.question("Send ether address: ", (answer) => {
+            rl.question("Send ether amount: ", (answer2) => {
+                let tx = new EtherTransaction(this.account)
+                tx.buildingTx(answer, answer2)
+            })
+        })
     }
         
 }
@@ -57,7 +73,9 @@ class User {
 
 module.exports = User;
 
-let user = new User("0x516690b19c04eeb1c9894ab18b56bfeb291eaaa0574c8bc92096cf3c592d1ff9")
+let account = fs.readFileSync('../accounts.json', 'utf8')
+
+let user = new User(account)
 
 user.startSession()
 

@@ -27,7 +27,6 @@ class EtherTransactions {
             gasLimit: web3.utils.toHex(21000),
             gasPrice: web3.utils.toHex(web3.utils.toWei('41', 'gwei'))
         }
-
         const tx = new Tx(txObject) 
 
         let txSigned = this.signTx(tx)
