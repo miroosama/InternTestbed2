@@ -18,7 +18,6 @@ exports.BTCTx = (() => {
         this.outputs = ""
     }
 
-<<<<<<< HEAD
      async getBalance(addr, scripthash){
         let telnetAdapter = new TelnetAdapter()
         console.log(addr)
@@ -27,15 +26,6 @@ exports.BTCTx = (() => {
           return resp
         }).catch(error => {
           console.log(error)
-=======
-    async getBalance(scripthash) {
-      let telnetAdapter = new TelnetAdapter()
-      let bal = await telnetAdapter.telnetConstructor("blockchain.scripthash.get_balance", scripthash).then(function (resp) {
-        console.log("Balance: ", resp.result.confirmed)
-        return resp
-      }).catch(error => {
-        console.log(error)
->>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
       });
       return bal.result.confirmed
     }
@@ -100,7 +90,6 @@ exports.BTCTx = (() => {
       let params = [`${this.txhex}`]
       return this.txhex
 
-<<<<<<< HEAD
         let { inputs, outputs, fee } = coinSelect(utxos, targets, feeRate)
         if (!inputs) throw new Error('No valid Transaction exists')
         let transaction = new bitcoin.TransactionBuilder(network)
@@ -126,19 +115,6 @@ exports.BTCTx = (() => {
       }).catch(error => {
         console.log(error)
     });
-=======
-      //  let rpc = new RPC()
-      //  rpc.rpcPost("sendrawtransaction", params)
-      // RPCAdapter.post("blockchain.transaction.broadcast", params)
-      // RPCAdapter.post("sendrawtransaction", this.txhex)
-      //   let telnetAdaptor = new TelnetAdapter()
-      //   let response = await telnetAdaptor.telnetConstructor("blockchain.transaction.broadcast", this.txhex).then(function (resp) {
-      //     console.log(resp)
-      //     return resp
-      //   }).catch(error => {
-      //     console.log(error)
-      // });
->>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
     }
   }
 })();

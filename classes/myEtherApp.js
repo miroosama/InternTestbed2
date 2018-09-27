@@ -52,10 +52,11 @@ class User {
         this.startSession()
     }
 
-    checkBalance(){
+    async checkBalance(){
         // let account = web3.eth.accounts.privateKeyToAccount(this.account.privateKey)
         let tx = new EtherTransaction(this.account)
-        tx.displayBalance()
+        await tx.displayBalance()
+        this.startSession()
     }
 
     sendMoney(){
