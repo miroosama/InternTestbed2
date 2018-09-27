@@ -12,12 +12,21 @@ exports.Wallet = (() => {
   return class {
     constructor() {
       this.address = "",
+<<<<<<< HEAD
       this.privateKey = "",
       this.extendedPrivateKey = "",
       this.changeAddr = "",
       this.changePrivateKey = "",
       this.addresses = [],
       this.scripthash = ""
+=======
+        this.privateKey = "",
+        this.extendedPrivateKey = "",
+        this.changeAddr = "",
+        this.changePrivateKey = "",
+        this.addresses = [],
+        this.scripthash = ""
+>>>>>>> 82a239e096849f1d7abb6aad2f7e80cc5fda5e7a
     }
 
     createOrUpdateAccount(str, val) {
@@ -62,10 +71,23 @@ exports.Wallet = (() => {
       return this.getChangeAddress(node, network, prk)
     }
 
+<<<<<<< HEAD
     getAddress (node, network, prk) {
       console.log("PrivateKey1",prk)
       console.log("address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+=======
+    getAddress(node, network, prk) {
+      console.log("PrivateKey1", prk)
+      console.log(bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address)
+      this.address = bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address
+>>>>>>> 82a239e096849f1d7abb6aad2f7e80cc5fda5e7a
       this.privateKey = prk
       let script = bitcoin.address.toOutputScript(this.address, network)
       let hash = bitcoin.crypto.sha256(Buffer.from(script))
@@ -74,10 +96,23 @@ exports.Wallet = (() => {
       return this.address
     }
 
+<<<<<<< HEAD
     getChangeAddress (node, network, prk) {
       console.log("PrivateKey2",prk)
       console.log("change address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+=======
+    getChangeAddress(node, network, prk) {
+      console.log("PrivateKey2", prk)
+      console.log(bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address)
+      this.changeAddr = bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address
+>>>>>>> 82a239e096849f1d7abb6aad2f7e80cc5fda5e7a
       this.changePrivateKey = prk
       return this.address
     }
