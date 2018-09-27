@@ -29,7 +29,7 @@ Testbed for Interns
 #### Our Test Mnemonics:
   Igor:
   Gray: quality chaos left cabbage aware sponsor shop burger urge lottery face glimpse
-  Celeste:
+  Celeste: warfare athlete example bus scissors apology mind noodle glow enemy cement scrub
   Osama: column capable stage auto obey twist bring correct crunch act penalty seminar goddess cage inflict pig route fence example cannon fragile puppy actual hedgehog
 
 

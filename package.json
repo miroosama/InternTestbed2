@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "Testbed for Interns",
   "main": "index.js",
+  "jest": {
+    "verbose": true
+  },
   "directories": {
-    "test": "test"
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -15,14 +18,23 @@
     "coinselect": "^3.1.11",
     "data-store": "^3.1.0",
     "ethereumjs-tx": "^1.3.7",
+<<<<<<< HEAD
     "mocha": "^5.2.0",
+=======
+    "jest": "^23.6.0",
+>>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
     "request": "^2.88.0",
+    "request-stream": "^1.2.2",
     "telnet-client": "^0.16.1",
     "web3": "^1.0.0-beta.36"
   },
   "devDependencies": {},
   "scripts": {
+<<<<<<< HEAD
     "test": "mocha --ui tdd test/om_test.js"
+=======
+    "test": "jest"
+>>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
   },
   "repository": {
     "type": "git",

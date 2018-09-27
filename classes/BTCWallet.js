@@ -1,25 +1,35 @@
 var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
 const Store = require('data-store');
-const store = new Store({ path: './../config.json' })
-store.set('addressCounter', 1)
+const store = new Store({
+  path: './../config.json'
+})
+store.set('addressCounter', 0)
 var network = bitcoin.networks.testnet;
 
 
-exports.Wallet = ( () => {
+exports.Wallet = (() => {
   return class {
-    constructor(){
+    constructor() {
       this.address = "",
+<<<<<<< HEAD
       this.privateKey = "",
       this.extendedPrivateKey = "",
       this.changeAddr = "",
       this.changePrivateKey = "",
       this.addresses = [],
       this.scripthash = ""
+=======
+        this.privateKey = "",
+        this.changeAddr = "",
+        this.changePrivateKey = "",
+        this.addresses = [],
+        this.scripthash = ""
+>>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
     }
 
-    createOrUpdateAccount(str, val){
-      if(val == "false"){
+    createOrUpdateAccount(str, val) {
+      if (val == "false") {
         let seed = bip39.mnemonicToSeed(str);
         let root = this.getRoot(seed)
         return this.getNode(root)
@@ -51,8 +61,8 @@ exports.Wallet = ( () => {
       return this.extendedPrivateKey
     }
 
-    getNewNode(root){
-      let updateAddress = store.data.addressCounter +=1
+    getNewNode(root) {
+      let updateAddress = store.data.addressCounter += 1
       store.set('addressCounter', updateAddress)
       let newAddress = parseInt(store.data.addressCounter)
       var node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0).derive(0).derive(newAddress)
@@ -60,10 +70,23 @@ exports.Wallet = ( () => {
       return this.getChangeAddress(node, network, prk)
     }
 
+<<<<<<< HEAD
     getAddress (node, network, prk) {
       console.log("PrivateKey1",prk)
       console.log("address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.address = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+=======
+    getAddress(node, network, prk) {
+      console.log("PrivateKey1", prk)
+      console.log(bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address)
+      this.address = bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address
+>>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
       this.privateKey = prk
       let script = bitcoin.address.toOutputScript(this.address, network)
       let hash = bitcoin.crypto.sha256(Buffer.from(script))
@@ -72,12 +95,27 @@ exports.Wallet = ( () => {
       return this.address
     }
 
+<<<<<<< HEAD
     getChangeAddress (node, network, prk) {
       console.log("PrivateKey2",prk)
       console.log("change address", bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address)
       this.changeAddr = bitcoin.payments.p2pkh({ pubkey: node.publicKey, network }).address
+=======
+    getChangeAddress(node, network, prk) {
+      console.log("PrivateKey2", prk)
+      console.log(bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address)
+      this.changeAddr = bitcoin.payments.p2pkh({
+        pubkey: node.publicKey,
+        network
+      }).address
+>>>>>>> 8ee04cad239e0158f92470fbf94658627c796717
       this.changePrivateKey = prk
       return this.address
     }
   }
 })()
+
+console.log(bitcoin.bip32.fromSeed(bip39.mnemonicToSeed("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss"), network))
