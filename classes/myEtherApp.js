@@ -1,9 +1,83 @@
 const EtherTransaction = require('./myEtherTx')
 const Wallet = require('./myEther')
+const readline = require('readline');
+const Web3 = require('web3')
+var Tx = require('ethereumjs-tx')
+// const infura = 'https://ropsten.infura.io/v3/e7e240cdeda947cdbaf41a2092c85ff5'
+// const web3 = new Web3(Web3.givenProvider || infura)
+web3 = new Web3(new Web3.providers.HttpProvider("http://13.58.39.53:8545"))
 
-const wallet = new Wallet()
-wallet.createAccount("vitalik is a great guy")
-console.log("HIAHHAD", wallet.account.privateKey)
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+
+
+class User {
+    constructor(privateKey = ""){
+        this.mnemonic = "",
+        this.privateKey = privateKey
+    }
+
+
+    startSession(){
+        if(this.privateKey.length > 1){
+            rl.question("check balance or send transaction: ", (answer) =>{
+                switch(answer){
+                    default:
+                    this.checkBalance()
+                }
+            })
+        } else {
+        rl.question("Sign in with mnemonic: ", (answer) =>{
+            switch(answer){
+                default:
+                    this.mnemonic = answer
+                    this.createEtherWallet(answer)
+            }
+        })
+      }
+    }
+
+    createEtherWallet(){
+        let wallet = new Wallet()
+        let account = wallet.createAccount(this.mnemonic)
+        this.privateKey = account.privateKey
+    }
+
+    checkBalance(){
+        let account = web3.eth.accounts.privateKeyToAccount(this.privateKey)
+        let tx = new EtherTransaction(account)
+        tx.displayBalance()
+    }
+        
+}
+
+
+module.exports = User;
+
+let user = new User("0x516690b19c04eeb1c9894ab18b56bfeb291eaaa0574c8bc92096cf3c592d1ff9")
+
+user.startSession()
+
+
+
+
+
+
+// curl --data '{\"method\":\"web3_clientVersion\",\"params\":[],\"id\": 1,\"jsonrpc\":\"1.0\"}' -H "Content-Type: application/json" -X POST 13.58.39.53:8545
+
+
+
+
+
+
+
+// const wallet = new Wallet()
+// wallet.createAccount("vitalik is a great guy")
+// console.log("HIAHHAD", wallet.account.privateKey)
+
 
 // wallet.displayBalance("0xaa98f82ab403663748e10b6f7256e3c29cdd0051")
 

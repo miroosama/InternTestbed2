@@ -32,7 +32,8 @@ exports.Wallet = ( () => {
 
 
     getRoot(seed) {
-      // var root = bitcoin.bip32.fromSeed(seed, network);
+      var root = bitcoin.bip32.fromSeed(seed, network);
+      console.log(root)
       return bitcoin.bip32.fromSeed(seed, network);
     }
 
@@ -46,7 +47,8 @@ exports.Wallet = ( () => {
       // let extPub = node.neutered().toBase58()
       // console.log(extPub)
       let prk = node.toWIF()
-      return this.getAddress(node, network, prk)
+      this.getAddress(node, network, prk)
+      return this.extendedPrivateKey
     }
 
     getNewNode(root){

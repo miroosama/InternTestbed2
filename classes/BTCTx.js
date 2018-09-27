@@ -18,7 +18,7 @@ exports.BTCTx = (() => {
         let telnetAdapter = new TelnetAdapter()
         console.log(addr)
         let bal = await telnetAdapter.telnetConstructor("blockchain.address.get_balance", addr).then(function (resp) {
-          console.log("Balance: ", resp.result.confirmed)
+          console.log("Balance: ", resp.result)
           return resp
         }).catch(error => {
           console.log(error)
