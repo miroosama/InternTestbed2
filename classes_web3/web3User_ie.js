@@ -33,11 +33,11 @@ exports.User = (() => {
       })
     }
 
-    sendOrCheck() {
+    async sendOrCheck() {
       rl.question("Check Balance or Send Transaction? ", (answer) => {
         switch (answer) {
           case 'check balance':
-            tx.getBalance(this.address);
+           await tx.getBalance(this.address);
             this.sendOrCheck();
             break;
           case 'send transaction':
