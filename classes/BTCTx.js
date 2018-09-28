@@ -18,7 +18,7 @@ class BTCTx {
 
     test(){
       // console.log(bitcoin)
-      bitcoin.bip32.fromBase58(accountExtendedPublicKey, network).derive(0)
+      // bitcoin.bip32.fromBase58(accountExtendedPublicKey, network).derive(0)
       console.log(this.node)
       console.log(bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
       let address = bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address
