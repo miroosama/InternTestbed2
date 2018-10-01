@@ -12,19 +12,22 @@ exports.web3Tx = (() => {
 
     }
 
-    getBalance(address) {
-      web3.eth.getBalance(address, (err, bal) => {
-        console.log(web3.utils.fromWei(bal, 'ether'))
+    async getBalance(address) {
+      let balance;
+      await web3.eth.getBalance(address, (err, bal) => {
+        console.log('Your balance:', web3.utils.fromWei(bal, 'ether'), '\n');
+        balance = web3.utils.fromWei(bal, 'ether');
       });
+      return balance;
     }
 
-    makeTx(source, target, amount, prk) {
+    async makeTx(source, target, amount, prk) {
       web3.eth.getTransactionCount(source, (err, txCount) => {
         // Build the transaction: 
         const txObject = {
           nonce: web3.utils.toHex(txCount),
           to: target,
-          value: web3.utils.toHex(web3.utils.toWei('0.5', 'ether')),
+          value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
           gasLimit: web3.utils.toHex('21000'),
           gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei'))
         }
@@ -39,11 +42,14 @@ exports.web3Tx = (() => {
         const raw = '0x' + serializedTransaction.toString('hex');
 
         // Broadcast the transaction: 
+        let outputHash;
         web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+          outputHash = txHash;
           console.log(raw)
           console.log('txHash:', txHash)
-        })
-      })
+        });
+        return outputHash;
+      });
     }
 
   }

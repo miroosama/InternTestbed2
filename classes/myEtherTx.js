@@ -18,7 +18,6 @@ class EtherTransactions {
         }
 
     buildingTx(soundAcc, amount) {
-        // const privateKey = Buffer.from(this.account.privateKey, 'hex')
      web3.eth.getTransactionCount(this.account.address, (err, txCount) => { 
         const txObject = {
             nonce: web3.utils.toHex(txCount),
@@ -30,9 +29,6 @@ class EtherTransactions {
         const tx = new Tx(txObject) 
 
         let txSigned = this.signTx(tx)
-        
-        // const serializedTransaction = txSigned.serialize() 
-        // const raw = '0x' + serializedTransaction.toString('hex')
 
         web3.eth.sendSignedTransaction(txSigned, (err, txHash) => {
             console.log('txhash:', txHash)

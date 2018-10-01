@@ -13,42 +13,23 @@ exports.User = (() => {
     })
 
     return class {
-        constructor() {
-            this.mnemonic = ""
-            this.firstAddress = "",
-                this.privateKey = "",
-                this.changeAddress = "",
-                this.scripthash = ""
-        }
-
         startSession() {
             rl.question("Sign in with mnemonic: ", (answer) => {
                 switch (answer) {
                     default:
-                        this.mnemonic = answer
-                        this.createWallet(answer, "false")
+                        this.createWallet(answer)
                 }
             })
         }
 
-        createWallet(mnemonic, val) {
-            const wallet = new Wallet()
-            wallet.createOrUpdateAccount(mnemonic, val)
-            wallet.createOrUpdateAccount(mnemonic, "true")
-            this.mnemonic = mnemonic
-            this.firstAddress = wallet.address
-            this.privateKey = wallet.privateKey
-            this.changeAddress = wallet.changeAddr
-            this.scripthash = wallet.scripthash
-            console.log("SH", this.scripthash)
-            this.sendOrCheck()
-            return [this.firstAddress, this.changeAddress];
+        createWallet(mnemonic) {
+            const wallet = new Wallet(mnmonic)
+            wallet.createOrUpdateAccount(mnemonic);
         }
 
         sendOrCheck() {
             rl.question("Check Balance or Send Transaction? ", (answer) => {
                 switch (answer) {
-<<<<<<< HEAD
                   case 'check balance':
                     this.checkBalance();
                     break;
@@ -66,42 +47,21 @@ exports.User = (() => {
             const bitcoinCh = new BTCTx()
             await bitcoinCh.getBalance(this.firstAddress, this.scripthash)
             this.sendOrCheck()
-=======
-                    case 'check balance':
-                        this.checkBalance();
-                        break;
-                    case 'send transaction':
-                        this.sendMoney();
-                        break;
-                    default:
-                        console.log("try again: invalid input")
-                        this.sendOrCheck()
-                }
-            })
-        }
-
-        async checkBalance() {
-            const bitcoinCh = new BTCTx()
-            await bitcoinCh.getBalance(this.scripthash)
-            this.sendOrCheck()
-            return bitcoinCh.getBalance(this.scripthash)
->>>>>>> 82a239e096849f1d7abb6aad2f7e80cc5fda5e7a
         }
 
         sendMoney() {
             console.log("CHECKING ADDR", this.firstAddress)
             rl.question("Send bitcoin address: ", (answer) => {
                 rl.question("Send bitcoin amount: ", (answer2) => {
-                    this.sendTransaction(answer, answer2)
+                    const bitcoinTxBuild = new BTCTx()
+                    bitcoinTxBuild.checkUtxO(answer, answer2)
                 })
             })
         }
 
-        sendTransaction(sendAddr, sendAMT) {
+        sendTransaction(txhex) {
             const bitcoinTx = new BTCTx()
-            bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
-            // this.changeAddress = wallet.changeAddr
-            // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
+            bitcoinTx.broadcastTx(txhex)
             rl.close()
         }
     }
