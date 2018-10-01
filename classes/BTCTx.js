@@ -66,7 +66,7 @@ class BTCTx {
     }
 
     // sendAddr, sendAMT, changeAddress, privateKey
-    async checkUTxO(sendAddr, sendAMT, changeAddress, privateKey, scripthash){
+    async checkUTxO(){
       let utxos = [];
       for(let i = 0; i < this.currentAddress; i++){
         let childNode = this.node.derive(i)
