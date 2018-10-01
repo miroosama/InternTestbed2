@@ -7,7 +7,7 @@
     "verbose": true
   },
   "directories": {
-    "test": "jest"
+    "test": "test"
   },
   "dependencies": {
     "axios": "^0.18.0",

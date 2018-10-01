@@ -48,24 +48,23 @@ exports.User = (() => {
         sendOrCheck() {
             rl.question("Check Balance or Send Transaction? ", (answer) => {
                 switch (answer) {
-                    case 'check balance':
-                        this.checkBalance();
-                        break;
-                    case 'send transaction':
-                        this.sendMoney();
-                        break;
-                    default:
-                        console.log("try again: invalid input")
-                        this.sendOrCheck()
+                  case 'check balance':
+                    this.checkBalance();
+                    break;
+                  case 'send transaction':
+                    this.sendMoney();
+                    break;
+                default:
+                console.log("try again: invalid input")
+                this.sendOrCheck()
                 }
             })
         }
-
-        async checkBalance() {
+    
+        async checkBalance(){
             const bitcoinCh = new BTCTx()
-            await bitcoinCh.getBalance(this.scripthash)
+            await bitcoinCh.getBalance(this.firstAddress, this.scripthash)
             this.sendOrCheck()
-            return bitcoinCh.getBalance(this.scripthash)
         }
 
         sendMoney() {
@@ -81,7 +80,7 @@ exports.User = (() => {
             const bitcoinTx = new BTCTx()
             bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
             // this.changeAddress = wallet.changeAddr
-            // bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
+            bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
             rl.close()
         }
     }

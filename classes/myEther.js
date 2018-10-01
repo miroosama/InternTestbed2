@@ -7,7 +7,7 @@ var Tx = require('ethereumjs-tx')
 var fs = require('fs')
 
 web3 = new Web3(new Web3.providers.HttpProvider("http://13.58.39.53:8545"))
-const counter = 1
+
 
 class Wallet extends Web3 {
 
