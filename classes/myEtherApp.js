@@ -150,7 +150,7 @@ user.startSession()
 
 
 
-// {btc: {create: create(), import: import()}, ether: eth.create}
+// {btc: {create: create(), import: send()}, ether: eth.create}
 
 // rl "which coin?"
 // for(loop through coins)
