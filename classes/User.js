@@ -13,36 +13,18 @@ exports.User = (() => {
     })
 
     return class {
-        constructor() {
-            this.mnemonic = ""
-            this.firstAddress = "",
-                this.privateKey = "",
-                this.changeAddress = "",
-                this.scripthash = ""
-        }
-
         startSession() {
             rl.question("Sign in with mnemonic: ", (answer) => {
                 switch (answer) {
                     default:
-                        this.mnemonic = answer
-                        this.createWallet(answer, "false")
+                        this.createWallet(answer)
                 }
             })
         }
 
-        createWallet(mnemonic, val) {
-            const wallet = new Wallet()
-            wallet.createOrUpdateAccount(mnemonic, val)
-            wallet.createOrUpdateAccount(mnemonic, "true")
-            this.mnemonic = mnemonic
-            this.firstAddress = wallet.address
-            this.privateKey = wallet.privateKey
-            this.changeAddress = wallet.changeAddr
-            this.scripthash = wallet.scripthash
-            console.log("SH", this.scripthash)
-            this.sendOrCheck()
-            return [this.firstAddress, this.changeAddress];
+        createWallet(mnemonic) {
+            const wallet = new Wallet(mnmonic)
+            wallet.createOrUpdateAccount(mnemonic);
         }
 
         sendOrCheck() {
@@ -71,16 +53,15 @@ exports.User = (() => {
             console.log("CHECKING ADDR", this.firstAddress)
             rl.question("Send bitcoin address: ", (answer) => {
                 rl.question("Send bitcoin amount: ", (answer2) => {
-                    this.sendTransaction(answer, answer2)
+                    const bitcoinTxBuild = new BTCTx()
+                    bitcoinTxBuild.checkUtxO(answer, answer2)
                 })
             })
         }
 
-        sendTransaction(sendAddr, sendAMT) {
+        sendTransaction(txhex) {
             const bitcoinTx = new BTCTx()
-            bitcoinTx.checkUTxO(sendAddr, sendAMT, this.changeAddress, this.privateKey, this.scripthash)
-            // this.changeAddress = wallet.changeAddr
-            bitcoinTx.transactionBuilding(sendAddr, sendAMT, this.changeAddress, this.privateKey)  
+            bitcoinTx.broadcastTx(txhex)
             rl.close()
         }
     }
