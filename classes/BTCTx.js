@@ -12,22 +12,24 @@ class BTCTx {
         this.node = bitcoin.bip32.fromBase58(accountExtendedPublicKey, network),
         this.scripthash = "",
         this.currentAddress = 0,
-        this.changeAddr = 0
+        this.changeAddr = 0,
+        this.totalBal = 0
     }
 
-    test(){
+    // test(){
       // console.log(bitcoin)
       // bitcoin.bip32.fromBase58(accountExtendedPublicKey, network).derive(2)
-      console.log(this.node)
-      console.log(bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
-      let address = bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address
-      let script = bitcoin.address.toOutputScript(address, network)
-      let hash = bitcoin.crypto.sha256(Buffer.from(script))
-      let reversedHash = hash.reverse()
-      this.scripthash = reversedHash.toString('hex')
+      // console.log(this.node)
+      // console.log(bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
+      // let address = bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address
+      // let script = bitcoin.address.toOutputScript(address, network)
+      // let hash = bitcoin.crypto.sha256(Buffer.from(script))
+      // let reversedHash = hash.reverse()
+      // this.scripthash = reversedHash.toString('hex')
+      // console.log(this.node.derive(1).derive(0), bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
       // this.getBalance()
-      this.accountInfo()
-    }
+      // this.accountInfo()
+    // }
 
     async accountInfo(){
       let telLoop = true;
@@ -37,7 +39,7 @@ class BTCTx {
         let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
         let telnetAdapter = new TelnetAdapter()
       let response = await telnetAdapter.telnetConstructor("blockchain.address.get_history", address).then(function (resp) {
-        console.log("Balance: ", resp.result)
+        console.log("Address History: ", resp.result)
         return resp
       }).catch(error => {
         console.log(error)
@@ -51,18 +53,24 @@ class BTCTx {
     console.log(this.currentAddress, this.changeAddr)
   }
     // return response.result
-    this.checkUTxO()
+    // this.checkUTxO()
+    this.getBalance()
 }
 
      async getBalance(){
-        let telnetAdapter = new TelnetAdapter()
-        let bal = await telnetAdapter.telnetConstructor("blockchain.scripthash.get_balance", this.scripthash).then(function (resp) {
-          console.log("Balance: ", resp.result)
+      for(let i = 0; i < this.currentAddress; i++){
+        let childNode = this.node.derive(i)
+        let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+        let telnetAdapt = new TelnetAdapter()
+        let response = await telnetAdapt.telnetConstructor("blockchain.address.get_balance", address).then(function (resp) {
+          console.log("Balance: ", resp.result.confirmed)
           return resp
         }).catch(error => {
           console.log(error)
       });
-      return bal.result
+      this.totalBal += response.result.confirmed
+      }
+      console.log(this.totalBal)
     }
 
     // sendAddr, sendAMT, changeAddress, privateKey
@@ -134,4 +142,4 @@ class BTCTx {
   }
 
   let btctx = new BTCTx("tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6")
-  btctx.test()
+  btctx.accountInfo()
