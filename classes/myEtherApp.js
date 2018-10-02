@@ -139,3 +139,21 @@ user.startSession()
 // 0x81b7e08f65bdf5648606c89998a9cc8164397647
 
 // To:  0xaa98f82ab403663748e10b6f7256e3c29cdd0051
+
+
+
+
+
+
+
+
+
+
+
+// {btc: {create: create(), import: import()}, ether: eth.create}
+
+// rl "which coin?"
+// for(loop through coins)
+// answer == btc
+
+// bitcoin
