@@ -22,6 +22,7 @@
     "request": "^2.88.0",
     "request-stream": "^1.2.2",
     "telnet-client": "^0.16.1",
+    "usb": "^1.3.3",
     "web3": "^1.0.0-beta.36"
   },
   "devDependencies": {},
