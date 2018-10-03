@@ -59,8 +59,8 @@ class BTCTx {
     console.log(this.currentAddress, this.changeAddr)
   }
     // return response.result
-    this.checkUTxO()
-    // this.getBalance()
+    // this.checkUTxO()
+    this.getBalance()
     
 }
 
