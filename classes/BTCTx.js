@@ -5,37 +5,34 @@ const coinSelect = require('./coinselect/coinSelect.js')
 const { RPCAdapter } = require('../classes/classbin/RPCAdapter');
 const { TelnetAdapter } = require('./TelnetAdapter.js')
 const Sign = require('./BTCSignTx')
+var fs = require('fs')
 
 class BTCTx {
-    constructor(accountExtendedPublicKey){
-        this.pub = accountExtendedPublicKey,
-        this.node = bitcoin.bip32.fromBase58(accountExtendedPublicKey, network),
+    constructor(node){
+        this.node = bitcoin.bip32.fromBase58(JSON.parse(node), network),
         this.scripthash = "",
         this.currentAddress = 0,
         this.changeAddr = 0,
-        this.totalBal = 0
+        this.totalBal = 0,
+        this.intOrExtInd = 0,
+        this.addresses = [],
+        this.switch = false
     }
 
-    // test(){
-      // console.log(bitcoin)
-      // bitcoin.bip32.fromBase58(accountExtendedPublicKey, network).derive(2)
-      // console.log(this.node)
-      // console.log(bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
-      // let address = bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address
-      // let script = bitcoin.address.toOutputScript(address, network)
-      // let hash = bitcoin.crypto.sha256(Buffer.from(script))
-      // let reversedHash = hash.reverse()
-      // this.scripthash = reversedHash.toString('hex')
-      // console.log(this.node.derive(1).derive(0), bitcoin.payments.p2pkh({ pubkey: this.node.publicKey, network }).address)
-      // this.getBalance()
-      // this.accountInfo()
-    // }
+    test(){
+      let n = this.node.derive(1).derive(0)
+      console.log(this.node)
+      console.log(bitcoin.payments.p2pkh({ pubkey: n.publicKey, network }).address)
+    }
+
+
 
     async accountInfo(){
       let telLoop = true;
       while(telLoop == true){
         // console.log(this.currentAddress, "AHAHAHAHAHHAHAHAAH")
-        let childNode = this.node.derive(this.currentAddress)
+        
+        let childNode = this.node.derive(this.intOrExtInd).derive(!this.switch ? this.currentAddress : this.changeAddr)
         let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
         let telnetAdapter = new TelnetAdapter()
       let response = await telnetAdapter.telnetConstructor("blockchain.address.get_history", address).then(function (resp) {
@@ -45,42 +42,50 @@ class BTCTx {
         console.log(error)
     });
     if(response.result.length != 0){
+      console.log(response, "AHHHHHHHHHHHHHHHHHHHHHHHH")
       this.currentAddress += 1;
-      this.changeAddr += 1;
-    } else {
+      this.addresses.push(address)
+    }  
+    else if(response.result.length == 0 && this.intOrExtInd !== 1){
+      this.switch = true
+      this.intOrExtInd = 1
+      let childNode = this.node.derive(this.intOrExtInd).derive(this.changeAddr)
+      let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+      this.changeAddr += 1
+      this.addresses.push(address)
+    } else if (response.result.length == 0 && this.intOrExtInd == 1) {
       telLoop = false
     }
     console.log(this.currentAddress, this.changeAddr)
   }
     // return response.result
-    // this.checkUTxO()
-    this.getBalance()
+    this.checkUTxO()
+    // this.getBalance()
+    
 }
 
      async getBalance(){
-      for(let i = 0; i < this.currentAddress; i++){
-        let childNode = this.node.derive(i)
-        let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+       this.intOrExtInd = 0
+       
+        for(let i = 0; i < this.addresses.length; i++){
         let telnetAdapt = new TelnetAdapter()
-        let response = await telnetAdapt.telnetConstructor("blockchain.address.get_balance", address).then(function (resp) {
+        let response = await telnetAdapt.telnetConstructor("blockchain.address.get_balance", this.addresses[i]).then(function (resp) {
           console.log("Balance: ", resp.result.confirmed)
           return resp
         }).catch(error => {
           console.log(error)
       });
       this.totalBal += response.result.confirmed
-      }
+     }
       console.log(this.totalBal)
     }
 
     // sendAddr, sendAMT, changeAddress, privateKey
     async checkUTxO(){
       let utxos = [];
-      for(let i = 0; i < this.currentAddress; i++){
-        let childNode = this.node.derive(i)
-        let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+      for(let i = 0; i < this.addresses.length; i++){
         let telnetAdapt = new TelnetAdapter()
-        let response = await telnetAdapt.telnetConstructor("blockchain.address.listunspent", address).then(function (resp) {
+        let response = await telnetAdapt.telnetConstructor("blockchain.address.listunspent", this.addresses[i]).then(function (resp) {
           console.log("Unspent: ", resp.result)
           if(resp.result.length > 0){
             utxos.push(resp.result)
@@ -97,9 +102,7 @@ class BTCTx {
     }
 
     async transactionBuilding(utxoData, sendAddr, sendAMT){
-      this.changeAddr +=1
-      let childNode = this.node.derive(this.changeAddr)
-      let changeAddress = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+      let changeAddress = this.addresses[this.addresses.length-1]
         let utxos = []
         for(let i = 0; i < utxoData.length; i++){
           utxos.push({txId: utxoData[i].tx_hash, vout: 1, value: utxoData[i].value})
@@ -141,5 +144,9 @@ class BTCTx {
     }
   }
 
-  let btctx = new BTCTx("tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6")
+  let account = fs.readFileSync('../classes/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
+
+  let btctx = new BTCTx(account)
   btctx.accountInfo()
+
+  // tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6
