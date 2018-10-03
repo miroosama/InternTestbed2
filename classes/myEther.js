@@ -10,15 +10,15 @@ web3 = new Web3(new Web3.providers.HttpProvider("http://13.58.39.53:8545"))
 
 
 class Wallet extends Web3 {
+    constructor(mnemonic){
+        super();
+        this.mnemonic = mnemonic
+    }
 
 
-    createAccount(mnemonic){
-    let account = this.eth.accounts.create([mnemonic])
-    var data = fs.writeFileSync(`../accounts.json`, JSON.stringify(account), (err) => {  
-        // throws an error, you could also catch it here
-        if (err) throw err;
-    
-    }  )
+    createAccount(){
+    let account = this.eth.accounts.create([this.mnemonic])
+    var data = fs.writeFileSync(`./accounts.json`, JSON.stringify(account))
     console.log(account)
     return account
     }
