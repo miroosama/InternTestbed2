@@ -42,7 +42,6 @@ class BTCTx {
         console.log(error)
     });
     if(response.result.length != 0){
-      console.log(response, "AHHHHHHHHHHHHHHHHHHHHHHHH")
       this.currentAddress += 1;
       this.addresses.push(address)
     }  
@@ -131,8 +130,10 @@ class BTCTx {
           }
           transaction.addOutput(output.address, output.value)
         })
-        let signed = new Sign(transaction)
-        signed.signTx()
+        fs.writeFileSync(`./classes/accounts/unsignedTx.json`, JSON.stringify(transaction)) 
+        // console.log(node) 
+        // let signed = new Sign(transaction)
+        // signed.signTx()
     }
 
     async broadcastTx(txhex){

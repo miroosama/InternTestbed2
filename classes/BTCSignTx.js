@@ -7,10 +7,13 @@ class Sign {
     }
 
     signTx(){
-        let keypairSpend = bitcoin.bip32.fromBase58("tprv8ix4Gedees5rRWRQ21YCgHLSr2VbbaWk7gF6k1NcBoiKiXsCgW1UJYqAcBj4S9BxPXoC6ZNWkJeD1z35awxAwNHKPLnckSh8e1PfbpLQGFF", network)
+        let prv = fs.readFileSync fs.readFileSync('./classes/accounts/privateK.json', 'utf8')
+        // let privateKey = JSON.parse(prv)
+        let keypairSpend = bitcoin.bip32.fromBase58(prv, network)
         this.transaction.sign(0, keypairSpend)
         let tx = this.transaction.build()
         let txhex = tx.toHex()
+        fs.writeFileSync(`./classes/accounts/signedTx.json`, JSON.stringify(txhex)) 
         console.log("TXHEX from Cold Class", txhex)
     }
 }

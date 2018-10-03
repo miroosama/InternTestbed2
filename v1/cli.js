@@ -7,6 +7,7 @@ const EtherWallet = require('../classes/myEther')
 const BitcoinWallet = require('../classes/BTCWallet')
 const BTCTx = require('../classes/BTCTx')
 const EtherTx = require('../classes/myEtherTx')
+const BTCSign = require('../classes/BTCSignTx')
 
 
 let create = {
@@ -35,6 +36,12 @@ class User {
         case 'import':
         this.importFile();
         break;
+        case 'sign':
+        this.signTx();
+        break;
+        case 'broadcast':
+        this.broadcastTx();
+        break;
         default:
           console.log('please enter a command');
       }
@@ -48,19 +55,23 @@ class User {
               if(this.args[2] == 'check'){
                 transaction.getBalance()
               } else {
+                console.log("here")
                 transaction.buildingTx(this.args[3], this.args[4])
               }
           }
         }
     }
 
-      // if(!this.args[0]) {
-      //   console.log("please enter your arguments")
-      // }
-      // else {
-      //   console.log(this.args)
-      // }
+    signTx(){
+      let tx = fs.readFileSync('./classes/accounts/unsignedTx.json', 'utf8')
+      new BTCSign(tx)
+    }
 
+    broadcastTx(){
+      let txhex = fs.readFileSync('./classes/accounts/signedTx.json', 'utf8')
+      let btctx = new BTCTx()
+      btctx.broadcastTx(txhex)
+    }
   }
 
   let user = new User(args);

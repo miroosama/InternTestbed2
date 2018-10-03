@@ -18,7 +18,7 @@ class Wallet {
         let extendedPubExt = extNode.neutered().toBase58()
         let extendedPubInt = intNode.neutered().toBase58()
         let extPrv = extNode.toBase58()
-        // let account = fs.writeFileSync(`../${extendedPubExt}.json`, JSON.stringify([extPrv, extendedPubInt]))
+        fs.writeFileSync(`./classes/accounts/privateK.json`, JSON.stringify(extPrv))
         let account = fs.writeFileSync(`./classes/accounts/${extendedPubExt}.json`, JSON.stringify(nodeSend)) 
         // console.log(node) 
       } 
