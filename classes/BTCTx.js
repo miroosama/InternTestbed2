@@ -59,12 +59,13 @@ class BTCTx {
     console.log(this.currentAddress, this.changeAddr)
   }
     // return response.result
-    this.checkUTxO()
+    // this.checkUTxO()
     // this.getBalance()
     
 }
 
      async getBalance(){
+       await this.accountInfo()
        this.intOrExtInd = 0
        
         for(let i = 0; i < this.addresses.length; i++){
@@ -82,6 +83,7 @@ class BTCTx {
 
     // sendAddr, sendAMT, changeAddress, privateKey
     async checkUTxO(){
+      await this.accountInfo()
       let utxos = [];
       for(let i = 0; i < this.addresses.length; i++){
         let telnetAdapt = new TelnetAdapter()
@@ -144,9 +146,11 @@ class BTCTx {
     }
   }
 
-  let account = fs.readFileSync('../classes/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
+  module.exports = BTCTx;
 
-  let btctx = new BTCTx(account)
-  btctx.accountInfo()
+  // let account = fs.readFileSync('../classes/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
+
+  // let btctx = new BTCTx()
+  // btctx.accountInfo()
 
   // tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6
