@@ -11,7 +11,7 @@ class EtherTransactions {
         this.account = account
     }
 
-    displayBalance(){
+    getBalance(){
         console.log(this.account)
         web3.eth.getBalance(this.account.address)
             .then((res) => console.log(web3.utils.fromWei(res, 'ether')))

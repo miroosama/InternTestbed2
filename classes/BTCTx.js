@@ -59,7 +59,7 @@ class BTCTx {
     console.log(this.currentAddress, this.changeAddr)
   }
     // return response.result
-    // this.checkUTxO()
+    // this.buildingTx()
     // this.getBalance()
     
 }
@@ -82,7 +82,7 @@ class BTCTx {
     }
 
     // sendAddr, sendAMT, changeAddress, privateKey
-    async checkUTxO(){
+    async buildingTx(sendAddr, sendAmt){
       await this.accountInfo()
       let utxos = [];
       for(let i = 0; i < this.addresses.length; i++){
@@ -98,7 +98,7 @@ class BTCTx {
       });
       }
        let utxoData = utxos.reduce((acc, val) => acc.concat(val), [])
-        this.transactionBuilding(utxoData, "mfrU7eT9mXTSizqG1z2hynjKse8T9JNpiW", 10000).catch(error => {
+        this.transactionBuilding(utxoData, sendAddr, sendAmt).catch(error => {
         console.log(error)
       });
     }

@@ -27,8 +27,8 @@ class Wallet {
   module.exports = Wallet;
 // console.log(bitcoin.bip32.fromSeed(bip39.mnemonicToSeed("fun swamp jump history obvious scare struggle deputy cannon village buzz state power play expose moral million lift gravity size chalk grocery scout toss"), network))
 
-// let wallet = new Wallet("human sun wall return tragic bless detail foot rescue gown deer clerk body certain casual")
-// wallet.createOrUpdateAccount()
+let wallet = new Wallet("human sun wall return tragic bless detail foot rescue gown deer clerk body certain casual")
+wallet.createAccount()
 
 // human sun wall return tragic bless detail foot rescue gown deer clerk body certain casual
 // law used index main pony kitchen finish hospital laugh diary obtain jewel usage decade peanut
