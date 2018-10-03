@@ -5,10 +5,16 @@ const program = require('commander');
 const args = require('minimist')(process.argv.slice(2))._;
 const EtherWallet = require('../classes/myEther')
 const BitcoinWallet = require('../classes/BTCWallet')
+const BTCTx = require('../classes/BTCTx')
+
 
 let create = {
   btc: BitcoinWallet,
   eth: EtherWallet
+}
+
+let send = {
+
 }
 
 
@@ -24,11 +30,19 @@ class User {
           new create[coin](this.args[1]).createAccount()
         }
           break;
-        case 'send':
-        console.log('switch to ethereum');
+        case 'import':
+        this.importFile();
         break;
         default:
           console.log('please enter a command');
+      }
+    }
+
+      importFile() {
+        let account = fs.readFileSync('./classes/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
+        let transaction = new BTCTx(account);
+        transaction.getBalance()
+        
       }
 
       // if(!this.args[0]) {
@@ -38,7 +52,6 @@ class User {
       //   console.log(this.args)
       // }
 
-    }
   }
 
   let user = new User(args);
