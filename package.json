@@ -22,6 +22,11 @@
   },
   "homepage": "https://github.com/10thFloorSoft/InternTestbed2#readme",
   "dependencies": {
-    "drivelist": "^6.4.3"
+    "bip32": "^1.0.2",
+    "bip39": "^2.5.0",
+    "bitcoinjs-lib": "^4.0.2",
+    "drivelist": "^6.4.3",
+    "ethereumjs-tx": "^1.3.7",
+    "telnet-client": "^0.16.1"
   }
 }
