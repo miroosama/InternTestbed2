@@ -1,13 +1,13 @@
 var bitcoin = require('bitcoinjs-lib');
 const network = bitcoin.networks.testnet;
-
+const fs = require('fs');
 class Sign {
     constructor(transaction){
         this.transaction = transaction
     }
 
     signTx(){
-        let prv = fs.readFileSync fs.readFileSync('./classes/accounts/privateK.json', 'utf8')
+        let prv = fs.readFileSync('./classes/accounts/privateK.json', 'utf8')
         // let privateKey = JSON.parse(prv)
         let keypairSpend = bitcoin.bip32.fromBase58(prv, network)
         this.transaction.sign(0, keypairSpend)
