@@ -8,12 +8,13 @@ class Sign {
     }
 
     signTx(){
-        let prk = this.account.privateKey.slice(2)
+        let prk = fs.readFileSync()
+        // let prk = this.account.privateKey.slice(2)
         const privateK = Buffer.from(prk, 'hex')
         this.transaction.sign(privateK)
         const serializedTransaction = this.transaction.serialize() 
         const raw = '0x' + serializedTransaction.toString('hex')
-        return raw
+        fs.writeFileSync()
     }
 }
 

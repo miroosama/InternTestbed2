@@ -1,6 +1,7 @@
 
 const Web3 = require('web3')
 var Tx = require('ethereumjs-tx')
+var fs = require('fs')
 // const infura = 'https://ropsten.infura.io/v3/e7e240cdeda947cdbaf41a2092c85ff5'
 // const web3 = new Web3(Web3.givenProvider || infura)
 
@@ -27,20 +28,25 @@ class EtherTransactions {
             gasPrice: web3.utils.toHex(web3.utils.toWei('41', 'gwei'))
         }
         const tx = new Tx(txObject) 
-
+        fs.writeFileSync()
+    })
         let txSigned = this.signTx(tx)
 
         web3.eth.sendSignedTransaction(txSigned, (err, txHash) => {
             console.log('txhash:', txHash)
         })
-    })
  }
+
+    broadcastTx(txSigned){
+        web3.eth.sendSignedTransaction(txSigned, (err, txHash) => {
+            console.log('txhash:', txHash)
+        })
+    }
 
     signTx(tx){
         let prk = this.account.privateKey.slice(2)
         const privateK = Buffer.from(prk, 'hex')
         tx.sign(privateK)
-        //prompt to confirm
         const serializedTransaction = tx.serialize() 
         const raw = '0x' + serializedTransaction.toString('hex')
         return raw

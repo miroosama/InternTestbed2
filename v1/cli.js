@@ -8,6 +8,7 @@ const BitcoinWallet = require('../classes/BTCWallet')
 const BTCTx = require('../classes/BTCTx')
 const EtherTx = require('../classes/myEtherTx')
 const BTCSign = require('../classes/BTCSignTx')
+const ETHSign = require('../myEtherSign.js')
 
 
 let create = {
@@ -18,6 +19,11 @@ let create = {
 let coinManager = {
 btc: BTCTx,
 eth: EtherTx
+}
+
+let signatures = {
+  btc: BTCSign,
+  eth: ETHSign
 }
 
 
@@ -63,15 +69,24 @@ class User {
     }
 
     signTx(){
-      let tx = fs.readFileSync('./classes/accounts/unsignedTx.json', 'utf8')
-      new BTCSign(tx)
+      let transaction = fs.readFileSync('./classes/accounts/unsignedTx.json', 'utf8')
+      for(var coin in signatures){
+        if(coin == this.args[1]){
+          new signatures[coin](transaction).sign()
+        }
+      }
     }
 
     broadcastTx(){
       let txhex = fs.readFileSync('./classes/accounts/signedTx.json', 'utf8')
-      let btctx = new BTCTx()
-      btctx.broadcastTx(txhex)
+      for(var coin in coinManager){
+        if(coin == this.args[1]){
+          new coinManager[coin]().broadcastTx(txhex)
+        }
+      }
     }
+
+    
   }
 
   let user = new User(args);
