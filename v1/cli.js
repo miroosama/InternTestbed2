@@ -3,12 +3,12 @@
 const fs = require('fs');
 const program = require('commander');
 const args = require('minimist')(process.argv.slice(2))._;
-const EtherWallet = require('../classes/myEther')
-const BitcoinWallet = require('../classes/BTCWallet')
-const BTCTx = require('../classes/BTCTx')
-const EtherTx = require('../classes/myEtherTx')
-const BTCSign = require('../classes/BTCSignTx')
-const ETHSign = require('../myEtherSign.js')
+const EtherWallet = require('../cold/classes/myEther')
+const BitcoinWallet = require('../cold/classes/BTCWallet')
+const BTCTx = require('../hot/classes/BTCTx')
+const EtherTx = require('../hot/classes/myEtherTx')
+const BTCSign = require('../cold/classes/BTCSignTx')
+const ETHSign = require('../cold/myEtherSign.js')
 
 
 let create = {

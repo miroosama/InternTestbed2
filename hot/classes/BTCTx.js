@@ -1,10 +1,9 @@
 var bitcoin = require('bitcoinjs-lib');
 const axios = require('axios')
 const network = bitcoin.networks.testnet;
-const coinSelect = require('./coinselect/coinSelect.js')
-const { RPCAdapter } = require('../classes/classbin/RPCAdapter');
-const { TelnetAdapter } = require('./TelnetAdapter.js')
-const Sign = require('./BTCSignTx')
+const coinSelect = require('../classes/coinselect/coinSelect.js')
+const { TelnetAdapter } = require('../../adapters/TelnetAdapter.js')
+const Sign = require('../../cold/classes/BTCSignTx')
 var fs = require('fs')
 
 class BTCTx {
