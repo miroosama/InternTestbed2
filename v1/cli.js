@@ -77,7 +77,8 @@ class User {
     }
 
     broadcastTx(){
-      let txhex = fs.readFileSync('./classes/accounts/signedTx.json', 'utf8')
+      let path = await USBAdapter.getPath().catch(err => {console.log(err)})
+      let txhex = fs.readFileSync('path', 'utf8')
       for(var coin in coinManager){
         if(coin == this.args[1]){
           new coinManager[coin]().broadcastTx(txhex)

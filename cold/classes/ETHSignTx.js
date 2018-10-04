@@ -9,13 +9,14 @@ exports.ETHSignTx = (() => {
         }
 
         signTx(){
-            let prk = fs.readFileSync()
+            //let prk = fs.readFileSync()
             // let prk = this.account.privateKey.slice(2)
             const privateK = Buffer.from(prk, 'hex')
             this.transaction.sign(privateK)
             const serializedTransaction = this.transaction.serialize() 
-            const raw = '0x' + serializedTransaction.toString('hex')
-            fs.writeFileSync()
+            const txhex = '0x' + serializedTransaction.toString('hex')
+            let path = await USBAdapter.getPath().catch(err => {console.log(err)})
+            fs.writeFileSync(`${path}`, JSON.stringify(txhex))
         }
     }
 })();
