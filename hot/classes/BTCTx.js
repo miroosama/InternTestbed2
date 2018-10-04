@@ -1,12 +1,11 @@
 var bitcoin = require('bitcoinjs-lib');
-const axios = require('axios')
 const network = bitcoin.networks.testnet;
 const coinSelect = require('../classes/coinselect/coinSelect.js')
 const { TelnetAdapter } = require('../../adapters/TelnetAdapter.js')
-const Sign = require('../../cold/classes/BTCSignTx')
 var fs = require('fs')
 
-class BTCTx {
+exports.BTCTx = (()=>{
+  return class BTCTx {
     constructor(node){
         this.node = bitcoin.bip32.fromBase58(JSON.parse(node), network),
         this.scripthash = "",
@@ -24,8 +23,6 @@ class BTCTx {
       console.log(bitcoin.payments.p2pkh({ pubkey: n.publicKey, network }).address)
     }
 
-
-
     async accountInfo(){
       let telLoop = true;
       while(telLoop == true){
@@ -39,47 +36,43 @@ class BTCTx {
         return resp
       }).catch(error => {
         console.log(error)
-    });
-    if(response.result.length != 0){
-      this.currentAddress += 1;
-      this.addresses.push(address)
-    }  
-    else if(response.result.length == 0 && this.intOrExtInd !== 1){
-      this.switch = true
-      this.intOrExtInd = 1
-      let childNode = this.node.derive(this.intOrExtInd).derive(this.changeAddr)
-      let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
-      this.changeAddr += 1
-      this.addresses.push(address)
-    } else if (response.result.length == 0 && this.intOrExtInd == 1) {
-      telLoop = false
+      });
+      if(response.result.length != 0){
+        this.currentAddress += 1;
+        this.addresses.push(address)
+      }  
+      else if(response.result.length == 0 && this.intOrExtInd !== 1){
+        this.switch = true
+        this.intOrExtInd = 1
+        let childNode = this.node.derive(this.intOrExtInd).derive(this.changeAddr)
+        let address = bitcoin.payments.p2pkh({ pubkey: childNode.publicKey, network }).address
+        this.changeAddr += 1
+        this.addresses.push(address)
+      } else if (response.result.length == 0 && this.intOrExtInd == 1) {
+        telLoop = false
+      }
+      console.log(this.currentAddress, this.changeAddr)
+      } 
     }
-    console.log(this.currentAddress, this.changeAddr)
-  }
-    // return response.result
-    // this.buildingTx()
-    // this.getBalance()
-    
-}
 
-     async getBalance(){
-       await this.accountInfo()
-       this.intOrExtInd = 0
-       
-        for(let i = 0; i < this.addresses.length; i++){
-        let telnetAdapt = new TelnetAdapter()
-        let response = await telnetAdapt.telnetConstructor("blockchain.address.get_balance", this.addresses[i]).then(function (resp) {
-          console.log("Balance: ", resp.result.confirmed)
-          return resp
-        }).catch(error => {
-          console.log(error)
+    async getBalance(){
+      await this.accountInfo()
+      this.intOrExtInd = 0
+      
+      for(let i = 0; i < this.addresses.length; i++){
+      let telnetAdapt = new TelnetAdapter()
+      let response = await telnetAdapt.telnetConstructor("blockchain.address.get_balance", this.addresses[i]).then(function (resp) {
+        console.log("Balance: ", resp.result.confirmed)
+        return resp
+      }).catch(error => {
+        console.log(error)
       });
       this.totalBal += response.result.confirmed
-     }
+      }
       console.log(this.totalBal)
     }
 
-    // sendAddr, sendAMT, changeAddress, privateKey
+      // sendAddr, sendAMT, changeAddress, privateKey
     async buildingTx(sendAddr, sendAmt){
       await this.accountInfo()
       let utxos = [];
@@ -95,7 +88,7 @@ class BTCTx {
           console.log(error)
       });
       }
-       let utxoData = utxos.reduce((acc, val) => acc.concat(val), [])
+        let utxoData = utxos.reduce((acc, val) => acc.concat(val), [])
         this.transactionBuilding(utxoData, sendAddr, sendAmt).catch(error => {
         console.log(error)
       });
@@ -103,36 +96,36 @@ class BTCTx {
 
     async transactionBuilding(utxoData, sendAddr, sendAMT){
       let changeAddress = this.addresses[this.addresses.length-1]
-        let utxos = []
-        for(let i = 0; i < utxoData.length; i++){
-          utxos.push({txId: utxoData[i].tx_hash, vout: 1, value: utxoData[i].value})
+      let utxos = []
+      for(let i = 0; i < utxoData.length; i++){
+        utxos.push({txId: utxoData[i].tx_hash, vout: 1, value: utxoData[i].value})
+      }
+      console.log(utxos)
+      let feeRate = 55
+      let amount = parseInt(sendAMT)
+      let targets = [
+        {
+          address: sendAddr, 
+          value: amount
         }
-        console.log(utxos)
-        let feeRate = 55
-        let amount = parseInt(sendAMT)
-        let targets = [
-          {
-            address: sendAddr, 
-            value: amount
-          }
-        ]
-        console.log(targets)
+      ]
+      console.log(targets)
 
-        let { inputs, outputs, fee } = coinSelect(utxos, targets, feeRate)
-        if (!inputs) throw new Error('No valid Transaction exists')
-        let transaction = new bitcoin.TransactionBuilder(network)
-        // console.log(utxos)
-        inputs.forEach(input => transaction.addInput(input.txId, input.vout))
-        outputs.forEach(output => {
-          if(!output.address) {
-            output.address = changeAddress
-          }
-          transaction.addOutput(output.address, output.value)
-        })
-        fs.writeFileSync(`./classes/accounts/unsignedTx.json`, JSON.stringify(transaction)) 
-        // console.log(node) 
-        // let signed = new Sign(transaction)
-        // signed.signTx()
+      let { inputs, outputs, fee } = coinSelect(utxos, targets, feeRate)
+      if (!inputs) throw new Error('No valid Transaction exists')
+      let transaction = new bitcoin.TransactionBuilder(network)
+      // console.log(utxos)
+      inputs.forEach(input => transaction.addInput(input.txId, input.vout))
+      outputs.forEach(output => {
+        if(!output.address) {
+          output.address = changeAddress
+        }
+        transaction.addOutput(output.address, output.value)
+      })
+      fs.writeFileSync(`./classes/accounts/unsignedTx.json`, JSON.stringify(transaction)) 
+      // console.log(node) 
+      // let signed = new Sign(transaction)
+      // signed.signTx()
     }
 
     async broadcastTx(txhex){
@@ -145,12 +138,4 @@ class BTCTx {
     });
     }
   }
-
-  module.exports = BTCTx;
-
-  // let account = fs.readFileSync('../classes/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
-
-  // let btctx = new BTCTx()
-  // btctx.accountInfo()
-
-  // tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6
+})();

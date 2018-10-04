@@ -3,27 +3,24 @@
 const fs = require('fs');
 const program = require('commander');
 const args = require('minimist')(process.argv.slice(2))._;
-const EtherWallet = require('../cold/classes/myEther')
-const BitcoinWallet = require('../cold/classes/BTCWallet')
-const BTCTx = require('../hot/classes/BTCTx')
-const EtherTx = require('../hot/classes/myEtherTx')
-const BTCSign = require('../cold/classes/BTCSignTx')
-const ETHSign = require('../cold/classes/myEtherSign.js')
+const {ETHSignTx, BTCSignTx, BTCWallet, ETHWallet} = require("../cold/classes")
+const {BTCTx, ETHTx} = require("../hot/classes")
 
+const USBAdapter = require('../adapters/USBAdapter.js')
 
 let create = {
-  btc: BitcoinWallet,
-  eth: EtherWallet
+  btc: BTCWallet,
+  eth: ETHWallet
 }
 
 let coinManager = {
-btc: BTCTx,
-eth: EtherTx
+  btc: BTCTx,
+  eth: ETHTx
 }
 
 let signatures = {
-  btc: BTCSign,
-  eth: ETHSign
+  btc: BTCSignTx,
+  eth: ETHSignTx
 }
 
 
