@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const program = require('commander');
 const args = require('minimist')(process.argv.slice(2))._;
-const {ETHSignTx, BTCSignTx, BTCWallet, ETHWallet} = require("../cold/classes")
-const {BTCTx, ETHTx} = require("../hot/classes")
-
+const {ETHSignTx} = require("../cold/classes/ETHSignTx")
+const {BTCSignTx} = require("../cold/classes/BTCSignTx")
+const {BTCWallet} = require("../cold/classes/BTCWallet")
+const {ETHWallet} = require("../cold/classes/ETHWallet")
+const {BTCTx} = require("../hot/classes/BTCTx")
+const {ETHTx} = require("../hot/classes/ETHTx")
 const USBAdapter = require('../adapters/USBAdapter.js')
 
 let create = {
