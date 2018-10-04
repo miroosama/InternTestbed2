@@ -8,7 +8,7 @@ const BitcoinWallet = require('../cold/classes/BTCWallet')
 const BTCTx = require('../hot/classes/BTCTx')
 const EtherTx = require('../hot/classes/myEtherTx')
 const BTCSign = require('../cold/classes/BTCSignTx')
-const ETHSign = require('../cold/myEtherSign.js')
+const ETHSign = require('../cold/classes/myEtherSign.js')
 
 
 let create = {
