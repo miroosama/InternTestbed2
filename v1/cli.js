@@ -67,8 +67,9 @@ class User {
         }
     }
 
-    signTx(){
-      let transaction = fs.readFileSync('./classes/accounts/unsignedTx.json', 'utf8')
+    async signTx(){
+      let path = await USBAdapter.getPath().catch(err => {console.log(err)})
+      let transaction = fs.readFileSync(`${path}/unsignedTx.json`, 'utf8')
       for(var coin in signatures){
         if(coin == this.args[1]){
           new signatures[coin](transaction).sign()
@@ -76,9 +77,9 @@ class User {
       }
     }
 
-    broadcastTx(){
+   await broadcastTx(){
       let path = await USBAdapter.getPath().catch(err => {console.log(err)})
-      let txhex = fs.readFileSync('path', 'utf8')
+      let txhex = fs.readFileSync(`${path}/txhex.json`, 'utf8')
       for(var coin in coinManager){
         if(coin == this.args[1]){
           new coinManager[coin]().broadcastTx(txhex)
