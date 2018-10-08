@@ -1,5 +1,8 @@
 var bip39 = require('bip39');
 var bitcoin = require('bitcoinjs-lib');
+var {
+  USBAdapter
+} = require('../../adapters/USBAdapter')
 var network = bitcoin.networks.testnet;
 var fs = require('fs')
 
@@ -9,7 +12,7 @@ exports.BTCWallet = (() => {
       this.mnemonic = mnemonic
     }
 
-    createAccount() {
+    async createAccount() {
       let seed = bip39.mnemonicToSeed(this.mnemonic);
       let root = bitcoin.bip32.fromSeed(seed, network)
       let node = root.deriveHardened(44).deriveHardened(1).deriveHardened(0)
@@ -19,8 +22,11 @@ exports.BTCWallet = (() => {
       let extendedPubExt = extNode.neutered().toBase58()
       let extendedPubInt = intNode.neutered().toBase58()
       let extPrv = extNode.toBase58()
-      fs.writeFileSync(`./classes/accounts/privateK.json`, JSON.stringify(extPrv))
-      let account = fs.writeFileSync(`./classes/accounts/${extendedPubExt}.json`, JSON.stringify(nodeSend))
+      fs.writeFileSync(`../InternTestbed2/cold/accounts/${extendedPubExt}`, JSON.stringify(extPrv))
+      let path = await USBAdapter.getPath().catch(err => {
+        console.log(err)
+      })
+      fs.writeFileSync(`${path}/${extendedPubExt}.json`, JSON.stringify(nodeSend))
       // console.log(node) 
     }
   }

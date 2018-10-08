@@ -7,14 +7,15 @@ exports.BTCSignTx = (()=>{
             this.transaction = transaction
         }
     
-        signTx(){
-            let prv = fs.readFileSync('./classes/accounts/privateK.json', 'utf8')
-            // let privateKey = JSON.parse(prv)
-            let keypairSpend = bitcoin.bip32.fromBase58(prv, network)
+        async signTx(){
+            let prv = fs.readFileSync('../InternTestbed2/cold/accounts/tpubDFe6R4ftoEmXJyTBufCo5gzZR41Xkuhegyqt2XQuc5WiZ27yJtq4V3T2nJr2yVNbU3jJmpYCiSiwH7k4QJkqNKqrA1crMQksucUcKQjTDF6.json', 'utf8')
+             let privateKey = JSON.parse(prv)
+            let keypairSpend = bitcoin.bip32.fromBase58(privateKey, network)
             this.transaction.sign(0, keypairSpend)
             let tx = this.transaction.build()
             let txhex = tx.toHex()
-            fs.writeFileSync(`./classes/accounts/signedTx.json`, JSON.stringify(txhex)) 
+            let path = await USBAdapter.getPath().catch(err => {console.log(err)})
+            fs.writeFileSync(`${path}/txhex.json`, JSON.stringify(txhex)) 
             console.log("TXHEX from Cold Class", txhex)
         }
     }
