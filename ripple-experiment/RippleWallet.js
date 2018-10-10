@@ -11,13 +11,14 @@ class RippleWallet {
   constructor(mnemonic) {
     // super();
     this.mnemonic = mnemonic;
+    this.keyPair = "";
   }
 
   createAccount() {
-    const seed = bip39.mnemonicToSeed(this.mnemonic)
-    const m = bip32.fromSeedBuffer(seed)
-    const keyPair = m.derivePath("m/44'/144'/0'/0/0").keyPair.getKeyPairs()
-    console.log("THIS IS THE KEYPAIR: ", keyPair)
+    const seed = bip39.mnemonicToSeed(this.mnemonic);
+    const m = bip32.fromSeedBuffer(seed);
+    const keyPair = m.derivePath("m/44'/144'/0'/0/0").keyPair.getKeyPairs();
+    this.keyPair = keyPair;
     const key = ripple.KeyPair.from_json(keyPair.privateKey.substring(2))
 
     console.log('privateKey: ' + keyPair.privateKey)
@@ -25,12 +26,13 @@ class RippleWallet {
     console.log('publicKey: ' + keyPair.publicKey)
     const address = key.to_address_string();
     console.log(address);
+    console.log(keyPair);
     return address;
     // console.log('address: ' + key.to_address_string())
     // return key.to_address_string();
 
-  };
-};
+  }
+}
 
 // const rippleWallet = new RippleWallet();
 // rippleWallet.createAccount();

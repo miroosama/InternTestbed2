@@ -2,6 +2,7 @@
 
 const args = require('minimist')(process.argv.slice(2))._;
 const RippleAPI = require('ripple-lib').RippleAPI;
+const fs = require('fs');
 
 const {
   RippleWallet
@@ -15,8 +16,13 @@ const {
   RippleSignTx
 } = require('./RippleSignTx');
 
+const {
+  Payment
+} = require('./RipplePayment');
+
 const api = new RippleAPI({
-  server: 'wss://s1.ripple.com' // Public rippled server
+  // server: 'wss://s1.ripple.com' // Public rippled server
+  server: 'wss://s.altnet.rippletest.net:51233' // This is the Ripple testnet server 
 });
 
 class User {
@@ -24,7 +30,7 @@ class User {
     this.args = args;
   }
 
-  path() {
+  async path() {
     switch (this.args[0]) {
       case 'create-account':
         const rippleWallet = new RippleWallet(this.args[1]);
@@ -32,18 +38,25 @@ class User {
         break;
       case 'build-transaction':
         const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3], this.args[4]);
-        rippleTx.buildTx();
+        // rippleTx.buildTx();
+        fs.writeFileSync(`./unsignedTx.json`, JSON.stringify(await rippleTx.run()))
         break;
       case 'sign-transaction':
-        const rippleSignTx = new RippleSignTx(tx);
-        // console.log(this.args)
+        let utx = JSON.parse(fs.readFileSync('./unsignedTx.json', 'utf8'))
+        console.log(utx)
+        const rippleSignTx = new RippleSignTx(utx);
+        // // console.log(this.args)
         rippleSignTx.signTx()
-        //     break;
+        break;
       case 'account-info':
         this.getAccountInfo(this.args[1]);
         break;
       case 'get-balance':
         this.getBalance(this.args[1]);
+        break;
+      case 'make-payment':
+        const payment = new Payment(this.args[1], this.args[2], this.args[3], this.args[4])
+        payment.run();
         break;
       default:
         console.log('Please enter a valid command')
@@ -87,4 +100,6 @@ user.path()
 
 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
 
-'novel matter final only nice cheese address cradle civil crash great flame struggle consider crowd surface purpose saddle mango endless mixed trial tape wrap'
+// novel matter final only nice cheese address cradle civil crash great flame struggle consider crowd surface purpose saddle mango endless mixed trial tape wrap
+
+// Account from the above mnemonic: rHygPg8NvpAgppUBTvHYF4q34oXtb5Uk4f

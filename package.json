@@ -29,6 +29,7 @@
     "drivelist": "^6.4.3",
     "ethereumjs-tx": "^1.3.7",
     "ripple-bip32": "0.0.3",
+    "ripple-keypairs": "^0.10.1",
     "ripple-lib": "^1.0.1",
     "ripple-sign-keypairs": "^1.0.2",
     "ripplelib": "^1.2.5",
