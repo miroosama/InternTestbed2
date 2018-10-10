@@ -42,6 +42,7 @@ exports.BTCTx = (()=>{
         this.currentAddress += 1;
         this.addresses.push(address)
       }  
+      
       else if(response.result.length == 0 && this.intOrExtInd !== 1){
         this.switch = true
         this.intOrExtInd = 1

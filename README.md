@@ -31,7 +31,8 @@ Testbed for Interns
   Gray: quality chaos left cabbage aware sponsor shop burger urge lottery face glimpse
   Celeste: warfare athlete example bus scissors apology mind noodle glow enemy cement scrub
   Osama: human sun wall return tragic bless detail foot rescue gown deer clerk body certain casual
-
+## Ripple notes
+G: { Address: rGQqGU8TtM3aLs6QGjhCyAphE11gaboy4H, Secret: spi5n1yQAkpAF4u47vqfmkwbJmLXA, Balance: 10,000 XRP }
 
 
 ## DEV NOTES
