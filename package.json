@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "jest",
-    "cli": "node ./v1/cli.js"
+    "cli": "node ./v1/cli.js",
+    "ripplecli": "node ./ripple-experiment/cli.js"
   },
   "repository": {
     "type": "git",
@@ -27,10 +28,11 @@
     "bitcoinjs-lib": "^4.0.2",
     "drivelist": "^6.4.3",
     "ethereumjs-tx": "^1.3.7",
-    "npm": "^6.4.1",
     "ripple-bip32": "0.0.3",
     "ripple-keypairs": "^0.10.1",
     "ripple-lib": "^1.0.1",
+    "ripple-sign-keypairs": "^1.0.2",
+    "ripplelib": "^1.2.5",
     "telnet-client": "^0.16.1",
     "web3": "^1.0.0-beta.36"
   }
