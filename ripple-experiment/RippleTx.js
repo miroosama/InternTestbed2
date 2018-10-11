@@ -14,9 +14,9 @@ const {
 } = require("./RippleWallet");
 
 class RippleTx {
-  constructor(account, secret, destination, amount = "") {
+  constructor(account, destination, amount = "") {
     this.account = account;
-    this.secret = secret;
+    // this.secret = secret;
     this.destination = destination;
     this.amount = amount;
   }
@@ -54,7 +54,7 @@ class RippleTx {
     };
 
     const prepared = await api.preparePayment(this.account, payment, {
-      maxLedgerVersionOffset: 5
+      maxLedgerVersionOffset: 500
     });
 
     const tx = prepared.txJSON;

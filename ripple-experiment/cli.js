@@ -17,6 +17,10 @@ const {
 } = require('./RippleSignTx');
 
 const {
+  RippleSubmitTx
+} = require('./RippleSubmitTx');
+
+const {
   Payment
 } = require('./RipplePayment');
 
@@ -37,7 +41,7 @@ class User {
         rippleWallet.createAccount();
         break;
       case 'build-transaction':
-        const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3], this.args[4]);
+        const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3]);
         // rippleTx.buildTx();
         fs.writeFileSync(`./unsignedTx.json`, JSON.stringify(await rippleTx.run()))
         break;
@@ -46,8 +50,11 @@ class User {
         console.log(utx)
         const rippleSignTx = new RippleSignTx(utx);
         // // console.log(this.args)
-        rippleSignTx.signTx()
+        rippleSignTx.signTx();
         break;
+      case 'submit-transaction':
+        let rippleSubmitTx = new RippleSubmitTx(this.args[1]);
+        rippleSubmitTx.run();
       case 'account-info':
         this.getAccountInfo(this.args[1]);
         break;
