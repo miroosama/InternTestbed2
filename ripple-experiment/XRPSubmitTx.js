@@ -29,6 +29,4 @@ class RippleSubmitTx {
   }
 }
 
-module.exports = {
-  RippleSubmitTx
-};
+module.exports = { RippleSubmitTx };

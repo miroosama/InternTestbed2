@@ -1,6 +1,5 @@
 const fs = require('fs');
 const RippleAPI = require('ripple-lib').RippleAPI;
-
 const { USBAdapter } = require('../adapters/USBAdapter');
 
 
@@ -9,7 +8,7 @@ const {
 } = require("../devbin/RippleWallet");
 
 class RippleTx {
-  constructor(accountName, accountIndex, destination, amount = "") {
+  constructor(accountName, accountIndex, destination, amount) {
     this.accountName = accountName;
     this.accountIndex = accountIndex;
     this.destination = destination;
@@ -62,10 +61,4 @@ class RippleTx {
 }
 
 
-module.exports = RippleTx;
-
-'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY'
-
-"key.to_address_string()"
-
-"npm run --silent cli sign-transaction rPqjUtmrY9JmfPoDVnBgjQkaDpxTPdzfPp sp6T5GywsDgzqzawedNkVNYiW1P8e rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY 1"
+module.exports = { RippleTx };

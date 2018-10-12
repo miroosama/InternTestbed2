@@ -14,7 +14,7 @@ class RippleSignTx {
     this.tx = this.UTX.tx;
     this.keyPair = {
       publicKey: this.UTX.pubKey,
-      privateKey: fs.readFileSync(`ripple-experiment/keyDump/${this.UTX.pubKey}`,'utf8');
+      privateKey: fs.readFileSync(`ripple-experiment/keyDump/${this.UTX.pubKey}`,'utf8')
     }
     // console.log(this.keyPair)
     let txSign = sign(this.tx, this.keyPair);
@@ -24,6 +24,4 @@ class RippleSignTx {
   }
 }
 
-module.exports = {
-  RippleSignTx
-};
+module.exports = { RippleSignTx };
