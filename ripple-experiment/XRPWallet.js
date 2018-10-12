@@ -81,4 +81,4 @@ class XRPWallet {
         })
     }
 }
-module.exports = XRPWallet;
+module.exports = { XRPWallet };

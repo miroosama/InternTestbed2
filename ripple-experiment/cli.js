@@ -6,23 +6,31 @@ const fs = require('fs');
 
 const {
   RippleWallet
+<<<<<<< HEAD
 } = require('../devbin/RippleWallet');
+=======
+} = require('./XRPWallet');
+>>>>>>> fcc14438490c1140ac807db169393e2f9de7e305
 
 const {
   RippleTx
-} = require('./RippleTx');
+} = require('./XRPTx');
 
 const {
   RippleSignTx
-} = require('./RippleSignTx');
+} = require('./XRPSign');
 
 const {
   RippleSubmitTx
+<<<<<<< HEAD
 } = require('./RippleSubmitTx');
 
 const {
   Payment
 } = require('../devbin/RipplePayment');
+=======
+} = require('./XRPSubmitTx');
+>>>>>>> fcc14438490c1140ac807db169393e2f9de7e305
 
 const api = new RippleAPI({
   // server: 'wss://s1.ripple.com' // Public rippled server
@@ -37,10 +45,10 @@ class User {
   async path() {
     switch (this.args[0]) {
       case 'create-account':
-        const rippleWallet = new RippleWallet(this.args[1]);
-        rippleWallet.createAccount();
+        new XRPWallet(this.args[1], this.args[2]);
         break;
       case 'build-transaction':
+<<<<<<< HEAD
         const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3], this.args[4]);
         // rippleTx.buildTx();
         fs.writeFileSync(`./unsignedTx.json`, JSON.stringify(await rippleTx.run()))
@@ -52,15 +60,20 @@ class User {
         break;
       case 'submit-transaction':
         let rippleSubmitTx = new RippleSubmitTx();
+=======
+        new RippleTx(this.args[1], this.args[2], this.args[3], this.args[4]);
+        break;
+      case 'sign-transaction':
+        new RippleSignTx();
+        break;
+      case 'submit-transaction':
+        new RippleSubmitTx();
+>>>>>>> fcc14438490c1140ac807db169393e2f9de7e305
       case 'account-info':
         this.getAccountInfo(this.args[1]);
         break;
       case 'get-balance':
         this.getBalance(this.args[1]);
-        break;
-      case 'make-payment':
-        const payment = new Payment(this.args[1], this.args[2], this.args[3], this.args[4])
-        payment.run();
         break;
       default:
         console.log('Please enter a valid command')
