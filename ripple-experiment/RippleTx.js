@@ -1,4 +1,3 @@
-const fs = require('fs');
 const RippleAPI = require('ripple-lib').RippleAPI;
 const fs = require('fs');
 
@@ -12,7 +11,7 @@ const {
 } = require("../devbin/RippleWallet");
 
 class RippleTx {
-  constructor(accountName, accountIndex, destination, amount = "") {
+  constructor(accountName, accountIndex, destination, amount) {
     this.accountName = accountName;
     this.accountIndex = accountIndex;
     this.destination = destination;
