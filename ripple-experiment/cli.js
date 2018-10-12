@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const {
   RippleWallet
-} = require('./RippleWallet');
+} = require('../devbin/RippleWallet');
 
 const {
   RippleTx
@@ -22,7 +22,7 @@ const {
 
 const {
   Payment
-} = require('./RipplePayment');
+} = require('../devbin/RipplePayment');
 
 const api = new RippleAPI({
   // server: 'wss://s1.ripple.com' // Public rippled server
@@ -41,20 +41,17 @@ class User {
         rippleWallet.createAccount();
         break;
       case 'build-transaction':
-        const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3]);
+        const rippleTx = new RippleTx(this.args[1], this.args[2], this.args[3], this.args[4]);
         // rippleTx.buildTx();
         fs.writeFileSync(`./unsignedTx.json`, JSON.stringify(await rippleTx.run()))
         break;
       case 'sign-transaction':
-        let utx = JSON.parse(fs.readFileSync('./unsignedTx.json', 'utf8'))
-        console.log(utx)
-        const rippleSignTx = new RippleSignTx(utx);
+        const rippleSignTx = new RippleSignTx();
         // // console.log(this.args)
-        rippleSignTx.signTx();
+
         break;
       case 'submit-transaction':
-        let rippleSubmitTx = new RippleSubmitTx(this.args[1]);
-        rippleSubmitTx.run();
+        let rippleSubmitTx = new RippleSubmitTx();
       case 'account-info':
         this.getAccountInfo(this.args[1]);
         break;

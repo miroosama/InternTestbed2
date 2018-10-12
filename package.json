@@ -9,7 +9,8 @@
   "scripts": {
     "test": "jest",
     "cli": "node ./v1/cli.js",
-    "ripplecli": "node ./ripple-experiment/cli.js"
+    "ripplecli": "node ./ripple-experiment/cli.js",
+    "oldripplecli": "node ./ripple-experiment/cli-old.js"
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,7 @@ const bip32 = require("ripple-bip32");
 const ripple = require('ripplelib');
 const sign = require('ripple-sign-keypairs');
 const RippleAPI = require('ripple-lib').RippleAPI;
+const fs = require('fs');
 
 const {
   USBAdapter
@@ -11,7 +12,7 @@ const {
 
 const {
   RippleWallet
-} = require("./RippleWallet");
+} = require("../devbin/RippleWallet");
 
 class RippleTx {
   constructor(accountName, accountIndex, destination, amount = "") {
@@ -69,7 +70,9 @@ class RippleTx {
 }
 
 
-module.exports = RippleTx;
+module.exports = {
+  RippleTx
+};
 
 'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY'
 
