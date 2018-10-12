@@ -54,7 +54,7 @@ class XRPWallet {
             fs.writeFileSync(`ripple-experiment/coldAccounts/${this.name}.json`, JSON.stringify(this.getColdAccount()));
             fs.writeFileSync(`${path}/accounts/${this.name}.json`, JSON.stringify(this.export()));
             this.accounts.map(account=>{
-                fs.writeFileSync(`ripple-experiment/keyDump/${account.keyPair.publicKey}`, JSON.stringify(account.keyPair.privateKey));
+                fs.writeFileSync(`ripple-experiment/keyDump/${account.keyPair.publicKey}`, account.keyPair.privateKey);
             })
         } else {
             console.log('please insert USB')
