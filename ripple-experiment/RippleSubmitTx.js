@@ -1,8 +1,5 @@
-const bip39 = require("bip39");
-const bip32 = require("ripple-bip32");
-const ripple = require('ripplelib');
-const sign = require('ripple-sign-keypairs');
 const RippleAPI = require('ripple-lib').RippleAPI;
+const { USBAdapter } = require('../adapters/USBAdapter');
 
 const api = new RippleAPI({
   // server: 'wss://s1.ripple.com' // Public rippled server
@@ -10,11 +7,15 @@ const api = new RippleAPI({
 });
 
 class RippleSubmitTx {
-  constructor(signedTx) {
-    this.signedTx = signedTx;
+  constructor() {
+    this.run()
   }
 
   async run() {
+    const usbPath = await USBAdapter.getPath().catch(err => {console.log(err)});
+    this.STX = JSON.parse(fs.readFileSync(`${usbPath}\STX\\STX.json`,'utf8'));
+    console.log(STX)
+    this.signedTx = STX
     await api.connect();
 
     const res = await api.submit(this.signedTx);

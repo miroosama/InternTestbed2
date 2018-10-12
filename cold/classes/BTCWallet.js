@@ -6,7 +6,18 @@ var {
 var network = bitcoin.networks.testnet;
 var fs = require('fs')
 
+<<<<<<< HEAD
+exports.BTCWallet = (()=>{
+  /** This class must be refactored to contain the getBalance and getInfo methods
+   *  Must also be refactoed to allow a user to create multiple accounts. In BTC
+   *  the derivation path is described thusly: 44'/0'/Account'/Change/Address.
+   *  Accounts are hardened derivations of the coin, built off of a seed value.
+   *  this means our UTXO indexer must be aware of every account. A wallet
+   *  therefore must hold state describing its accounts (right?)
+   */
+=======
 exports.BTCWallet = (() => {
+>>>>>>> 3a9a1814f75fd5c93752b371701327ad1963a17d
   return class {
     constructor(mnemonic = "") {
       this.mnemonic = mnemonic
