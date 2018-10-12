@@ -1,10 +1,7 @@
+const fs = require('fs')
 const RippleAPI = require('ripple-lib').RippleAPI;
 const { USBAdapter } = require('../adapters/USBAdapter');
-const fs = require('fs')
-const api = new RippleAPI({
-  // server: 'wss://s1.ripple.com' // Public rippled server
-  server: 'wss://s.altnet.rippletest.net:51233' // This is the Ripple testnet server 
-});
+
 
 class RippleSubmitTx {
   constructor() {
@@ -12,6 +9,10 @@ class RippleSubmitTx {
   }
 
   async run() {
+    const api = new RippleAPI({
+      // This is the Ripple testnet server 
+      server: 'wss://s.altnet.rippletest.net:51233' 
+    });
     const usbPath = await USBAdapter.getPath().catch(err => {console.log(err)});
     this.STX = JSON.parse(fs.readFileSync(`${usbPath}\STX\\STX.json`));
     
