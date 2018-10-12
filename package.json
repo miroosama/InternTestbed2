@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/10thFloorSoft/InternTestbed2#readme",
   "dependencies": {
+    "base58": "^1.0.1",
+    "base58check": "^2.0.0",
     "bip32": "^1.0.2",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^4.0.2",

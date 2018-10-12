@@ -1,5 +1,6 @@
 const rippleKeyPairs = require('ripple-keypairs');
 const readline = require('readline');
+const Base58 = require('base58');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -22,9 +23,21 @@ const rl = readline.createInterface({
 //   })
 // })
 
-rl.question("Enter a secret: ", (answer1) => {
-  select(answer1);
-})
+// rl.question("Enter a secret: ", (answer1) => {
+//   select(answer1);
+// })
+
+
+function question() {
+  rl.question("Enter a secret: ", (answer1) => {
+    try {
+      if (typeof Base58.decode(answer1) === 'number') select(answer1);
+    } catch (err) {
+      console.log(err.message)
+      question();
+    }
+  })
+}
 
 
 function select(answer1) {
@@ -42,7 +55,7 @@ function select(answer1) {
         rl.close();
         break;
       default:
-        console.log('pelase enter a secret and a question');
+        console.log("pelase enter either 'address' or 'keypair'");
         select(answer1);
         break;
     }
@@ -62,3 +75,6 @@ function deriveAddress(secret) {
   console.log(address);
   return address;
 }
+
+
+question();

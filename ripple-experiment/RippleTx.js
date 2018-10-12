@@ -21,7 +21,6 @@ class RippleTx {
     this.amount = amount;
   }
 
-
   // buildTx() {
   //   let tx = {
   //     TransactionType: 'Payment',
