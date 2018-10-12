@@ -4,38 +4,34 @@ const ripple = require('ripplelib');
 const sign = require('ripple-sign-keypairs');
 const RippleAPI = require('ripple-lib').RippleAPI;
 
-const api = new RippleAPI({
-  // server: 'wss://s1.ripple.com' // Public rippled server
-  server: 'wss://s.altnet.rippletest.net:51233' // This is the Ripple testnet server 
-});
+const { USBAdapter } = require('../adapters/USBAdapter')
+
 
 const {
   RippleWallet
 } = require("./RippleWallet");
 
 class RippleTx {
-  constructor(account, destination, amount = "") {
-    this.account = account;
-    // this.secret = secret;
+  constructor(accountName, accountIndex, destination, amount = "") {
+    this.accountName = accountName;
+    this.accountIndex = accountIndex;
     this.destination = destination;
     this.amount = amount;
+    this.run();
   }
 
-
-  // buildTx() {
-  //   let tx = {
-  //     TransactionType: 'Payment',
-  //     Account: this.account,
-  //     Fee: (0.000012 * 1000 * 1000) + '',
-  //     Destination: this.destination,
-  //     DestinationTag: 2,
-  //     Amount: (this.amount * 1000 * 1000) + '',
-  //     Sequence: 0
-  //   };
-
   async run() {
+    
+    const api = new RippleAPI({
+      // This is the Ripple testnet server
+      server: 'wss://s.altnet.rippletest.net:51233'  
+    });
     await api.connect();
+    const usbPath = await USBAdapter.getPath().catch(err => {console.log(err)});
+    const wallet = JSON.parse(fs.readFileSync(`${usbPath}\accounts\\${this.accountName}.json`,'utf8'))
 
+    this.account = wallet.accounts[this.accountIndex].address;
+    this.pubKey = wallet.accounts[this.accountIndex].pubKey
     const payment = {
       source: {
         address: this.account,
@@ -57,19 +53,19 @@ class RippleTx {
       maxLedgerVersionOffset: 500
     });
 
-    const tx = prepared.txJSON;
+    const tx = {
+      tx: prepared.txJSON,
+      pubKey: this.pubKey
+    }
 
     api.disconnect();
     console.log(tx);
-    // console.log(JSON.stringify(tx));
-    return tx;
+    fs.writeFileSync(`${usbPath}/UTX/UTX.json`, JSON.stringify(tx));
   }
 }
 
 
-module.exports = {
-  RippleTx
-};
+module.exports = RippleTx;
 
 'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY'
 
