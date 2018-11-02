@@ -1,11 +1,13 @@
 const axios = require('axios');
 
 const rootUrl = "devapi.custody.center";
-const test_pw = "WK!l@g@1fY$A3*l";
+//end user password
+const test_pw = "";
 let userId = "";
-let firm_users_token = "";
+let end_users_token = "";
 
-const api_token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiR3JheXNvbiBDb3dpbmciLCJJcGEiOiI2NS4yMTcuMjQ0Ljk4IiwiUGFyZW50Q29tcGFueSI6IkZvb2JhciAmIFNvbnMgQ3J5cHRvIEhvbGRpbmcgSW5jIiwiUGFpIjoiYjQyNTkxODItMDViMS00Mjg3LTgzYTYtY2FiMDJhNDc0ZjFjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiUGFydG5lciIsIlVpZCI6IjFmYjNhZGNmLTcxNjEtNDRkNC04Yzg2LTA4ZDYzZjUzMWQ0YSIsIm5iZiI6MTU0MTAxNzc1OCwiZXhwIjoxNTcyNTUzNzU4LCJpc3MiOiJkaWdpdGFsYXNzZXRjdXN0b2R5LmNvbSIsImF1ZCI6IlJlZFdpbmdBdWRpZW5jZSJ9.IJyCZCI1sigA1hfcdDBfqPH11ddk3zS9IH3cQqH8Y0I";
+//set token here
+const api_token = "";
 
 
 function getHeaders(token){
@@ -32,6 +34,7 @@ function validateCredentials() {
     userId = response.data.userId;
   })
   .catch(error => {
+    console.log(error)
   });
 }
 
@@ -46,9 +49,10 @@ function validateTotp() {
     headers: getHeaders(api_token),
   })
   .then(response => {
-    firm_users_token = `Bearer ${response.data}`;
+    end_users_token = `Bearer ${response.data}`;
   })
   .catch(error => {
+    console.log(error)
   });
 }
 
@@ -56,12 +60,13 @@ function getCoins() {
   axios({
     method: 'get',
     url: `https://${rootUrl}/api/reference/coins/`,
-    headers: getHeaders(firm_users_token),
+    headers: getHeaders(end_users_token),
   })
   .then(response => {
     console.log(response.data);
   })
   .catch(error => {
+    console.log(error)
   });
 }
 
