@@ -1,13 +1,8 @@
 const RippleAPI = require('ripple-lib').RippleAPI;
-<<<<<<< HEAD:ripple-experiment/RippleTx.js
 const fs = require('fs');
-
 const {
   USBAdapter
 } = require('../adapters/USBAdapter');
-=======
-const { USBAdapter } = require('../adapters/USBAdapter');
->>>>>>> fcc14438490c1140ac807db169393e2f9de7e305:ripple-experiment/XRPTx.js
 
 
 const {
@@ -70,16 +65,6 @@ class RippleTx {
 }
 
 
-<<<<<<< HEAD:ripple-experiment/RippleTx.js
 module.exports = {
   RippleTx
 };
-
-'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY'
-
-"key.to_address_string()"
-
-"npm run --silent cli sign-transaction rPqjUtmrY9JmfPoDVnBgjQkaDpxTPdzfPp sp6T5GywsDgzqzawedNkVNYiW1P8e rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY 1"
-=======
-module.exports = { RippleTx };
->>>>>>> fcc14438490c1140ac807db169393e2f9de7e305:ripple-experiment/XRPTx.js
