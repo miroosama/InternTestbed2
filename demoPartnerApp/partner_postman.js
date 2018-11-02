@@ -16,7 +16,7 @@ const rl = readline.createInterface({
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
-function getPartnerToken() {
+function getApiToken() {
   axios({
     method: 'post',
     url: `https://${rootUrl}/api/identity/getsyspartnertoken`,
@@ -31,7 +31,7 @@ function getPartnerToken() {
   })
   .then(response => {
     jwt = `Bearer ${response.data}`;
-    console.log('\n' + response.data);
+    console.log('\nYour API token:\n' + response.data);
   })
   .catch(error => {
     console.log(error.response.status);
@@ -54,7 +54,7 @@ function getFirmToken() {
   })
   .then(response => {
     firm_jwt = `Bearer ${response.data}`;
-    console.log('\n' + response.data);
+    console.log('\nYour Firm token:\n' + response.data);
   })
   .catch(error => {
     console.log(error.response.status);
@@ -72,7 +72,7 @@ function getCoins() {
     }
   })
   .then(response => {
-    console.log('\n');
+    console.log('\nCoins:\n');
     console.log(response.data);
   })
   .catch(error => {
@@ -80,6 +80,7 @@ function getCoins() {
   });
 }
 
-getPartnerToken();
+getApiToken();
 setTimeout(getFirmToken, 3000);
 setTimeout(getCoins, 6000);
+setTimeout(process.exit, 9000);

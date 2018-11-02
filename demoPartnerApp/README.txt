@@ -18,7 +18,7 @@ SECTION 2: AUTHENTICATING
 4. you will recieve a UUID as the response. set this ID to {{userId}}
 5. start building a request to the /api/identity/validatetotp
 6. pass the partner token in as the bearer auth
-7. set the body to { "userId": "{{userId}}", "totpCode": "9999999"} (note: these seven 9s are just part of the dev build
+7. set the body to { "userId": `${userId}`, "totpCode": "9999999"} (note: these seven 9s are just part of the dev build
 8. execute the request
 9. the response will cotain a new token: this token is your firm users token, and will be used from here on out as a header when building all subsequent requests 
 
