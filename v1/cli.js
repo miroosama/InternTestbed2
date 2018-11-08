@@ -77,7 +77,7 @@ class User {
       }
     }
 
-   await broadcastTx(){
+   async broadcastTx(){
       let path = await USBAdapter.getPath().catch(err => {console.log(err)})
       let txhex = fs.readFileSync(`${path}/txhex.json`, 'utf8')
       for(var coin in coinManager){
