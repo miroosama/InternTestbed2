@@ -16,23 +16,23 @@ exports.ETHTx = (()=>{
             }
     
         buildingTx(soundAcc, amount) {
-         web3.eth.getTransactionCount(this.account.address, (err, txCount) => { 
-            const txObject = {
-                nonce: web3.utils.toHex(txCount),
-                to: soundAcc,
-                value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
-                gasLimit: web3.utils.toHex(21000),
-                gasPrice: web3.utils.toHex(web3.utils.toWei('41', 'gwei'))
-            }
-            const tx = new Tx(txObject) 
-            fs.writeFileSync()
-        })
+            web3.eth.getTransactionCount(this.account.address, (err, txCount) => { 
+                const txObject = {
+                    nonce: web3.utils.toHex(txCount),
+                    to: soundAcc,
+                    value: web3.utils.toHex(web3.utils.toWei(amount, 'ether')),
+                    gasLimit: web3.utils.toHex(21000),
+                    gasPrice: web3.utils.toHex(web3.utils.toWei('41', 'gwei'))
+                }
+                const tx = new Tx(txObject) 
+                fs.writeFileSync()
+            })
             let txSigned = this.signTx(tx)
     
             web3.eth.sendSignedTransaction(txSigned, (err, txHash) => {
                 console.log('txhash:', txHash)
             })
-     }
+        }
     
         broadcastTx(txSigned){
             web3.eth.sendSignedTransaction(txSigned, (err, txHash) => {
@@ -47,7 +47,6 @@ exports.ETHTx = (()=>{
             const serializedTransaction = tx.serialize() 
             const raw = '0x' + serializedTransaction.toString('hex')
             return raw
-        }
-    
+        }    
     }
 })();

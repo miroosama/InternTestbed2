@@ -2,6 +2,7 @@ var bitcoin = require('bitcoinjs-lib');
 const network = bitcoin.networks.testnet;
 const coinSelect = require('../classes/coinselect/coinSelect.js')
 const { TelnetAdapter } = require('../../adapters/TelnetAdapter.js')
+var { USBAdapter } = require('../../adapters/USBAdapter')
 var fs = require('fs')
 
 exports.BTCTx = (()=>{
@@ -41,6 +42,7 @@ exports.BTCTx = (()=>{
         this.currentAddress += 1;
         this.addresses.push(address)
       }  
+      
       else if(response.result.length == 0 && this.intOrExtInd !== 1){
         this.switch = true
         this.intOrExtInd = 1
@@ -122,7 +124,8 @@ exports.BTCTx = (()=>{
         }
         transaction.addOutput(output.address, output.value)
       })
-      fs.writeFileSync(`./classes/accounts/unsignedTx.json`, JSON.stringify(transaction)) 
+      let path = await USBAdapter.getPath().catch(err => {console.log(err)})
+      fs.writeFileSync(`${path}/unsignedTx.json`, JSON.stringify(transaction))
       // console.log(node) 
       // let signed = new Sign(transaction)
       // signed.signTx()
