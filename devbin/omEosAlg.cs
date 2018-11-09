@@ -28,4 +28,3 @@ namespace Bluebird.Business.Tools
     }
 }
 
-eosAccountNamer("EOS7QqYDZ3UCiAVBYRGdsfyaEZBGYasxZXqkTM5tAzqYhAEyW3byr")
