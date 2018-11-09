@@ -13,7 +13,7 @@ let id = 0
 function generateAccounts(){
     for(let i = 0; i < 1600; i++){
     let mnemonic = bip39.generateMnemonic(256)
-    const wallet = eos.fromMasterSeed(mnemonic)
+    const wallet = eos.fromMnemonic(mnemonic)
     const pubkey = wallet.getPublicKey()
     console.log(pubkey)
     fs.open('./pubkeys.txt', 'a', 666, function( e, id ) {
@@ -25,7 +25,7 @@ function generateAccounts(){
        });
        id += 1
     }
-
 }
+
 
 generateAccounts()
