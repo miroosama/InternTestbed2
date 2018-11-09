@@ -1,31 +1,31 @@
-const electron = window.require('electron');
-const remote = electron.remote;
-const bitcoin = remote.require('bitcoinjs-lib');
-const eosUtil = remote.require('eosjs-ecc');
-class EOSWalletHelper {
-    constructor(Seed) {
-        this.seed = Seed;
+// const electron = window.require('electron');
+// const remote = electron.remote;
+const bitcoin = require('bitcoinjs-lib');
+const eosUtil = require('eosjs-ecc');
+var bip39 = require('bip39');
+var os = require("os");
+const fs = require('fs')
+
+let eos = require('@cobo/eos')
+
+let id = 0
+
+function generateAccounts(){
+    for(let i = 0; i < 1600; i++){
+    let mnemonic = bip39.generateMnemonic(256)
+    const wallet = eos.fromMasterSeed(mnemonic)
+    const pubkey = wallet.getPublicKey()
+    console.log(pubkey)
+    fs.open('./pubkeys.txt', 'a', 666, function( e, id ) {
+        fs.write( id, pubkey + os.EOL, null, 'utf8', function(){
+         fs.close(id, function(){
+          console.log('file is updated');
+         });
+        });
+       });
+       id += 1
     }
-    getAccount(env, index, coinType) {
-        return GetAccount(env, this.seed, index, coinType);
-    }
+
 }
-class Account {
-    constructor(Address, PrivateKey) {
-        this.address = Address;
-        this.privateKey = PrivateKey;
-    }
-}
-function GetAccount(network, seed, index, coinType) {
-    let networkUsed = bitcoin.networks.bitcoin;
-    console.log("Network Used: ", networkUsed);
-    console.log("EOS wallet helper get account. seed: %s index %s coinType %s" , seed, index, coinType);
-    var node = bitcoin.HDNode.fromSeedBuffer(seed, networkUsed);
-    var EOSNode = node.deriveHardened(44).deriveHardened(coinType).deriveHardened(index).derive(0).derive(0);
-    var privKeyBuffer = EOSNode.keyPair.d;
-    var privKey = eosUtil.PrivateKey(privKeyBuffer);
-    var privKeyWIF = privKey.toWif();
-    var address = privKey.toPublic().toString();
-    return new Account(address, privKeyWIF);
-}
-module.exports = EOSWalletHelper;
+
+generateAccounts()
