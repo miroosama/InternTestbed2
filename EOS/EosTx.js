@@ -13,7 +13,7 @@ let eos = require('@cobo/eos')
 var request = require("request");
 
 function eosBlockchain(action){
-let params = JSON.stringify({account_name:"gqztenjzgege")
+let params = JSON.stringify({account_name:"gqztenjzgege"})
 var options = { method: 'POST', body: [`${params}`],
   url: `https://api.eosnewyork.io/v1/chain/${action}`};
 
