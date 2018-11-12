@@ -1,6 +1,6 @@
 const bip39 = require("bip39");
 const bip32 = require("bip32");
-// const eosUtil = require('eosjs-ecc');
+const {pubKeyToAddress} = require('@cobo/crypto-address')
 const fs = require('fs')
 const { USBAdapter } = require('../adapters/USBAdapter')
 
@@ -13,8 +13,8 @@ class EOSWallet {
     
         this.name = name;
         this.accounts = [];
-        this.coinType = 43;
-        console.log(bip32)
+        this.coinType = 60;
+        console.log(pubKeyToAddress)
         if (input==''){
             this.mnemonic = bip39.generateMnemonic(256);
             this.seed = bip39.mnemonicToSeed(this.mnemonic);
@@ -39,25 +39,13 @@ class EOSWallet {
             {
                 aXPrv: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'`).toBase58(),
                 aXPub: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'`).neutered().toBase58(),
-                address: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`),
-                keyPair: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`)
+                address: pubKeyToAddress(this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).neutered().publicKey.toString('hex'),'ethereum'),
+                priv: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).toWIF(),
+                pub: '0x' + this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).neutered().publicKey.toString('hex')
             }
         )}
         // this.writeOut();
         console.log(this.getColdAccount())
-    }
-    async writeOut(){
-        let path = await USBAdapter.getPath().catch(err => {console.log(err)});
-        if (path) {
-            console.log(`${path}/accounts/${this.name}.json`)
-            fs.writeFileSync(`ripple-experiment/coldAccounts/${this.name}.json`, JSON.stringify(this.getColdAccount()));
-            fs.writeFileSync(`${path}/accounts/${this.name}.json`, JSON.stringify(this.export()));
-            this.accounts.map(account=>{
-                fs.writeFileSync(`ripple-experiment/keyDump/${account.keyPair.publicKey}`, account.keyPair.privateKey);
-            })
-        } else {
-            console.log('please insert USB')
-        }
     }
     getColdAccount(){
         return({
@@ -68,16 +56,5 @@ class EOSWallet {
             accounts: this.accounts
         })
     }
-    export(){
-        return ({
-            name: this.name,
-            accounts: this.accounts.map(account=>{
-                return {
-                    address: account.address,
-                    pubKey: account.keyPair.publicKey
-                }
-            })
-        })
-    }
 }
-new EOSWallet();
+new EOSWallet('dingo','eight person fade off border garden ugly borrow rhythm bronze gadget combine tower list bus raven flock ethics adult task galaxy detect tilt envelope');
