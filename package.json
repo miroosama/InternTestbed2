@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/10thFloorSoft/InternTestbed2#readme",
   "dependencies": {
+    "@cobo/crypto-address": "^0.1.4",
     "@cobo/eos": "^0.2.0",
     "axios": "^0.18.0",
     "base58": "^1.0.1",
