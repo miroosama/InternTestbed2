@@ -24,7 +24,7 @@ class EOSWallet {
             this.mnemonic = input;
             this.seed = bip39.mnemonicToSeed(this.mnemonic);
             this.rootNode = bip32.fromSeed(this.seed);
-            this.rootKey = this.rootNode.toBase58();
+            this.rootKey = this.rootNode.toBase58(); 
         }
         
         /** The following for loop region can be nested further
