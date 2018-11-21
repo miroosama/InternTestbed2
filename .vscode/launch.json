@@ -7,6 +7,14 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Debug omThunder.js",
+            "program": "${workspaceRoot}/devbin/omThunder.js",
+            "env": { },
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug bitcoin.js",
             "program": "${workspaceRoot}/classes/bitcoin.js",
             "env": { },

@@ -1,16 +1,16 @@
 // const electron = window.require('electron');
 // const remote = electron.remote;
-const bitcoin = require('bitcoinjs-lib');
-const eosUtil = require('eosjs-ecc');
-var bip39 = require('bip39');
-var os = require("os");
-const fs = require('fs')
-const hdkey = require('hdkey')
-const wif = require('wif')
+// const bitcoin = require('bitcoinjs-lib');
+// const eosUtil = require('eosjs-ecc');
+// var bip39 = require('bip39');
+// var os = require("os");
+// const fs = require('fs')
+// const hdkey = require('hdkey')
+// const wif = require('wif')
 
-let eos = require('@cobo/eos')
+// let eos = require('@cobo/eos')
 
-let id = 0
+// let id = 0
 
 // function generateAccounts(){
 //     for(let i = 0; i < 1; i++){
@@ -55,16 +55,16 @@ let id = 0
 //   console.log(body);
 // });
 
-var request = require("request");
-// let params = JSON.stringify({account_name:"gqztenjzgege")
-var options = { method: 'POST',
-  url: 'https://api.eosnewyork.io/v1/chain/get_info'};
+// var request = require("request");
+// // let params = JSON.stringify({account_name:"gqztenjzgege")
+// var options = { method: 'POST',
+//   url: 'https://18.217.207.243:8888/v1/chain/get_info'};
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+// request(options, function (error, response, body) {
+//   if (error) throw new Error(error);
 
-  console.log(body);
-});
+//   console.log(body);
+// });
 
 
 
@@ -80,3 +80,37 @@ request(options, function (error, response, body) {
 //     var address = privKey.toPublic().toString();
 //     return new Account(address, privKeyWIF);
 // }
+
+
+// const Eos = require('eosjs');
+// // // const eos = Eos();
+
+
+// const config = {
+//     expireInSeconds: 60,
+//     broadcast: true,
+//     debug: false,
+//     sign: true,
+//     // mainNet bp endpoint
+//     httpEndpoint: 'https://api.eosnewyork.io',
+//     // mainNet chainId
+// };
+
+// // const eos = Eos(config);
+
+// // const eos = Eos(config);
+
+// const eos = Eos(config).getInfo((error, info) => {
+//     console.log(error, info);
+// });
+
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.eosnewyork.io/v1/chain/get_info' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});

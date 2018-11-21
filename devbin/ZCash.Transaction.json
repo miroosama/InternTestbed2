@@ -1,0 +1,37 @@
+{
+  "TxId": 1347,
+  "SendAmt": 100000,
+  "Fee": 13633,
+  "GasPrice": 0,
+  "Nonce": 0,
+  "GasLimit": 0,
+  "ExtPublicKey": "xpub6By315i6A5mTEq24p6K3m9VpCeav9ACFLbZvesgpgDktKjT3VLht5Lf63jnUiswEazz4BLCE7T2CbdA28sBKwgzs3E2Ecba5D4aykJ54RYk",
+  "CoinType": "ZEC",
+  "FromAddress": null,
+  "ToAddress": "ZS+knDc0On3/3y/Cn5Me3VnFzK77PKNH8Kd6Eo0RD/na6xx6ClOwwio+6mCSty9Gn0FmQQGx3URCKpQqNAWLAsP8sxuoIl31buqr8ViE5M2KX8lSxwSikS6BE5c4uZ906OaDg8ifodenmYKvrjnwNRlyUlsghm1I4Xs8pW44F+bUaYFiy0gW1J0ELAtcsm+MMQo6jtsQmG1PahIi2Mf0YhYcxFbopiW90twFTDyIkZFz8A4LwnM6uSeJh0e24f6cimb6Y6k3vHgjna1iJWhwkt2rmT/iZsyvhds11DhlRC5iABvdPUb6Xw7DmsKQFZtxoCCrBu4R8J77AbIJlOe/Pg==",
+  "ChgAddress": "t1fCMmWVN4o9v75weMTGQYuN22ZcbQ8BSST",
+  "Contract": null,
+  "Decimal": 0,
+  "InputUTXOs": [
+    {
+      "Tx_hash": "56440fb4224ea997d833374c3412355c8f38b01410c71b9d49fee279a8c35fd4",
+      "Tx_pos": 0,
+      "Height": 411512,
+      "Value": 5271881,
+      "Address": "t1b9NDripdRZMWazHS3HjGyMrWpPrCRwp2i",
+      "KeyHash": "02d67529dea30748236f0836fc4b190f8b4c137ae480cf7e094c3c2746e7de1bd5",
+      "AddrType": 1,
+      "AddrIndex": 13,
+      "tmp": null
+    }
+  ],
+  "Params": null,
+  "TX": null,
+  "Flags": 0,
+  "Sequence": 0,
+  "LastLedgerSequence": 0,
+  "DestinationTag": null,
+  "TransactionType": null,
+  "Testnet": false,
+  "Mocknet": false
+}
