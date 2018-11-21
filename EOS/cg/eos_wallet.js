@@ -3,29 +3,47 @@ const bip39 = require('bip39')
 const hdkey = require('hdkey')
 const fs = require('fs')
 
-// mask tell letter wide quit program rally fever thank harvest maple dismiss
+            const mnemonic = bip39.generateMnemonic()
 
-// tumble inch depth water garlic grief scan task fall wife know shift token oven shiver hole unhappy ship panel exchange face topple festival boat
-
-exports.wallet = (() => {
-    return class {
-        constructor(Mnemonic="mask tell letter wide quit program rally fever thank harvest maple dismiss") {
-            this.mnemonic = Mnemonic
-        }
-
-        createAccount() {
+            const network = bitcoin.networks.testnet
             const seed = bip39.mnemonicToSeed(mnemonic)
             const root = hdkey.fromMasterSeed(mnemonic)
-            const addressnode = root.derive("m/44'/0'/0'/0/0")
-            const pubkey = addressnode._publicKey
-            const privatekey = addressnode._privateKey
-            const network = bitcoin.networks.testnet
-            const { address } = bitcoin.payments.p2pkh({ pubkey, network })
-            fs.writeFileSync(`./addresses.json`, 'the private key: ' + JSON.stringify(privatekey), (err) => { if (err) throw err; } )
-        }
-    }
-})();
 
+            // const masterPrivateKey = root.privateKey.toString('hex')
+            // console.log(masterPrivateKey)
+
+            
+            const derived = root.derivePath("m/44'/0'/0'/0/0")
+            console.log('THE PATH:', derived)
+
+            const keyPair = bitcoin.ECPair.makeRandom({ network })
+            console.log('KEYPAIR:', keyPair)
+            const publicKey = keyPair.publicKey.toString('hex')
+            const privateKey = keyPair.toWIF()
+            console.log(publicKey, privateKey)
+
+            const ourWallet = new bitcoin.ECPair.fromWIF(privateKey, network )
+
+            console.log(ourWallet.publicKey.toString('hex'))
+
+
+
+
+
+            // const addressnode = root.derive("m/44'/0'/0'/0/0")
+            // const pubkey = addressnode._publicKey
+            // const privatekey = addressnode._privateKey
+            // // const network = bitcoin.networks.testnet
+            // const { address } = bitcoin.payments.p2pkh({ pubkey, network })
+            // console.log(address)
+            // fs.writeFileSync(`./addresses.json`, 'the private key: ' + JSON.stringify(privatekey), (err) => { if (err) throw err; } )
+  
+    
+    // const hey = new Wallet()
+    // console.log(hey)
+    // const test = hey.createAccount()
+    // console.log(test)
+    // new.createAccount()
 
 // const mnemonic = bip39.generateMnemonic()
 // const seed = bip39.mnemonicToSeed(mnemonic)

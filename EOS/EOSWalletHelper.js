@@ -1,11 +1,12 @@
 const bitcoin = require('bitcoinjs-lib');
 const eosUtil = require('eosjs-ecc');
+const bip39 = require("bip39");
 class EOSWalletHelper {
     constructor(Seed) {
         this.seed = Seed;
     }
-    getAccount(env, index, coinType) {
-        return GetAccount(env, this.seed, index, coinType);
+    getAccount(index, coinType) {
+        return GetAccount(this.seed, index, coinType);
     }
 }
 class Account {
@@ -14,7 +15,7 @@ class Account {
         this.privateKey = PrivateKey;
     }
 }
-function GetAccount(network, seed, index, coinType) {
+function GetAccount(seed, index, coinType) {
     let networkUsed = bitcoin.networks.bitcoin;
     console.log("Network Used: ", networkUsed);
     console.log("EOS wallet helper get account. seed: %s index %s coinType %s" , seed, index, coinType);
@@ -24,9 +25,14 @@ function GetAccount(network, seed, index, coinType) {
     var privKey = eosUtil.PrivateKey(privKeyBuffer);
     var privKeyWIF = privKey.toWif();
     var address = privKey.toPublic().toString();
+    console.log(address, privKey)
     return new Account(address, privKeyWIF);
 }
-EOSWalletHelper();
+let seed = bip39.mnemonicToSeed('eight person fade off border garden ugly borrow rhythm bronze gadget combine tower list bus raven flock ethics adult task galaxy detect tilt envelope');
+
+let ew = new EOSWalletHelper(seed).getAccount(43, 0);
+
+
 
 
 

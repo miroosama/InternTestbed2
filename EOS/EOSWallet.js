@@ -1,7 +1,10 @@
 const bip39 = require("bip39");
 const bip32 = require("bip32");
-const {pubKeyToAddress} = require('@cobo/crypto-address')
+const { pubKeyToAddress } = require('@cobo/crypto-address')
+const hdkey = require('hdkey')
+const wif = require('wif')
 const fs = require('fs')
+const ecc = require('eosjs-ecc');
 const { USBAdapter } = require('../adapters/USBAdapter')
 
 
@@ -13,18 +16,20 @@ class EOSWallet {
     
         this.name = name;
         this.accounts = [];
-        this.coinType = 60;
+        this.coinType = 43;
         console.log(pubKeyToAddress)
         if (input==''){
             this.mnemonic = bip39.generateMnemonic(256);
             this.seed = bip39.mnemonicToSeed(this.mnemonic);
             this.rootNode = bip32.fromSeed(this.seed);
+            this.node = hdkey.fromMasterSeed(Buffer.from(this.seed, 'hex'))
             this.rootKey = this.rootNode.toBase58();
         } else if (input.split(' ').length == 24) {
             this.mnemonic = input;
             this.seed = bip39.mnemonicToSeed(this.mnemonic);
             this.rootNode = bip32.fromSeed(this.seed);
-            this.rootKey = this.rootNode.toBase58(); 
+            this.rootKey = this.rootNode.toBase58();
+            this.node = hdkey.fromMasterSeed(Buffer.from(this.seed, 'hex'))
         }
         
         /** The following for loop region can be nested further
@@ -39,9 +44,8 @@ class EOSWallet {
             {
                 aXPrv: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'`).toBase58(),
                 aXPub: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'`).neutered().toBase58(),
-                address: pubKeyToAddress(this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).neutered().publicKey.toString('hex'),'ethereum'),
-                priv: this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).toWIF(),
-                pub: '0x' + this.rootNode.derivePath(`m/44'/${this.coinType}'/${i}'/0/0`).neutered().publicKey.toString('hex')
+                priv: wif.encode(128, this.node._privateKey, false),
+                pub: ecc.PublicKey(this.node._publicKey).toString()
             }
         )}
         // this.writeOut();
