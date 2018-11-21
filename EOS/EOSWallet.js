@@ -1,6 +1,6 @@
 const bip39 = require("bip39");
 const bip32 = require("bip32");
-const {pubKeyToAddress} = require('@cobo/crypto-address')
+const { pubKeyToAddress } = require('@cobo/crypto-address')
 const hdkey = require('hdkey')
 const wif = require('wif')
 const eos = require('eosjs')
