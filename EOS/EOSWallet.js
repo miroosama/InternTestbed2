@@ -37,14 +37,6 @@ class EOSWallet {
             this.rootKey = this.rootNode.toBase58();
             this.node = hdkey.fromMasterSeed(Buffer.from(this.seed, 'hex'))
         }
-        
-        /** The following for loop region can be nested further
-         *  in a foreach loop which iterates over an array where each
-         *  index is populated by a coin value ie [0,44,144] where 
-         *  the derivation path forks. account and address mgmt are
-         *  the features that distinguish each coin and are thereby
-         *  where we would seek to extend the parent HDWallet class.
-         */
         for (let i = 0; i<3; i++){
             this.accounts.push(
             {
@@ -68,7 +60,7 @@ class EOSWallet {
     }
    async getInstance (expiration, refBlockNum, refBlockPrefix) {
         let eosB = new EOSBlockchain
-        eosB.getInfoRefs(this.accounts[0].priv, this.accounts[0].pub)
+        eosB.createInstance(this.accounts[0].priv, this.accounts[0].pub, creatorPrv)
         console.log(eosB.accInstance)
     //      const headers = {
     //       ref_block_num: eosB.getIn(),

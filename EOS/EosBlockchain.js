@@ -1,5 +1,3 @@
-// const electron = window.require('electron');
-// const remote = electron.remote;
 const bitcoin = require('bitcoinjs-lib');
 const eosUtil = require('eosjs-ecc');
 var bip39 = require('bip39');
@@ -7,7 +5,7 @@ var os = require("os");
 const fs = require('fs')
 const Eos = require('eosjs');
 const axios = require('axios');
-const { Api, JsonRpc, RpcError, JsSignatureProvider } = require('eosjs');
+
 // let eos = require('@cobo/eos')
 
 
@@ -30,93 +28,43 @@ class EOSBlockchain{
     this.accInstance = ""
 }
 
-    async getInfoRefs(prk, pub){
-        const url = 'https://api.eosnewyork.io/v1/chain/'
-        // const url = 'http://jungle.cryptolions.io:18888/v1/chain/'
- 
-        let info = await axios({url: url+'get_info', method: 'post'})
-          .then(function (response) {
-              console.log(response)
-             return response.data.head_block_num
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-          this.getInfoBlock(prk, info, pub)
-    }
 
-    async getInfoBlock(prk, blockNum, pub){
-        const url = 'https://api.eosnewyork.io/v1/chain/'
-        let refBlockPrefix = await axios({url: url+'get_block', method: 'post', data:{block_num_or_id: JSON.stringify(blockNum)} }
-          )
-          .then(function (response) {
-            console.log(response.data)
-            return response.data.ref_block_prefix
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-
-          this.createInstance(prk, blockNum, refBlockPrefix, pub)
-    }
-
-    createInstance(prk, blockNum, ref_block_prefix, pub){
-        // let newB = blockNum.toString().slice(0, 4)
-        // let newb1 = parseInt(newB, 10)
-        // console.log(newb1)
-        // const time = new Date().getTime()
-        // const expiration =  new Date(time + 60000).toISOString().split('.')[0]
-        // console.log(expiration)
-        // const headers = {
-        //   expiration: expiration,
-        //   ref_block_num: 1,
-        //   ref_block_prefix: ref_block_prefix
-        // }
-        // const client = eos({
-        //   keyProvider: "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
-        //   transactionHeaders: (expireInSeconds, callback) => callback(null, headers),
-        //   broadcast: true,
-        //   sign: true,
-        //   httpEndpoint: 'https://api.eosnewyork.io',
-        //   expireInSeconds: 60
-        // })
-        // this.accInstance = client
-        // this.registerAccount(prk, pub)
-        const defaultPrivateKey = "5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr"; // useraaaaaaaa
-        const signatureProvider = new JsSignatureProvider("5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr");
+    createInstance(prk, pub, creatorPrv, creator, name){
+        const defaultPrivateKey = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"; // useraaaaaaaa
+        // const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
         let eosConfig = {
-          chainId: this._chainId, // Jungle Testnet  http://dev.cryptolions.io:38888/v1/chain/get_info
-          keyProvider: signatureProvider, // <----- existing account (active) private key that has ram cpu and bandwidth already purchased
-          httpEndpoint: 'https://api.eosnewyork.io', // jungle testnet
+          chainId: '038f4b0fc8ff18a4f0842a8f0564611f6e96e8535901dd45e43ac8691a1c4dca', // Jungle Testnet  http://dev.cryptolions.io:38888/v1/chain/get_info
+          keyProvider: creatorPrv, // <----- existing account (active) private key that has ram cpu and bandwidth already purchased
+          httpEndpoint: 'http://jungle.cryptolions.io:38888', // jungle testnet
           expireInSeconds: 60,
           broadcast: true,
           debug: true, 
           sign: true
       }
       let eos = Eos(eosConfig)
-      this.registerAccount(prk, pub, eos)
+      this.registerAccount(prk, pub, eos, creator, name)
     }
     
     toEOSAmount(amount, symbol = 'EOS'){
         return (amount / 10000).toFixed(4) + ' ' + symbol
       }
 
-    async registerAccount(prk, pub, eos){
+    async registerAccount(prk, pub, eos, creator, name){
         const res = await eos.transaction(tr => {
             tr.newaccount({
-                creator: 'eosio',
-                name: "dingomate",
+                creator: creator,
+                name: name,
                 owner: pub,
                 active: pub
             })
             tr.buyrambytes({
-                payer: 'eosio',
-                receiver: 'dingomate',
+                payer: creator,
+                receiver: name,
                 bytes:4000
               })
               tr.delegatebw({
-                from: 'eosio',
-                receiver: "dingomate",
+                from: creator,
+                receiver: name,
                 stake_net_quantity: this.toEOSAmount(1000, "EOS"),
                 stake_cpu_quantity: this.toEOSAmount(1000, "EOS"),
                 transfer: 0
@@ -125,12 +73,45 @@ class EOSBlockchain{
         console.log(res)
     }
 
+    async eosTx(){
+      const options = {
+        authorization: '',
+        broadcast: false, 
+        sign: false,
+      };
+      const transaction = await eos.transaction(tr => {
+        tr.transfer(from, to, amount, memo);
+      },
+      options
+      );
+
+      const data = transaction.transaction.transaction.actions[0].data;
+    }
+     
+    async pushTx(){
+      //import transaction and sig
+      const trFinal = await eos.pushTransaction({ compression: 'none', transaction: transaction, signatures: sig })
+    }
+
 }
 
 
+
 module.exports = EOSBlockchain
-
-
+//dingomate111
+// aXPrv:
+//         'xprv9zCDbHEsrRfsJM398rkcSzhjYcANtjcCgRY43cmhppbBQqLwNnxJLTr5hHtjoYCcjj1VieRv9B24a3dPRcWeDeVqQdWZ1puZWxDKgy3dx7G',
+//        aXPub:
+//         'xpub6DBZznmmgoEAWq7cEtHcp8eU6dzsJCL43eTer1BKPA8AHdg5vLGYtGAZYYqLLKYLWKLVUGTDczF2GSNYXDaoCJZjvFvfME1kb8PDKX2eSQW',
+//        priv: '5JVJv6HpZWeeRpuc1AVCVFZEdYFWysUKoGK8QGiFPz2gGHF2Sat',
+//        pub: 'EOS5yGnpxp4ZsdnGevEd9yGw2PbJcHWaiU6hsE9tA7mHLvvB1ZDP9' },
+//dingomate222
+// [ { aXPrv:
+//   'xprv9zCDbHEsrRfsJM398rkcSzhjYcANtjcCgRY43cmhppbBQqLwNnxJLTr5hHtjoYCcjj1VieRv9B24a3dPRcWeDeVqQdWZ1puZWxDKgy3dx7G',
+//  aXPub:
+//   'xpub6DBZznmmgoEAWq7cEtHcp8eU6dzsJCL43eTer1BKPA8AHdg5vLGYtGAZYYqLLKYLWKLVUGTDczF2GSNYXDaoCJZjvFvfME1kb8PDKX2eSQW',
+//  priv: '5JVJv6HpZWeeRpuc1AVCVFZEdYFWysUKoGK8QGiFPz2gGHF2Sat',
+//  pub: 'EOS5yGnpxp4ZsdnGevEd9yGw2PbJcHWaiU6hsE9tA7mHLvvB1ZDP9' },
 
 
 
@@ -152,35 +133,6 @@ module.exports = EOSBlockchain
 
 //     # eosio.token <= eosio.token::transfer {"from":"eosio","to":"vew2clol22jm","quantity":"100.0000 EOS","memo":"Jungle Faucet"} # eosio <= eosio.token::transfer {"from":"eosio","to":"vew2clol22jm","quantity":"100.0000 EOS","memo":"Jungle Faucet"} # vew2clol22jm <= eosio.token::transfer {"from":"eosio","to":"vew2clol22jm","quantity":"100.0000 EOS","memo":"Jungle Faucet"}
 
-
-
-// this.config = {
-//     expireInSeconds: 60,
-//     broadcast: true,
-//     debug: false,
-//     sign: true,
-//     // mainNet bp endpoint
-//     httpEndpoint: 'https://api.eosnewyork.io',
-// },
-
-// async getIn(){
-//     let chainInfo = await this.ceos.getInfo((error, info) => {
-//      // console.log(error, info);
-//      // this.config.lastBlockNum = info.last_irreversible_block_num
-//      return info
-//  })
-//  return chainInfo
-// }
-
-//  async getR(){
-//      let h = await this.getIn()
-//      console.log(h)
-//  }
-//  getBl(){
-//      this.eos.getBlock("26760602", (error, info) => {
-//          console.log(error, info);
-//      });
-//  }
 
 
 //  getAccount(name){
@@ -215,132 +167,67 @@ module.exports = EOSBlockchain
 //  }
 
 
-//  async getInfo(){
-//      var options = { method: 'POST',
-//      url: 'https://api.eosnewyork.io/v1/chain/get_info'};
+// executed transaction: a9af9d78b848ad89626593b0ed479a5c486791231dfff739366b8638508b7e6d 336 bytes 1618 us warn 2018-11-27T20:00:53.065 thread-0 main.cpp:482 print_result ] warning: transaction executed locally, but may not be confirmed by the network yet 
 
-//      let info = await request(options, function (error, response, body) {
-//      // console.log(body);
-//      let res = JSON.parse(body)
-//      return res
-//      // console.log(res.last_irreversible_block_num, "break", res.last_irreversible_block_id)
-//      })
-//      .catch(err => console.log(err));
-//      return info
-//  }
+// # eosio <= eosio::newaccount {"creator":"eosio","newact":"dingomate111","owner":{"threshold":1,"keys":[{"key":"EOS5yGnpxp4ZsdnGev... # eosio <= eosio::buyrambytes {"payer":"eosio","receiver":"dingomate111","bytes":4096} # eosio.token <= eosio.token::transfer {"from":"eosio","to":"eosio.ram","quantity":"0.3134 EOS","memo":"buy ram"} # eosio <= eosio.token::transfer {"from":"eosio","to":"eosio.ram","quantity":"0.3134 EOS","memo":"buy ram"} # eosio.ram <= eosio.token::transfer {"from":"eosio","to":"eosio.ram","quantity":"0.3134 EOS","memo":"buy ram"} # eosio.token <= eosio.token::transfer {"from":"eosio","to":"eosio.ramfee","quantity":"0.0016 EOS","memo":"ram fee"} # eosio <= eosio.token::transfer {"from":"eosio","to":"eosio.ramfee","quantity":"0.0016 EOS","memo":"ram fee"} # eosio.ramfee <= eosio.token::transfer {"from":"eosio","to":"eosio.ramfee","quantity":"0.0016 EOS","memo":"ram fee"} # eosio <= eosio::delegatebw {"from":"eosio","receiver":"dingomate111","stake_net_quantity":"100.0000 EOS","stake_cpu_quantity":"... # eosio.token <= eosio.token::transfer {"from":"eosio","to":"eosio.stake","quantity":"200.0000 EOS","memo":"stake bandwidth"} # eosio <= eosio.token::transfer {"from":"eosio","to":"eosio.stake","quantity":"200.0000 EOS","memo":"stake bandwidth"} # eosio.stake <= eosio.token::transfer {"from":"eosio","to":"eosio.stake","quantity":"200.0000 EOS","memo":"stake bandwidth"}
 
-// maxFreeSockets: 256 },
-// socketPath: undefined,
-// timeout: undefined,
-// method: 'POST',
-// path: '/v1/chain/get_info',
-// _ended: true,
-// res:
-//  IncomingMessage {
-//    _readableState: [ReadableState],
-//    readable: false,
-//    _events: [Object],
-//    _eventsCount: 3,
-//    _maxListeners: undefined,
-//    socket: [Socket],
-//    connection: [Socket],
-//    httpVersionMajor: 1,
-//    httpVersionMinor: 1,
-//    httpVersion: '1.1',
-//    complete: true,
-//    headers: [Object],
-//    rawHeaders: [Array],
-//    trailers: {},
-//    rawTrailers: [],
-//    aborted: false,
-//    upgrade: false,
-//    url: '',
-//    method: null,
-//    statusCode: 200,
-//    statusMessage: 'OK',
-//    client: [Socket],
-//    _consuming: false,
-//    _dumped: false,
-//    req: [Circular],
-//    responseUrl: 'http://18.217.207.243:8888/v1/chain/get_info',
-//    redirects: [] },
-// aborted: undefined,
-// timeoutCb: null,
-// upgradeOrConnect: false,
-// parser: null,
-// maxHeadersCount: null,
-// _redirectable:
-//  Writable {
-//    _writableState: [WritableState],
-//    writable: true,
-//    _events: [Object],
-//    _eventsCount: 2,
-//    _maxListeners: undefined,
-//    _options: [Object],
-//    _redirectCount: 0,
-//    _redirects: [],
-//    _requestBodyLength: 0,
-//    _requestBodyBuffers: [],
-//    _onNativeResponse: [Function],
-//    _currentRequest: [Circular],
-//    _currentUrl: 'http://18.217.207.243:8888/v1/chain/get_info' },
-// [Symbol(isCorked)]: false,
-// [Symbol(outHeadersKey)]:
-//  { accept: [Array],
-//    'content-type': [Array],
-//    'user-agent': [Array],
-//    host: [Array] } },
-// data:
-// { server_version: '11c25394',
-// chain_id:
-//  'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
-// head_block_num: 1,
-// last_irreversible_block_num: 0,
-// last_irreversible_block_id:
-//  '0000000000000000000000000000000000000000000000000000000000000000',
-// head_block_id:
-//  '00000001bcf2f448225d099685f14da76803028926af04d2607eafcf609c265c',
-// head_block_time: '2018-06-01T12:00:00.000',
-// head_block_producer: '',
-// virtual_block_cpu_limit: 200000,
-// virtual_block_net_limit: 1048576,
-// block_cpu_limit: 200000,
-// block_net_limit: 1048576,
-// server_version_string: 'v1.4.3' } }
-// { timestamp: '2018-06-01T12:00:00.000',
-// producer: '',
-// confirmed: 1,
-// previous:
-// '0000000000000000000000000000000000000000000000000000000000000000',
-// transaction_mroot:
-// '0000000000000000000000000000000000000000000000000000000000000000',
-// action_mroot:
-// 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
-// schedule_version: 0,
-// new_producers: null,
-// header_extensions: [],
-// producer_signature:
-// 'SIG_K1_111111111111111111111111111111111111111111111111111111111111111116uk5ne',
-// transactions: [],
-// block_extensions: [],
-// id:
-// '00000001bcf2f448225d099685f14da76803028926af04d2607eafcf609c265c',
-// block_num: 1,
-// ref_block_prefix: 2517196066 }
-// { transaction_id:
-// '540cb804e1797fefbcb5e8051f252fb632de3c8c8e5187f3401f08a5d64878c9',
-// broadcast: false,
-// transaction:
-// { compression: 'none',
-// transaction:
-//  { expiration: '2018-11-20T17:06:42',
-//    ref_block_num: 1,
-//    ref_block_prefix: 2517196066,
-//    max_net_usage_words: 0,
-//    max_cpu_usage_ms: 0,
-//    delay_sec: 0,
-//    context_free_actions: [],
-//    actions: [Array],
-//    transaction_extensions: [] },
+
+
+
+
+
+
 // signatures:
-//  [ 'SIG_K1_KXRP61xviZp5hwoKaY4jUiVDF72Dsgx34LgSzwFkUp92GNCCjmERyA4zvT8yseFMJXup6bgP3qsz2BWjpX23oyKAqKoyhV' ] } }
+// [ 'SIG_K1_K8MpvjvSQvpSwsuVUCh6ufjiatTeXutTynWginVn8VXNdVMU8LtSyrRCbXBe1MngVLFSVkAg9btoxhwp97x6Gd4EnhDDMQ' ] },
+// transaction_id:
+// '3945495f92445705d3c9ff8f3d07db28d5e4d3339ec31e0ad8353259cd7c9bc2',
+// processed:
+// { id:
+// '3945495f92445705d3c9ff8f3d07db28d5e4d3339ec31e0ad8353259cd7c9bc2',
+// block_num: 26654343,
+// block_time: '2018-11-28T14:52:37.500',
+// producer_block_id: null,
+// receipt:
+// { status: 'executed', cpu_usage_us: 25045, net_usage_words: 42 },
+// elapsed: 25045,
+// net_usage: 336,
+// scheduled: false,
+// action_traces: [ [Object], [Object], [Object] ],
+// except: null } }
+
+// [ { aXPrv:
+//   'xprv9zCDbHEsrRfsJM398rkcSzhjYcANtjcCgRY43cmhppbBQqLwNnxJLTr5hHtjoYCcjj1VieRv9B24a3dPRcWeDeVqQdWZ1puZWxDKgy3dx7G',
+//  aXPub:
+//   'xpub6DBZznmmgoEAWq7cEtHcp8eU6dzsJCL43eTer1BKPA8AHdg5vLGYtGAZYYqLLKYLWKLVUGTDczF2GSNYXDaoCJZjvFvfME1kb8PDKX2eSQW',
+//  priv: '5JVJv6HpZWeeRpuc1AVCVFZEdYFWysUKoGK8QGiFPz2gGHF2Sat',
+//  pub: 'EOS5yGnpxp4ZsdnGevEd9yGw2PbJcHWaiU6hsE9tA7mHLvvB1ZDP9' },
+
+// async getInfoRefs(prk, pub){
+//   const url = 'https://api.eosnewyork.io/v1/chain/'
+//   // const url = 'http://jungle.cryptolions.io:18888/v1/chain/'
+
+//   let info = await axios({url: url+'get_info', method: 'post'})
+//     .then(function (response) {
+//         console.log(response)
+//        return response.data.head_block_num
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+//     this.getInfoBlock(prk, info, pub)
+// }
+
+// async getInfoBlock(prk, blockNum, pub){
+//   const url = 'https://api.eosnewyork.io/v1/chain/'
+//   let refBlockPrefix = await axios({url: url+'get_block', method: 'post', data:{block_num_or_id: JSON.stringify(blockNum)} }
+//     )
+//     .then(function (response) {
+//       console.log(response.data)
+//       return response.data.ref_block_prefix
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+
+//     this.createInstance(prk, blockNum, refBlockPrefix, pub)
+// }
